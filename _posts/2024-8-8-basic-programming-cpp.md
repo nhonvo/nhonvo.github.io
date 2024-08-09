@@ -56,8 +56,10 @@ b. Nhập vào ba số nguyên. Xuất ra màn hình giá trị lớn nhất.
 
 **Câu 6**: Nhập vào 3 số nguyên dương a, b, c. Kiểm tra xem 3 số đó có lập thành tam giác không? Nếu có, hãy tính chu vi và diện tích của tam giác theo công thức:
 
-Chu vi CV = a + b + c.
-Diện tích S = sqrt(p *(p - a)* (p - b) * (p - c)), trong đó: p = CV / 2.
+Chu vi $CV = a + b + c$.
+
+Diện tích $S = sqrt(p *(p - a)* (p - b) * (p - c))$, trong đó: $p = CV / 2$.
+
 Xuất các kết quả ra màn hình.
 
 **Câu 7**: Viết chương trình đảo ngược một số nguyên dương có đúng 3 chữ số.
@@ -66,33 +68,34 @@ Xuất các kết quả ra màn hình.
 
 Lần lượt lấy các chữ số dùng phép chia / và phép chia lấy phần dư % và in ra màn hình theo thứ tự:
 
-Chữ số hàng đơn vị
-Chữ số hàng chục
-Chữ số hàng trăm.
+- Chữ số hàng đơn vị
+- Chữ số hàng chục
+- Chữ số hàng trăm.
 Ví dụ:
 
 Với số 234, thực hiện:
-234 % 10 = 4 (lấy chữ số hàng đơn vị)
-234 / 10 = 23
-23 % 10 = 3 (lấy chữ số hàng chục)
-23 / 10 = 2
-2 % 10 = 2 (lấy chữ số hàng trăm)
+
+- 234 % 10 = 4 (lấy chữ số hàng đơn vị)
+- 234 / 10 = 23
+- 23 % 10 = 3 (lấy chữ số hàng chục)
+- 23 / 10 = 2
+- 2 % 10 = 2 (lấy chữ số hàng trăm)
 
 kết quả
 
-Hàng đơn vị: 4
-Hàng chục: 3
-Hàng trăm: 2
+- Hàng đơn vị: 4
+- Hàng chục: 3
+- Hàng trăm: 2
 
 ### Bài 2: Cấu trúc điều kiện If và switch
 
 **Câu 1:**
 
-- Viết chương trình giải phương trình bậc nhất `ax+b=0` với a,b nhập từ bàn phím.
+- Viết chương trình giải phương trình bậc nhất $ax+b=0$ với a,b nhập từ bàn phím.
 
 **Câu 2:**
 
-- Viết chương trình giải phương trình bậc hai `ax2+bx+c=0`. Với a,b,c nhập từ bàn phím.
+- Viết chương trình giải phương trình bậc hai $ax^2+bx+c=0$. Với a,b,c nhập từ bàn phím.
 
 ```c#
 #include <iostream>
@@ -247,6 +250,7 @@ int main() {
     return 0;
 }
 ```
+
 ### Bài 3: Cấu trúc lặp - do while, while và for
 
 **Câu 1:**
@@ -273,55 +277,61 @@ int main() {
 - Viết chương trình kiểm tra một số có phải là số hoàn hảo hay không (số hoàn hảo là số bằng tổng các ước số của nó trừ chính nó).
 
 **Câu 5:** Viết chương trình nhập vào một số nguyên n > 0, hãy:
-a. Xuất ra màn hình các số trong phạm vi từ 1 đến n.
-b. Xuất ra màn hình các số chẵn trong phạm vi từ 1 đến n.
-c. Xuất ra màn hình các số lẻ không chia hết cho 3 trong phạm vi từ 1 đến n.
-d. Tính các biểu thức sau:
+
+- a. Xuất ra màn hình các số trong phạm vi từ 1 đến n.
+- b. Xuất ra màn hình các số chẵn trong phạm vi từ 1 đến n.
+- c. Xuất ra màn hình các số lẻ không chia hết cho 3 trong phạm vi từ 1 đến n.
+- d. Tính các biểu thức sau:
 
 S3 = 1/2 + 2/3 + 3/4 + ...
 S4 = x^n (với x là số thực nhập từ bàn phím).
 e. Tính tổng các chữ số của n. Ví dụ: n = 125, tổng các chữ số là 1 + 2 + 5 = 8.
 
 **Câu 6:** Viết chương trình thực hiện:
-a. Nhập một số nguyên n sao cho 0 < n < 100. Nếu nhập sai thì yêu cầu nhập lại.
-b. Đếm số ước của n. Nếu đếm bằng 2 thì xuất ra màn hình "n là số nguyên tố", ngược lại xuất ra "n không phải là số nguyên tố".
-c. Tính tổng các ước của n (không tính chính nó). Nếu tổng các ước đúng bằng n thì xuất ra màn hình "n là số hoàn thiện", ngược lại xuất ra "n không là số hoàn thiện".
+
+- a. Nhập một số nguyên n sao cho 0 < n < 100. Nếu nhập sai thì yêu cầu nhập lại.
+- b. Đếm số ước của n. Nếu đếm bằng 2 thì xuất ra màn hình "n là số nguyên tố", ngược lại xuất ra "n không phải là số nguyên tố".
+- c. Tính tổng các ước của n (không tính chính nó). Nếu tổng các ước đúng bằng n thì xuất ra màn hình "n là số hoàn thiện", ngược lại xuất ra "n không là số hoàn thiện".
 
 **Câu 7:** Viết chương trình hiển thị bảng cửu chương ra màn hình.
 
 **Câu 8:** Viết chương trình thực hiện:
-a. Nhập n > 0.
-b. Liệt kê các số nguyên tố trong phạm vi từ 1 đến n.
-c. Đếm số lượng số nguyên tố trong phạm vi từ 1 đến n.
-d. Tính tổng các số nguyên tố trong phạm vi từ 1 đến n.
+
+- a. Nhập n > 0.
+- b. Liệt kê các số nguyên tố trong phạm vi từ 1 đến n.
+- c. Đếm số lượng số nguyên tố trong phạm vi từ 1 đến n.
+- d. Tính tổng các số nguyên tố trong phạm vi từ 1 đến n.
 
 **Câu 9:** Viết chương trình thực hiện:
-a. Nhập n > 0.
-b. Tính tổng các chữ số của n. Ví dụ: với n = 12537 thì tổng là 1 + 2 + 5 + 3 + 7 = 18.
+
+- a. Nhập n > 0.
+- b. Tính tổng các chữ số của n. Ví dụ: với n = 12537 thì tổng là 1 + 2 + 5 + 3 + 7 = 18.
 
 ### Bài 4: Hàm
 
 Câu 1: Viết chương trình thực hiện các chức năng sau (dùng hàm):
-a. Nhập vào một số nguyên n (0 < n < 100).
-b. Kiểm tra n có phải là số nguyên tố không?
-c. Liệt kê các số nguyên tố trong phạm vi từ 1 đến n.
-d. Đếm số lượng số nguyên tố trong phạm vi từ 1 đến n.
-e. Tính tổng các số nguyên tố trong phạm vi từ 1 đến n.
-f. Tính trung bình cộng các số nguyên tố trong phạm vi từ 1 đến n.
+
+- a. Nhập vào một số nguyên n (0 < n < 100).
+- b. Kiểm tra n có phải là số nguyên tố không?
+- c. Liệt kê các số nguyên tố trong phạm vi từ 1 đến n.
+- d. Đếm số lượng số nguyên tố trong phạm vi từ 1 đến n.
+- e. Tính tổng các số nguyên tố trong phạm vi từ 1 đến n.
+- f. Tính trung bình cộng các số nguyên tố trong phạm vi từ 1 đến n.
 
 **Câu 2:** Viết chương trình theo hàm cho phép thực hiện chọn lựa công việc:
-a. Giải phương trình bậc 1 ax + b = 0.
-b. Kiểm tra một số nguyên có là số hoàn thiện không?
-c. Liệt kê các số hoàn thiện trong phạm vi từ 1 đến n (n do người dùng nhập).
-d. Tìm ước chung lớn nhất của hai số nguyên a, b nhập từ bàn phím.
-e. Thoát khỏi chương trình.
+
+- a. Giải phương trình bậc 1 ax + b = 0.
+- b. Kiểm tra một số nguyên có là số hoàn thiện không?
+- c. Liệt kê các số hoàn thiện trong phạm vi từ 1 đến n (n do người dùng nhập).
+- d. Tìm ước chung lớn nhất của hai số nguyên a, b nhập từ bàn phím.
+- e. Thoát khỏi chương trình.
 
 **Câu 3:** Viết chương trình nhập từ bàn phím 2 số a, b và một ký tự ch. Nếu:
 
-ch là "+" thì thực hiện phép tính a + b và in kết quả lên màn hình.
-ch là "-" thì thực hiện phép tính a - b và in kết quả lên màn hình.
-ch là "*" thì thực hiện phép tính a* b và in kết quả lên màn hình.
-ch là "/" thì thực hiện phép tính a / b và in kết quả lên màn hình.
+- ch là "+" thì thực hiện phép tính a + b và in kết quả lên màn hình.
+- ch là "-" thì thực hiện phép tính a - b và in kết quả lên màn hình.
+- ch là "*" thì thực hiện phép tính a* b và in kết quả lên màn hình.
+- ch là "/" thì thực hiện phép tính a / b và in kết quả lên màn hình.
 
 **Câu 4:** Viết chương trình tính tiền lương ngày cho công nhân, cho biết trước giờ vào ca, giờ ra ca của mỗi người.
 
@@ -336,43 +346,44 @@ Giờ vào ca sớm nhất là 6 giờ sáng và giờ ra ca trễ nhất là 18
 
 ### Bài 5: Mảng - Array
 
-**Câu 1**:
-
-Thực hiện:
+**Câu 1**: Thực hiện:
 
 - a. Nhập mảng số nguyên gồm n phần tử (0 < n <= 10).
 - b. Xuất mảng vừa nhập.
 
 **Câu 2:** Làm tiếp theo trong chương trình của câu 1 với các yêu cầu sau:
-a. Xuất các phần tử chia hết cho 3 có trong mảng.
-b. Đếm số lượng số dương có trong mảng.
-c. Tính tổng các số trong mảng.
-d. Tính trung bình cộng của mảng.
-e. Tính trung bình cộng các phần tử dương có trong mảng.
-f. Xuất các số nguyên tố có trong mảng.
-g. Đếm số lượng số nguyên tố có trong mảng.
-h. Tính tổng các số nguyên tố có trong mảng.
-j. Tính trung bình cộng các số nguyên tố có trong mảng.
-k. Tìm phần tử dương đầu tiên.
-l. Tìm phần tử dương cuối cùng.
-m. Tìm giá trị phần tử lớn nhất (nhỏ nhất) trong mảng.
+
+- a. Xuất các phần tử chia hết cho 3 có trong mảng.
+- b. Đếm số lượng số dương có trong mảng.
+- c. Tính tổng các số trong mảng.
+- d. Tính trung bình cộng của mảng.
+- e. Tính trung bình cộng các phần tử dương có trong mảng.
+- f. Xuất các số nguyên tố có trong mảng.
+- g. Đếm số lượng số nguyên tố có trong mảng.
+- h. Tính tổng các số nguyên tố có trong mảng.
+- j. Tính trung bình cộng các số nguyên tố có trong mảng.
+- k. Tìm phần tử dương đầu tiên.
+- l. Tìm phần tử dương cuối cùng.
+- m. Tìm giá trị phần tử lớn nhất (nhỏ nhất) trong mảng.
 
 **Câu 3:** Viết chương trình thực hiện:
-a. Nhập vào mảng a gồm n phần tử, trong quá trình nhập kiểm tra các phần tử nhập vào không được trùng, nếu trùng thì thông báo và yêu cầu nhập lại.
-b. Xuất mảng.
-c. Xuất ra màn hình các phần tử là số chính phương nằm tại những vị trí lẻ trong mảng.
-d. Xuất ra vị trí của các phần tử có giá trị lớn nhất.
-e. Viết hàm tính tổng các phần tử nằm ở vị trí chẵn trong mảng.
-f. Viết hàm sắp xếp mảng theo thứ tự tăng dần.
+
+- a. Nhập vào mảng a gồm n phần tử, trong quá trình nhập kiểm tra các phần tử nhập vào không được trùng, nếu trùng thì thông báo và yêu cầu nhập lại.
+- b. Xuất mảng.
+- c. Xuất ra màn hình các phần tử là số chính phương nằm tại những vị trí lẻ trong mảng.
+- d. Xuất ra vị trí của các phần tử có giá trị lớn nhất.
+- e. Viết hàm tính tổng các phần tử nằm ở vị trí chẵn trong mảng.
+- f. Viết hàm sắp xếp mảng theo thứ tự tăng dần.
 
 ### Bài 6: Kiểu dữ liệu cấu trúc - struct
 
 **Câu 1:** Định nghĩa kiểu dữ liệu phần số gồm số và màu số. Viết chương trình thực hiện:
-a. Nhập 1 phần số.
-b. Xuất phần số.
-c. Rút gọn phần số.
-d. Tính tổng 2 phần số.
-e. So sánh 2 phần số.
+
+- a. Nhập 1 phần số.
+- b. Xuất phần số.
+- c. Rút gọn phần số.
+- d. Tính tổng 2 phần số.
+- e. So sánh 2 phần số.
 
 **Câu 2:** Làm tiếp câu 1, cài đặt các hàm sau:
 a. Nhập vào dãy phần số.
@@ -381,11 +392,11 @@ c. Tính tổng dãy.
 d. Tìm phần số lớn nhất.
 e. Sắp xếp dãy phần số tăng dần.
 
-**Câu 3:**
-3.1 Viết hàm nhập dữ liệu cho một sinh viên, thông tin về sinh viên gồm:
-a. Mã sinh viên (chuỗi 10 ký tự).
-b. Tên (là chuỗi tối đa 10 ký tự).
-c. Ngày tháng năm sinh (theo kiểu int, ví dụ: ngày/tháng/năm).
-d. Giới tính (Nam hoặc Nữ).
-e. Lớp (chuỗi 7 ký tự, trong đó 2 ký tự là năm vào học, 1 ký tự tiếp theo là bậc học (D: Đại học, C: Cao đẳng), 2 ký tự tiếp theo là ngành học (TH: Tin học, KT: Kế toán, QT: Quản trị, ĐT: Điện tử, DT: Điện thoại, ...)).
-f. Điểm toàn, lý, tin (Kiểu số thực).
+**Câu 3:** Viết hàm nhập dữ liệu cho một sinh viên, thông tin về sinh viên gồm:
+
+- a. Mã sinh viên (chuỗi 10 ký tự).
+- b. Tên (là chuỗi tối đa 10 ký tự).
+- c. Ngày tháng năm sinh (theo kiểu int, ví dụ: ngày/tháng/năm).
+- d. Giới tính (Nam hoặc Nữ).
+- e. Lớp (chuỗi 7 ký tự, trong đó 2 ký tự là năm vào học, 1 ký tự tiếp theo là bậc học (D: Đại học, C: Cao đẳng), 2 ký tự tiếp theo là ngành học (TH: Tin học, KT: Kế toán, QT: Quản trị, ĐT: Điện tử, DT: Điện thoại, ...)).
+- f. Điểm toàn, lý, tin (Kiểu số thực).

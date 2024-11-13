@@ -78,10 +78,10 @@ module.exports = {
               label: 'LinkedIn',
               href: 'https://www.linkedin.com/in/truongnhon/',
             },
-            {
-              label: 'Phonemic Chart',
-              href: '/PhonemicChart'
-            }
+            // {
+            //   label: 'Phonemic Chart',
+            //   href: '/PhonemicChart'
+            // }
           ],
         },
         {

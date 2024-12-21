@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunksample_website=self.webpackChunksample_website||[]).push([[6339],{4878:e=>{e.exports=JSON.parse('{"permalink":"/tags/git","page":1,"postsPerPage":5,"totalPages":1,"totalCount":2,"blogDescription":"A place to share my knowledge","blogTitle":"My Blog"}')}}]);

@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunksample_website=self.webpackChunksample_website||[]).push([[6046],{9556:e=>{e.exports=JSON.parse('{"permalink":"/tags/aws","page":1,"postsPerPage":5,"totalPages":1,"totalCount":1,"blogDescription":"A place to share my knowledge","blogTitle":"My Blog"}')}}]);

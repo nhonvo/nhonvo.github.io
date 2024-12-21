@@ -1,7 +1,7 @@
 ---
 layout: post
-title: "AWS cloud practitioner sample exam"
-subtitle: ""
+title: "AWS Exam 1"
+subtitle: "AWS cloud practitioner exam"
 date: 2024-4-19 00:00:00
 author: "Truong Nhon"
 published: false

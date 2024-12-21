@@ -1,7 +1,7 @@
 ---
 layout:     post
-title:      "Azure Cloud"
-subtitle:   ""
+title:      "Azure Exam 1"
+subtitle:   "Azure cloud practitioner exam"
 date:       2024-4-13 00:00:00
 author:     "Truong Nhon"
 published: false
@@ -9,11 +9,9 @@ hidden: true
 catalog: true
 tags:
   - azure
-  - cloud
 ---
 
 <!--truncate-->
-
 
 2. Your users want to sign-in to devices, apps, and services from anywhere. They want to sign-in using an organizational work or school account instead of a personal account. You must ensure corporate assets are protected and that devices meet standards for security and compliance. Specifically, you need to be able to enable or disable a device. What should you do? (1 Point)
 

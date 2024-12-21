@@ -28,7 +28,7 @@ tags: [webapi, c#, aws]
 - [**Step 8: Clean Up Resources (Optional)**](#step-8-clean-up-resources-optional)
 - [Upcoming content](#upcoming-content)
 
-****
+
 <!--truncate-->
 
 ### **Cost Breakdown for EC2**
@@ -356,7 +356,7 @@ Ensure it’s running on port 5000.
 
 3. Or Copy publish file from local
 
-```
+```bash
 scp -i "your-key.pem" -r /path/to/your/webapi ec2-user@<your-ec2-public-ip>:/var/www/webapi
 ```
 

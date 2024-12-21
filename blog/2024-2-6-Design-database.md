@@ -1,18 +1,15 @@
-<!-- ---
-layout:     post
-title:      "Design database"
-subtitle:   "SQL Essentials Part 5"
-date:       2024-2-6 17:00:00
-author:     "Truong Nhon"
-hidden: false
-published: true
-multilingual: false
-catalog: true
-lang: en
-tags:
-- sql
-- sqlserver
 ---
+title: Design database
+description: SQL Essentials Part 5
+slug: /design-database-5/
+image: https://i.imgur.com/mErPwqL.png
+authors:
+  - truongnhon
+tags: [sql]
+
+---
+<!--truncate-->
+
 ## Data normalization
 
 Which data de-normalized:
@@ -55,7 +52,7 @@ Eg:
 
 **Partial dependency**: a column that isn't part of the primary key, and that depends only on part of the primary key. For example, if the primary key (PK) is `(student_no, course_id)`, then a column called `student_name` would be a partial dependency on the PK because it only depends on the `student_no`.
 
-![img](/img/Design-database/2nf-before-after.png)
+<!-- ![img](/img/Design-database/2nf-before-after.png) -->
 
 In the example, I noted `item_name` and `variant_name` as partial dependencies, relying on `item_no` and `variant_code`, respectively. As such, I split these two partial dependencies into their own tables, avoiding quite a bit of data duplication.
 
@@ -68,7 +65,7 @@ From there, the newly named `item_id` and `variant_id` (replacing `item_no` and 
 
 **Transitive dependency**: when a column that isn't part of the primary key depends on the primary key, but through another non-key column. For example, a table of movie reviews would have a surrogate id column as its PK, and a `movie_id` column to refer to the movfacie which is being reviewed. If the table also contains a `movie_name` column, then that `movie_name` is transitively dependent on the PK, because it depends on it *through* `movie_id`.
 
-![img](/img/Design-database/3nf-before-after.png)
+<!-- ![img](/img/Design-database/3nf-before-after.png) -->
 
 To eliminate transitive dependencies, we'll use a strategy similar to that of eliminating partial dependencies: remove the concerned columns, and, if a table linking those columns to the one they depend on doesn't exist, create it. Keeping with the movie reviews example above, this would mean creating a table for movies, with an `id` and a `movie_name`, and only keeping the `movie_id` column in the reviews table.
 
@@ -162,4 +159,4 @@ In this lesson, we've looked at database constraints as a way to make data more 
 
 ## Index
 
-using the syntax `CREATE INDEX ON table_name (column_name)` -->
+using the syntax `CREATE INDEX ON table_name (column_name)`

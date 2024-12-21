@@ -1,7 +1,7 @@
-<!-- ---
+---
 title: Gitflow and github flow
 description: Lập trình cơ bản Cpp.
-slug: /git-flow/
+# slug: /git-flow/
 image: https://i.imgur.com/mErPwqL.png
 hide_table_of_contents: false
 authors:
@@ -17,7 +17,7 @@ Gitflow is a branching model built around Git, defining a structured approach to
 
 More information: [Gitflow Workflow | Atlassian Git Tutorial](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow)
 
-<img src="https://www.janbasktraining.com/community/uploads/b20ec99acd8ebafa76cf8d926540fea5.png" alt="Would you be able to clarify the Gitflow process? - Learn & Grow with ..." style="zoom:50%;" />
+![img](.././static/images/blog/2023-12-31-gitflow-and-githubflow/gitflow.png)
 
 ### Pros
 
@@ -37,7 +37,7 @@ GitHub Flow, in contrast, is a simpler workflow emphasizing continuous delivery 
 
 More information: [GitHub flow - GitHub Docs](https://docs.github.com/en/get-started/quickstart/github-flow)
 
-<img src="https://velog.velcdn.com/images/fenjo/post/5a348eaa-fc61-468c-ad93-8eed0a8f984a/image.png" alt="협업을 위한 Git-flow / GitHub-flow / Git branch 사용법" style="zoom:50%;" />
+![img](.././static/images/blog/2023-12-31-gitflow-and-githubflow/gitflow2.png)
 
 ### Pros
 
@@ -190,4 +190,4 @@ GitHub Flow is simpler and follows a more straightforward branching model:
 | **Ease of Use**  | More complex due to multiple long-lived branches       | Simpler with fewer branches and straightforward process      |
 | **Adaptability** | Less flexible due to structured nature                 | Highly adaptable for agile teams and frequent releases       |
 
-Both Gitflow and GitHub Flow offer distinct advantages depending on the project's size, complexity, and release needs. The choice between the two workflows should align with the team's working style, project requirements, and desired release management strategy. -->
+Both Gitflow and GitHub Flow offer distinct advantages depending on the project's size, complexity, and release needs. The choice between the two workflows should align with the team's working style, project requirements, and desired release management strategy.

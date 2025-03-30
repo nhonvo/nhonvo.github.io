@@ -1,10 +1,10 @@
-[<img width="1234" alt="new-blog" src="https://github.com/user-attachments/assets/4afbcff2-64a9-4808-81b9-96be4f10eeec" />](https://flo-bit.dev/blog-template/)
+[<img width="1234" alt="new-blog" src="https://github.com/user-attachments/assets/4afbcff2-64a9-4808-81b9-96be4f10eeec" />](https://nhonvo.github.io/)
 
 # astro blog template
 
 minimalistic but opinionated blog template using [astro](https://astro.build/) and [svelte](https://svelte.dev/). aims to be super easy to deploy and use, with a focus on performance and SEO, ease-of-use and design.
 
-See a [live demo here](https://flo-bit.dev/blog-template/) (also doubles as a tutorial on how to use this template).
+See a [live demo here](https://nhonvo.github.io/) (also doubles as a tutorial on how to use this template).
 
 Features:
 
@@ -27,15 +27,15 @@ Features:
 
 the demo blog doubles as a tutorial on how to use this template:
 
-- [quick start with github pages](https://flo-bit.dev/blog-template/posts/how-to-use)
+- [quick start with github pages](https://nhonvo.github.io/posts/how-to-use)
 
-- [adding content](https://flo-bit.dev/blog-template/posts/adding-content)
+- [adding content](https://nhonvo.github.io/posts/adding-content)
 
-- [comments and likes via bluesky](https://flo-bit.dev/blog-template/posts/comments-via-bluesky)
+- [comments and likes via bluesky](https://nhonvo.github.io/posts/comments-via-bluesky)
 
 ## quick start with github pages in 5 minutes
 
-1. Fork [the repository of this blog](https://github.com/flo-bit/blog-template) 
+1. Fork [the repository of this blog](https://github.com/nhonvo/algo-blog) 
 
 - Either name your fork `<github-username>.github.io` if you want your blog to live at `<github-username>.github.io` 
 
@@ -51,27 +51,27 @@ the demo blog doubles as a tutorial on how to use this template:
 4. Once you push your changes to main your blog should be live in about 1-2 minutes at 
 `<github-username>.github.io` or `<github-username>.github.io/<repo-name>`
 
-5. Set up more info in `src/config.ts` (see [all options here](https://flo-bit.dev/blog-template/posts/configuring-the-blog))
+5. Set up more info in `src/config.ts` (see [all options here](https://nhonvo.github.io/posts/configuring-the-blog))
 
 - `SITE_TITLE` is the title of your blog, and will be shown in the header and in search results
 - `SITE_DESCRIPTION` is the description of your blog, and will be shown e.g. in search results
 - `SITE_FAVICON` is the emoji that will be shown as favicon of your blog (will be shown in the header and as favicon)
 - `NAME` is the name of the author of the blog, will be shown in the footer as `(c) <YEAR> <NAME> - LICENSE`
 - `BLUESKY_IDENTIFIER` is your bluesky handle (without the `@`), this is needed for likes and comments to work 
-(see [comments via bluesky](https://flo-bit.dev/blog-template/posts/comments-via-bluesky))
-- `SOCIAL_LINKS` set your social media links here, e.g. `{ BLUESKY_URL: "https://bsky.app/profile/flo-bit.dev" }` 
+(see [comments via bluesky](https://nhonvo.github.io/posts/comments-via-bluesky))
+- `SOCIAL_LINKS` set your social media links here, e.g. `{ BLUESKY_URL: "https://bsky.app/profile/nhonvo.dev" }` 
 will be shown in the footer of the blog
 
 6. Edit `about.mdx` in `src/content/info/` to add your own about page.
 
 7. Remove all files from `src/content/blog/` and add your own blog posts there. Time to write your first blog post! 
-(see [adding content](https://flo-bit.dev/blog-template/posts/adding-content) for more info)
+(see [adding content](https://nhonvo.github.io/posts/adding-content) for more info)
 
 8. Anytime you push to the main branch, your blog will automatically be updated (should usually take less than 2 minutes). 
 You can also go to the github actions tab to check the progress/status.
 
-If you run into any issues, feel free to [open an issue](https://github.com/flo-bit/blog-template/issues) or 
-[contact me on bluesky](https://bsky.app/profile/flo-bit.dev)
+If you run into any issues, feel free to [open an issue](https://github.com/nhonvo/algo-blog/issues) or 
+[contact me on bluesky](https://bsky.app/profile/nhonvo.dev)
 
 ## Notes
 

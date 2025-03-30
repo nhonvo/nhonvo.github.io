@@ -24,3 +24,4 @@ pnpm-debug.log*
 .idea/
 
 public/pagefind/
+astro.config.ts

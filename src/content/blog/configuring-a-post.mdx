@@ -1,0 +1,149 @@
+---
+title: "Configuring a Post"
+description: "Learn how to configure a post"
+pubDate: "03 31 2025"
+published: true
+tags: 
+    - setup
+---
+
+
+## Blog Post Configuration Cheat Sheet
+
+Each blog post should have a properly formatted **YAML front matter** section at the top.
+### YouTube Embed
+
+Simply add a YouTube URL on a separate line:
+
+```
+https://www.youtube.com/watch?v=dQw4w9WgXcQ
+```
+
+Result:
+
+https://www.youtube.com/watch?v=dQw4w9WgXcQ
+
+### Link Card
+
+For any other link, just place it on its own line:
+
+```
+https://nhonvo.github.io
+```
+
+Result:
+
+https://nhonvo.github.io
+
+### Excalidraw Diagram
+
+Use the following syntax to embed an Excalidraw diagram:
+
+```
+:excalidraw[/src/assets/posts/excalidraw-demo.svg]
+```
+
+## Code Formatting
+
+### Inline Code
+
+Use backticks for inline code:
+
+```
+Write inline code like this: `inline code`
+```
+
+Result:
+
+This is some `inline code`
+
+### Multiline Code Blocks
+
+Wrap your code with triple backticks (`````) and specify the language for syntax highlighting.
+
+Example:
+
+```
+```js
+const message = "Hello, world!";
+console.log(message);
+Result:
+
+```js
+const message = "Hello, world!";
+console.log(message);
+```
+
+### Code Highlighting
+
+Add `// [!code highlight]` to highlight specific lines.
+
+Example:
+
+```
+const hello = "Hello world!";
+console.log(hello); // [!code highlight]
+```
+
+## Blog Post Configuration (Frontmatter)
+
+### Required Fields
+
+```
+title: "My Blog Post"
+description: "A short summary of the post."
+pubDate: "Mar 31 2025"
+```
+
+### Optional Fields
+
+- `published`: Set to `false` to hide the post.
+- `hidden`: Keeps the post accessible but not listed.
+- `tags`: Assign relevant tags to categorize your post.
+- `updatedDate`: Specify when the post was last updated.
+- `heroImage`: Path to the cover image.
+- `disableComments`: Set to `true` to disable comments.
+- `disableLikes`: Set to `true` to disable likes.
+
+Example:
+
+```
+title: "Advanced Markdown Guide"
+description: "Master Markdown with this guide."
+pubDate: "Apr 01 2025"
+published: true
+tags: ["markdown", "blogging"]
+heroImage: "../../assets/blog-cover.jpg"
+disableComments: false
+disableLikes: false
+```
+
+## Quickstart Guide for GitHub Pages
+
+1. **Fork the Repository**
+   - Visit [this blog template](https://github.com/nhonvo/algo-blog) and fork it.
+   - Name your fork as `<github-username>.github.io` or any other repo name.
+2. **Enable GitHub Pages**
+   - Go to **Settings** → **Pages** → **Source**: Select **GitHub Actions**.
+3. **Configure Your Blog**
+   - Update `src/config.ts` with your details.
+
+```
+SITE: "https://nhonvo.github.io",
+BASE: "/algo-blog",
+SITE_TITLE: "My Awesome Blog",
+SITE_DESCRIPTION: "A place for my thoughts.",
+```
+
+1. **Push Changes**
+   - Your blog should be live within a few minutes!
+2. **Customize Further**
+   - Edit `about.mdx` and add blog posts in `src/content/blog/`.
+
+## Blog Configuration Settings
+
+### Site Appearance
+
+- `**BASE_COLOR**`: Background color (e.g., `gray`, `stone`, `zinc`).
+- `**ACCENT_COLOR**`: Link color (e.g., `blue`, `red`, `green`).
+- `**MANUAL_DARK_MODE**`: Set `true` to enable dark mode toggle.

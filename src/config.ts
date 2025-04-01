@@ -51,11 +51,15 @@ export const SOCIAL_LINKS: {
   BLUESKY_URL?: string;
   SHOW_RSS?: boolean;
 } = {
-  SHOW_RSS: true,
-  BLUESKY_URL: "https://bsky.app/profile/nhonvo.bsky.social",
+  FACEBOOK_URL: "https://www.facebook.com/NhonVTT/",
   GITHUB_URL: "https://github.com/nhonvo",
+  INSTAGRAM_URL: "https://www.instagram.com/vothuongtruongnhon/",
+  LINKEDIN_URL: "https://www.linkedin.com/in/truongnhon/",
+  YOUTUBE_URL: "https://www.youtube.com/@nhonvo-dev",
   EMAIL: "vothuongtruongnhon2002@gmail.com",
+  SHOW_RSS: true,
 };
+
 
 
 // EVEN MORE SETTINGS:

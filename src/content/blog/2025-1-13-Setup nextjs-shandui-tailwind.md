@@ -6,8 +6,6 @@ published: true
 tags: [tailwind, nextjs, shandui]
 ---
 
-# Setup nextjs x shandui x tailwind css
-
 ### 1. **Set up a Next.js project**
 
 If you don't already have a Next.js project, you can create one by following these steps:

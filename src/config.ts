@@ -13,10 +13,10 @@ export const BASE = "";
 // MORE SETTINGS:
 
 // will be used for the the title and meta tags and in the header (if SITE_NAME is left blank)
-export const SITE_TITLE = "nhonvo's blog template";
+export const SITE_TITLE = "nhonvo's blog";
 
 // will be used in the meta tags (and for example shown in search results)
-export const SITE_DESCRIPTION = "Welcome to my blog template! Fork it and make it your own.";
+export const SITE_DESCRIPTION = "Welcome to my blog!";
 
 // will be used as the icon in the header and the favicon
 export const SITE_FAVICON = "📖";

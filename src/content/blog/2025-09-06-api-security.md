@@ -3,7 +3,7 @@ title: "API Security (OWASP Top 10)"
 description: "Discuss how to prevent common vulnerabilities (e.g., SQL Injection, XSS, CSRF) within the ASP.NET Core framework."
 pubDate: "Sep 06 2025"
 published: true
-tags: ["ASP.NET Core", "Security"]
+tags: ["ASP.NET-Core", "Security"]
 ---
 
 ### Mind Map Summary

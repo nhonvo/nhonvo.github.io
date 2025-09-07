@@ -3,7 +3,7 @@ title: "Authentication vs. Authorization"
 description: "Explain common schemes like JWT, OAuth 2.0, OpenID Connect, and Cookie-based authentication."
 pubDate: "Sep 06 2025"
 published: true
-tags: ["ASP.NET-Core", "Security"]
+tags: ["ASP.NET Core", "Security"]
 ---
 
 ### Mind Map Summary

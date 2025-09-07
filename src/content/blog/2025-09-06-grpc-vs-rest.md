@@ -3,7 +3,7 @@ title: "gRPC vs. REST"
 description: "Compare and contrast gRPC and REST for inter-service communication. Discuss the role of Protocol Buffers."
 pubDate: "Sep 06 2025"
 published: true
-tags: ["ASP.NET-Core", "Microservices", "API", "gRPC", "REST"]
+tags: ["ASP.NET Core", "Microservices", "API", "gRPC", "REST"]
 ---
 
 ### Mind Map Summary

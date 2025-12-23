@@ -1,74 +1,105 @@
 ---
 title: "HttpClientFactory for Resilient HTTP Requests"
-description: "Explain the problems with new HttpClient() (socket exhaustion) and how HttpClientFactory solves them. Discuss how to use it to configure named or typed clients and integrate it with Polly for resilience patterns (Retry, Circuit Breaker)."
-pubDate: "Sep 07 2025"
+description: "Master high-performance service-to-service communication. Learn how HttpClientFactory solves socket exhaustion and integrates with Polly for enterprise-grade resilience."
+pubDate: "9 7 2025"
 published: true
-tags: ["ASP.NET Core", "HttpClientFactory", "Polly", "Resilience"]
+tags:
+  [
+    ".NET",
+    "HttpClient",
+    "Microservices",
+    "Polly",
+    "Resilience",
+    "ASP.NET Core",
+    "Backend Development",
+    "Architecture",
+  ]
 ---
 
-### Mind Map Summary
+## The Problem with `new HttpClient()`
 
-- **Topic**: HttpClientFactory for Resilient HTTP Requests
-- **Problems with `new HttpClient()`**:
-    - **Socket Exhaustion**: Creating a new `HttpClient` for each request can exhaust the number of available sockets.
-    - **DNS Changes**: `HttpClient` does not respect DNS changes, which can cause problems in dynamic environments.
-- **`HttpClientFactory`**:
-    - **Manages `HttpClient` instances**: Manages the lifetime of `HttpClient` instances to avoid the problems with `new HttpClient()`.
-    - **Named and Typed Clients**: Allows you to configure named and typed clients with specific settings, such as base address and default headers.
-    - **Integration with Polly**: Integrates with Polly to add resilience patterns, such as retry and circuit breaker.
-- **Polly**: A .NET resilience and transient-fault-handling library that allows developers to express policies such as Retry, Circuit Breaker, Timeout, Bulkhead Isolation, and Fallback in a fluent and thread-safe manner.
+In early .NET development, developers often instantiated `HttpClient` inside a `using` block. This leads to two critical problems:
 
-### Practice Exercise
+1.  **Socket Exhaustion**: Even after disposal, the underlying socket remains in a `TIME_WAIT` state for minutes. High-traffic apps can quickly run out of ports, causing `SocketException`.
+2.  **DNS Updates**: If you use a `static` client to solve socket exhaustion, it won't respect DNS changes (e.g., during a deployment) because the connection is held open indefinitely to the original IP.
 
-Use `HttpClientFactory` to create a typed client for an external API. Use the Polly extension to add a transient error handling policy that retries failed requests (HTTP 5xx or network errors) up to three times with an exponential backoff.
+`IHttpClientFactory` solves both by managing the lifetime of the underlying **HttpClientHandler**. It pools handlers to prevent socket leaks while rotating them to ensure DNS changes are respected.
 
-### Answer
+---
 
-**1. Typed Client:**
+## Pattern: Typed Clients
+
+Typed Clients are the gold standard for microservice communication. They encapsulate all API-specific logic (base URL, headers, JSON serialization) into a single, injectable service.
 
 ```csharp
-public class MyApiClient
+public class PaymentService
 {
-    private readonly HttpClient _httpClient;
+    private readonly HttpClient _http;
 
-    public MyApiClient(HttpClient httpClient)
+    public PaymentService(HttpClient http)
     {
-        _httpClient = httpClient;
+        _http = http; // This client is pre-configured via DI
     }
 
-    public async Task<string> GetDataAsync()
+    public async Task ProcessPayment(PaymentRequest req)
     {
-        var response = await _httpClient.GetAsync("/data");
+        var response = await _http.PostAsJsonAsync("/payments", req);
         response.EnsureSuccessStatusCode();
-        return await response.Content.ReadAsStringAsync();
     }
 }
 ```
 
-**2. Configure `HttpClientFactory` and Polly in `Program.cs`:**
+---
+
+## Resilience with Polly
+
+**Polly** is a .NET resilience library. When paired with `HttpClientFactory`, you can define policies like **Retry** and **Circuit Breaker** declaratively in `Program.cs`.
+
+### 1. Wait and Retry (Exponential Backoff)
+
+Instead of retrying instantly, we wait longer between each attempt ($2^1, 2^2, 2^3$ seconds). This prevents "hammering" a struggling downstream service.
+
+### 2. Circuit Breaker
+
+If a service fails repeatedly, the circuit "trips" and stops all requests immediately. This saves your resources and gives the downstream service time to recover.
+
+---
+
+## Practice Exercise
+
+Configure a Typed Client for `ExternalApiService` that retries $3$ times with exponential backoff for transient errors ($5$xx and $408$ status codes).
+
+---
+
+## Answer
+
+### 1. Registration in `Program.cs`
 
 ```csharp
 using Polly;
 using Polly.Extensions.Http;
 
-builder.Services.AddHttpClient<MyApiClient>(client =>
+builder.Services.AddHttpClient<ExternalApiService>(client =>
 {
-    client.BaseAddress = new Uri("https://api.example.com");
+    client.BaseAddress = new Uri("https://api.external.com/");
+    client.Timeout = TimeSpan.FromSeconds(5);
 })
 .AddPolicyHandler(GetRetryPolicy());
 
 static IAsyncPolicy<HttpResponseMessage> GetRetryPolicy()
 {
     return HttpPolicyExtensions
-        .HandleTransientHttpError()
-        .OrResult(msg => msg.StatusCode == System.Net.HttpStatusCode.NotFound)
-        .WaitAndRetryAsync(3, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)));
+        .HandleTransientHttpError() // Handles 5xx, 408, and network failures
+        .WaitAndRetryAsync(3, attempt => TimeSpan.FromSeconds(Math.Pow(2, attempt)));
 }
 ```
 
-**Explanation:**
+### Why This Architecture Works
 
--   We create a typed client `MyApiClient` that takes an `HttpClient` in its constructor.
--   We use `AddHttpClient<MyApiClient>()` to register the typed client with the `HttpClientFactory`.
--   We use `AddPolicyHandler()` to add a Polly policy to the client.
--   The policy handles transient HTTP errors (5xx and 408) and retries the request up to three times with an exponential backoff.
+1.  **Fault Tolerance**: Your application won't crash just because a third-party API had a 1-second blip in connectivity.
+2.  **Clean Code**: The logic for "how many times to retry" is kept in the configuration layer (`Program.cs`), leaving your business services focused on business logic.
+3.  **Performance**: Handler pooling ensures that your application utilizes system resources efficiently, allowing it to handle thousands of concurrent requests without leaking sockets.
+
+## Summary
+
+`IHttpClientFactory` is more than a convenience; it's a prerequisite for building reliable, production-ready distributed systems in .NET. By combining it with **Polly**, you transform a fragile HTTP call into a resilient communication channel.

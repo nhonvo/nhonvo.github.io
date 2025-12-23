@@ -1,86 +1,116 @@
 ---
-title: "Arrays & Strings - Core Operations and Patterns"
-description: "Focus on time/space complexity. Master patterns like Two Pointers, Sliding Window, and Prefix Sums for solving a wide range of problems efficiently."
-pubDate: "Sep 07 2025"
+title: "Arrays & Strings: Core Operations and Patterns"
+description: "Master essential algorithmic patterns like Two Pointers, Sliding Window, and Prefix Sums to solve complex array and string problems with optimal complexity."
+pubDate: "9 7 2025"
 published: true
-tags: ["Data Structures & Algorithms (DSA)", "Arrays", "Strings", "Two Pointers", "Sliding Window", "Prefix Sums"]
+tags:
+  [
+    "Algorithms",
+    "Data Structures",
+    "Arrays",
+    "Strings",
+    "Two Pointers",
+    "Sliding Window",
+    "C#",
+    "LeetCode",
+    "Complexity Analysis",
+  ]
 ---
 
-### Mind Map Summary
+## Why Patterns Matter
 
-- **Topic**: Arrays & Strings - Core Operations and Patterns
-- **Core Concepts**:
-    - **Two Pointers**: A pattern where two pointers are used to iterate over an array or string in a single pass.
-    - **Sliding Window**: A pattern where a window of a fixed or variable size is used to iterate over a portion of an array or string.
-    - **Prefix Sums**: A pre-computation technique where the sum of all elements up to a given index is stored in an array. This allows for constant-time retrieval of the sum of any subarray.
-- **Time and Space Complexity**: Always analyze the time and space complexity of your solutions.
+In algorithmic interviews and high-performance computing, the difference between an $O(n^2)$ and an $O(n)$ solution is often the application of a specific pattern. Arrays and Strings are the most common data structures, and mastering their core patterns is essential for any developer.
 
-### Practice Exercise
+## Core Algorithmic Patterns
 
-Implement the Two Sum problem. Given a sorted array, square each element and return the sorted result. Find the maximum sum of any contiguous subarray of size 'k' (Sliding Window).
+### 1. Two Pointers
 
-### Answer
+- **Mechanism**: Use two indices (often `left` and `right`) to scan the array. One might move from the start and the other from the end, or both might move at different speeds.
+- **Use Case**: Searching in sorted arrays, reversing strings, or finding pairs.
 
-**1. Two Sum:**
+### 2. Sliding Window
+
+- **Mechanism**: Maintain a sub-segment ("window") that moves over the dataset. The window can be fixed-size or variable.
+- **Use Case**: Finding the longest substring with K distinct characters, or the maximum sum subarray of size K.
+
+### 3. Prefix Sums
+
+- **Mechanism**: Pre-compute an array where `prefix[i]` stores the sum of all elements from `0` to `i`.
+- **Use Case**: Calculating the sum of any subarray in $O(1)$ time after $O(n)$ setup.
+
+---
+
+## Practice Exercise
+
+1.  **Two Sum**: Find indices of two numbers that add up to a target.
+2.  **Sorted Squares**: Given a sorted array (with negatives), return an array of their squares in sorted order.
+3.  **Maximum Sum Subarray**: Find the max sum of any subarray of size `K`.
+
+---
+
+## Answer
+
+### 1. Two Sum ($O(n)$ Time, $O(n)$ Space)
 
 ```csharp
-// Time Complexity: O(n)
-// Space Complexity: O(n)
 public int[] TwoSum(int[] nums, int target) {
-    var map = new Dictionary<int, int>();
+    var seen = new Dictionary<int, int>();
     for (int i = 0; i < nums.Length; i++) {
         int complement = target - nums[i];
-        if (map.ContainsKey(complement)) {
-            return new int[] { map[complement], i };
+        if (seen.ContainsKey(complement)) {
+            return new int[] { seen[complement], i };
         }
-        map[nums[i]] = i;
+        seen[nums[i]] = i;
     }
-    return null;
+    return Array.Empty<int>();
 }
 ```
 
-**2. Sorted Squares:**
+### 2. Sorted Squares ($O(n)$ Two-Pointer approach)
 
 ```csharp
-// Time Complexity: O(n)
-// Space Complexity: O(n)
 public int[] SortedSquares(int[] nums) {
     int n = nums.Length;
     int[] result = new int[n];
-    int left = 0;
-    int right = n - 1;
+    int left = 0, right = n - 1;
+
+    // Fill from largest to smallest
     for (int i = n - 1; i >= 0; i--) {
-        int square;
-        if (Math.Abs(nums[left]) < Math.Abs(nums[right])) {
-            square = nums[right];
-            right--;
-        } else {
-            square = nums[left];
+        if (Math.Abs(nums[left]) > Math.Abs(nums[right])) {
+            result[i] = nums[left] * nums[left];
             left++;
+        } else {
+            result[i] = nums[right] * nums[right];
+            right--;
         }
-        result[i] = square * square;
     }
     return result;
 }
 ```
 
-**3. Maximum Sum Subarray of Size K:**
+### 3. Max Sum Subarray of Size K ($O(n)$ Sliding Window)
 
 ```csharp
-// Time Complexity: O(n)
-// Space Complexity: O(1)
-public int FindMaxSumSubarray(int[] nums, int k) {
-    int maxSum = 0;
-    int windowSum = 0;
-    int windowStart = 0;
-    for (int windowEnd = 0; windowEnd < nums.Length; windowEnd++) {
-        windowSum += nums[windowEnd];
-        if (windowEnd >= k - 1) {
-            maxSum = Math.Max(maxSum, windowSum);
-            windowSum -= nums[windowStart];
-            windowStart++;
+public int MaxSubarraySum(int[] nums, int k) {
+    int maxSum = 0, currentWindowSum = 0;
+
+    for (int i = 0; i < nums.Length; i++) {
+        currentWindowSum += nums[i];
+
+        // Once we hit window size, start sliding
+        if (i >= k - 1) {
+            maxSum = Math.Max(maxSum, currentWindowSum);
+            currentWindowSum -= nums[i - (k - 1)]; // Remove the element exiting the window
         }
     }
     return maxSum;
 }
 ```
+
+## Summary
+
+- **Two Pointers** reduce $O(n^2)$ nested loops to $O(n)$ linear scans.
+- **Sliding Window** efficiently tracks ranges in dynamic datasets.
+- **Prefix Sums** trade space for speed in range-query scenarios.
+
+Always look for these patterns before settling for a "brute-force" nested loop solution.

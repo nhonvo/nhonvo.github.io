@@ -1,91 +1,134 @@
 ---
 title: "Advanced Graph Algorithms"
-description: "Understand Dijkstra's algorithm for shortest path in a weighted graph and topological sort for ordering tasks with dependencies. Be aware of algorithms like A* and Prim's/Kruskal's for Minimum Spanning Trees."
-pubDate: "Sep 07 2025"
+description: "Master Dijkstra's shortest path, Topological sorting for task dependencies, and Minimum Spanning Trees (Prim & Kruskal) for network optimization."
+pubDate: "9 7 2025"
 published: true
-tags: ["Data Structures & Algorithms (DSA)", "Graphs", "Dijkstra", "Topological Sort", "Minimum Spanning Tree"]
+tags:
+  [
+    "Algorithms",
+    "Data Structures",
+    "Graphs",
+    "Dijkstra",
+    "Topological Sort",
+    "MST",
+    "C#",
+    "LeetCode",
+    "Complexity Analysis",
+  ]
 ---
 
-### Mind Map Summary
+## Solving Complex Connectivity
 
-- **Topic**: Advanced Graph Algorithms
-- **Core Concepts**:
-    - **Dijkstra's Algorithm**: An algorithm for finding the shortest path between two nodes in a weighted graph.
-    - **Topological Sort**: An algorithm for ordering the vertices in a directed acyclic graph (DAG) such that for every directed edge from vertex `u` to vertex `v`, `u` comes before `v` in the ordering.
-    - **Minimum Spanning Tree (MST)**: A subset of the edges of a connected, edge-weighted undirected graph that connects all the vertices together, without any cycles and with the minimum possible total edge weight.
-        - **Prim's Algorithm**: A greedy algorithm that finds an MST for a weighted undirected graph.
-        - **Kruskal's Algorithm**: A greedy algorithm that finds an MST for a weighted undirected graph.
-    - **A* Search Algorithm**: An informed search algorithm that is used to find the shortest path between two nodes in a graph.
+While BFS and DFS are sufficient for simple traversal, many real-world problems (like finding the fastest GPS route or managing package dependencies) require more advanced graph algorithms.
 
-### Practice Exercise
+---
 
-Implement Dijkstra's algorithm to find the shortest path between two nodes in a weighted graph. Given a list of courses and their prerequisites, find a valid order to take the courses (Topological Sort).
+## 1. Dijkstra's Algorithm (Shortest Path)
 
-### Answer
+Dijkstra finds the shortest path from a source node to all other nodes in a **weighted graph**.
 
-**1. Dijkstra's Algorithm:**
+- **Constraint**: It does not work with negative edge weights.
+- **Data Structure**: Uses a **Priority Queue** (Min-Heap) to always visit the "cheapest" next node.
+- **Complexity**: $O((V+E) \log V)$.
+
+---
+
+## 2. Topological Sort (Dependency Resolution)
+
+Topological Sort provides a linear ordering of vertices such that for every directed edge $u \rightarrow v$, node $u$ comes before node $v$.
+
+- **Constraint**: Only works on **Directed Acyclic Graphs (DAGs)**.
+- **Implementation**: **Kahn's Algorithm** (BFS-based) or DFS with a stack.
+- **Use Case**: Build systems (e.g., MSBuild, Webpack), course prerequisites, and task scheduling.
+
+---
+
+## 3. Minimum Spanning Tree (MST)
+
+An MST is a subset of edges that connects all vertices in an undirected graph with the **minimum total weight** and no cycles.
+
+1.  **Prim's Algorithm**: Starts from a node and greedily expands to the nearest neighbor.
+2.  **Kruskal's Algorithm**: Sorts all edges and adds the smallest one if it doesn't create a cycle (uses **Union-Find**).
+
+---
+
+## Practice Exercise
+
+1.  **Dijkstra**: Calculate the minimum "Network Delay Time" for a signal to reach all nodes.
+2.  **Topological Sort**: Given courses and prerequisites, return a valid order to complete them.
+
+---
+
+## Answer
+
+### 1. Network Delay Time (Dijkstra)
 
 ```csharp
 public int NetworkDelayTime(int[][] times, int n, int k) {
-    var adj = new Dictionary<int, List<(int, int)>>();
-    foreach (var time in times) {
-        if (!adj.ContainsKey(time[0])) {
-            adj[time[0]] = new List<(int, int)>();
-        }
-        adj[time[0]].Add((time[1], time[2]));
+    var adj = new Dictionary<int, List<(int node, int weight)>>();
+    foreach (var t in times) {
+        if (!adj.ContainsKey(t[0])) adj[t[0]] = new List<(int, int)>();
+        adj[t[0]].Add((t[1], t[2]));
     }
-    var dist = new int[n + 1];
-    for (int i = 1; i <= n; i++) {
-        dist[i] = int.MaxValue;
-    }
-    dist[k] = 0;
-    var pq = new PriorityQueue<(int, int), int>();
-    pq.Enqueue((k, 0), 0);
+
+    var minTime = new Dictionary<int, int>();
+    var pq = new PriorityQueue<int, int>();
+    pq.Enqueue(k, 0);
+
     while (pq.Count > 0) {
-        var (u, d) = pq.Dequeue();
-        if (d > dist[u]) continue;
-        if (adj.ContainsKey(u)) {
-            foreach (var (v, w) in adj[u]) {
-                if (dist[u] + w < dist[v]) {
-                    dist[v] = dist[u] + w;
-                    pq.Enqueue((v, dist[v]), dist[v]);
+        pq.TryDequeue(out int node, out int time);
+        if (minTime.ContainsKey(node)) continue;
+        minTime[node] = time;
+
+        if (adj.ContainsKey(node)) {
+            foreach (var neighbor in adj[node]) {
+                if (!minTime.ContainsKey(neighbor.node)) {
+                    pq.Enqueue(neighbor.node, time + neighbor.weight);
                 }
             }
         }
     }
-    int maxDist = 0;
-    for (int i = 1; i <= n; i++) {
-        if (dist[i] == int.MaxValue) return -1;
-        maxDist = Math.Max(maxDist, dist[i]);
-    }
-    return maxDist;
+
+    return minTime.Count == n ? minTime.Values.Max() : -1;
 }
 ```
 
-**2. Topological Sort:**
+### 2. Course Schedule (Topological Sort / Kahn's)
 
 ```csharp
 public int[] FindOrder(int numCourses, int[][] prerequisites) {
+    var inDegree = new int[numCourses];
     var adj = new List<int>[numCourses];
     for (int i = 0; i < numCourses; i++) adj[i] = new List<int>();
-    var degree = new int[numCourses];
+
     foreach (var p in prerequisites) {
-        adj[p[1]].Add(p[0]);
-        degree[p[0]]++;
+        adj[p[1]].Add(p[0]); // Destination, Source
+        inDegree[p[0]]++;
     }
+
     var queue = new Queue<int>();
     for (int i = 0; i < numCourses; i++) {
-        if (degree[i] == 0) queue.Enqueue(i);
+        if (inDegree[i] == 0) queue.Enqueue(i);
     }
-    var res = new List<int>();
+
+    var result = new List<int>();
     while (queue.Count > 0) {
         int curr = queue.Dequeue();
-        res.Add(curr);
+        result.Add(curr);
         foreach (int next in adj[curr]) {
-            degree[next]--;
-            if (degree[next] == 0) queue.Enqueue(next);
+            if (--inDegree[next] == 0) queue.Enqueue(next);
         }
     }
-    return res.Count == numCourses ? res.ToArray() : new int[0];
+
+    return result.Count == numCourses ? result.ToArray() : Array.Empty<int>();
 }
 ```
+
+## Summary
+
+Advanced graph algorithms turn interconnected data into actionable solutions.
+
+- Use **Dijkstra** for routing and shortest path with weights.
+- Use **Topological Sort** for ordering dependencies.
+- Use **Prim/Kruskal** to find the most efficient way to link every node in a network.
+- Always check for **Acyclicity** before applying Topological Sort.

@@ -1,9 +1,10 @@
+````
 ---
 title: "Delegates, Events, Func<T>, Action<T>"
 description: "Understand common use cases like event-driven architecture and callbacks."
-pubDate: "Sep 06 2025"
+pubDate: "9 6 2025"
 published: true
-tags: [".NET & C# Advanced"]
+tags: [".NET", "C#", "Delegates", "Events", "Func", "Action", "Callback", "Event-Driven"]
 ---
 
 ### Mind Map Summary
@@ -123,17 +124,17 @@ public class Program
         ui.Start();
     }
 }
-```
+````
 
 #### Explanation
 
 1.  **`ProgressEventArgs`**: We define a custom class inheriting from `EventArgs` to pass data (`Percentage`) with our event. This is a standard .NET pattern.
-2.  **`Worker` (Publisher)**: 
-    -   It declares a public `event` named `ProgressChanged`. The type is `EventHandler<ProgressEventArgs>`, a built-in delegate perfect for this scenario.
-    -   The `DoWork` method simulates a long task. In the loop, it calls `OnProgressChanged`.
-    -   `OnProgressChanged` is a protected virtual method (a common pattern allowing derived classes to modify how the event is raised). It checks if any subscribers are registered (`handler != null`) and, if so, invokes the delegate, which in turn calls all subscribed handler methods.
+2.  **`Worker` (Publisher)**:
+    - It declares a public `event` named `ProgressChanged`. The type is `EventHandler<ProgressEventArgs>`, a built-in delegate perfect for this scenario.
+    - The `DoWork` method simulates a long task. In the loop, it calls `OnProgressChanged`.
+    - `OnProgressChanged` is a protected virtual method (a common pattern allowing derived classes to modify how the event is raised). It checks if any subscribers are registered (`handler != null`) and, if so, invokes the delegate, which in turn calls all subscribed handler methods.
 3.  **`ConsoleUI` (Subscriber)**:
-    -   It creates an instance of the `Worker`.
-    -   It subscribes to the `ProgressChanged` event using the `+=` operator, assigning its `HandleProgressChanged` method as a handler.
-    -   The `HandleProgressChanged` method has the correct signature to match the `EventHandler<ProgressEventArgs>` delegate. It receives the `sender` (the `Worker` instance) and the `ProgressEventArgs` data, which it uses to write the progress to the console.
-    -   This demonstrates perfect decoupling: the `Worker` class has no knowledge of the `ConsoleUI` class. It simply raises an event, and any class that has subscribed will be notified.
+    - It creates an instance of the `Worker`.
+    - It subscribes to the `ProgressChanged` event using the `+=` operator, assigning its `HandleProgressChanged` method as a handler.
+    - The `HandleProgressChanged` method has the correct signature to match the `EventHandler<ProgressEventArgs>` delegate. It receives the `sender` (the `Worker` instance) and the `ProgressEventArgs` data, which it uses to write the progress to the console.
+    - This demonstrates perfect decoupling: the `Worker` class has no knowledge of the `ConsoleUI` class. It simply raises an event, and any class that has subscribed will be notified.

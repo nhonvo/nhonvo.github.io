@@ -1,109 +1,109 @@
 ---
 title: "Heaps (Min-Heap, Max-Heap)"
-description: "Understand the properties of a heap and how they are typically implemented using an array. Know their use cases for priority queues and finding the K-th smallest/largest element."
-pubDate: "Sep 07 2025"
+description: "Master the fundamental data structure for Priority Queues. Learn how Heaps use arrays to represent complete binary trees and solve K-th element problems."
+pubDate: "9 7 2025"
 published: true
-tags: ["Data Structures & Algorithms (DSA)", "Heaps", "Priority Queues"]
+tags:
+  [
+    "Algorithms",
+    "Data Structures",
+    "Heaps",
+    "Priority Queue",
+    "C#",
+    "LeetCode",
+    "Complexity Analysis",
+  ]
 ---
 
-### Mind Map Summary
+## What is a Heap?
 
-- **Topic**: Heaps (Min-Heap, Max-Heap)
-- **Properties**:
-    - **Heap**: A complete binary tree where each node is smaller (Min-Heap) or larger (Max-Heap) than its children.
-    - **Implementation**: Typically implemented using an array.
-- **Use Cases**:
-    - **Priority Queues**: Heaps are the ideal data structure for implementing priority queues.
-    - **Finding K-th Smallest/Largest Element**: Heaps can be used to efficiently find the k-th smallest or largest element in an array.
+A Heap is a specialized tree-based data structure that satisfies the **Heap Property**:
 
-### Practice Exercise
+- **Min-Heap**: Each node is $\ge$ its parent. The smallest element is at the root.
+- **Max-Heap**: Each node is $\le$ its parent. The largest element is at the root.
 
-Implement a Min-Heap from scratch with `insert` and `extractMin` operations. Use a Min-Heap to find the 'K' largest elements in an array. Find the median from a data stream.
+Heaps are **Complete Binary Trees**: every level is filled except possibly the last, which is filled from left to right.
 
-### Answer
+### Array-Based Representation
 
-**1. Implement a Min-Heap:**
+Because it's a complete tree, we don't need pointers. We can map the nodes to an array:
 
-```csharp
-public class MinHeap {
-    private List<int> heap = new List<int>();
+- **Parent Index**: `(i - 1) / 2`
+- **Left Child**: `2 * i + 1`
+- **Right Child**: `2 * i + 2`
 
-    public void Insert(int val) {
-        heap.Add(val);
-        int i = heap.Count - 1;
-        while (i > 0 && heap[i] < heap[(i - 1) / 2]) {
-            Swap(i, (i - 1) / 2);
-            i = (i - 1) / 2;
-        }
-    }
+---
 
-    public int ExtractMin() {
-        if (heap.Count == 0) throw new InvalidOperationException();
-        int min = heap[0];
-        heap[0] = heap[heap.Count - 1];
-        heap.RemoveAt(heap.Count - 1);
-        Heapify(0);
-        return min;
-    }
+## Complexity Matrix
 
-    private void Heapify(int i) {
-        int left = 2 * i + 1;
-        int right = 2 * i + 2;
-        int smallest = i;
-        if (left < heap.Count && heap[left] < heap[smallest]) smallest = left;
-        if (right < heap.Count && heap[right] < heap[smallest]) smallest = right;
-        if (smallest != i) {
-            Swap(i, smallest);
-            Heapify(smallest);
-        }
-    }
+| Operation           | Complexity  | Description                                    |
+| :------------------ | :---------- | :--------------------------------------------- |
+| **Insert**          | $O(\log N)$ | Add to the end and "bubble up."                |
+| **Extract Min/Max** | $O(\log N)$ | Swap root with last element and "bubble down." |
+| **Peek**            | $O(1)$      | Access the root element at `array[0]`.         |
+| **Build Heap**      | $O(N)$      | Convert an arbitrary array into a heap.        |
 
-    private void Swap(int i, int j) {
-        int temp = heap[i];
-        heap[i] = heap[j];
-        heap[j] = temp;
-    }
-}
-```
+---
 
-**2. Find the K Largest Elements in an Array:**
+## Practice Exercise
+
+1.  **K-th Largest Element**: Find the k-th largest element in an unsorted array using a heap in $O(N \log K)$ time.
+2.  **Median from Stream**: Maintain the median of a stream of numbers as they arrive.
+
+---
+
+## Answer
+
+### 1. K-th Largest Element (Min-Heap Approach)
+
+By keeping a **Min-Heap** of size $K$, the root will always be the $K$-th largest element we've seen so far.
 
 ```csharp
 public int FindKthLargest(int[] nums, int k) {
+    // In .NET 6+, we have a built-in PriorityQueue
     var minHeap = new PriorityQueue<int, int>();
+
     foreach (int num in nums) {
         minHeap.Enqueue(num, num);
         if (minHeap.Count > k) {
             minHeap.Dequeue();
         }
     }
+
     return minHeap.Peek();
 }
 ```
 
-**3. Find Median from Data Stream:**
+### 2. Median from Data Stream
+
+Use two heaps:
+
+- **Max-Heap** (left): Stores the smaller half of numbers.
+- **Min-Heap** (right): Stores the larger half of numbers.
 
 ```csharp
 public class MedianFinder {
-    private PriorityQueue<int, int> minHeap = new PriorityQueue<int, int>();
-    private PriorityQueue<int, int> maxHeap = new PriorityQueue<int, int>(Comparer<int>.Create((a, b) => b.CompareTo(a)));
+    private PriorityQueue<int, int> large = new(); // Min-Heap
+    private PriorityQueue<int, int> small = new(Comparer<int>.Create((a, b) => b - a)); // Max-Heap
 
     public void AddNum(int num) {
-        maxHeap.Enqueue(num, num);
-        minHeap.Enqueue(maxHeap.Peek(), maxHeap.Peek());
-        maxHeap.Dequeue();
-        if (minHeap.Count > maxHeap.Count) {
-            maxHeap.Enqueue(minHeap.Peek(), minHeap.Peek());
-            minHeap.Dequeue();
+        small.Enqueue(num, num);
+        int fromSmall = small.Dequeue();
+        large.Enqueue(fromSmall, fromSmall);
+
+        if (large.Count > small.Count) {
+            int fromLarge = large.Dequeue();
+            small.Enqueue(fromLarge, fromLarge);
         }
     }
 
     public double FindMedian() {
-        if (maxHeap.Count > minHeap.Count) {
-            return maxHeap.Peek();
-        } else {
-            return (maxHeap.Peek() + minHeap.Peek()) / 2.0;
-        }
+        if (small.Count > large.Count) return small.Peek();
+        return (small.Peek() + large.Peek()) / 2.0;
     }
 }
 ```
+
+## Summary
+
+Heaps are the engine behind **Priority Queues**. They are the optimal choice whenever you need to frequently access/remove the minimum or maximum element in a dynamic collection. While they aren't meant for general searching, their $O(\log N)$ update time makes them essential for algorithms like **Dijkstra's** and **Heapsort**.

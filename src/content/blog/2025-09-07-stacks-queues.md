@@ -1,140 +1,140 @@
 ---
 title: "Stacks & Queues"
-description: "Understand their LIFO/FIFO principles. Know common use cases: Stacks for parsing, recursion simulation, and reversing. Queues for BFS and task scheduling."
-pubDate: "Sep 07 2025"
+description: "Master the fundamental data structures for order-based processing. Learn how Stacks (LIFO) and Queues (FIFO) power everything from web history to BFS algorithms."
+pubDate: "9 7 2025"
 published: true
-tags: ["Data Structures & Algorithms (DSA)", "Stacks", "Queues", "LIFO", "FIFO"]
+tags:
+  [
+    "Algorithms",
+    "Data Structures",
+    "Stack",
+    "Queue",
+    "LIFO",
+    "FIFO",
+    "C#",
+    "LeetCode",
+    "Complexity Analysis",
+  ]
 ---
 
-### Mind Map Summary
+## What is a Stack?
 
-- **Topic**: Stacks & Queues
-- **Core Concepts**:
-    - **Stack**: A linear data structure that follows the Last-In, First-Out (LIFO) principle.
-    - **Queue**: A linear data structure that follows the First-In, First-Out (FIFO) principle.
-- **Use Cases**:
-    - **Stacks**: Parsing, recursion simulation, reversing.
-    - **Queues**: Breadth-First Search (BFS), task scheduling.
+A Stack is a linear data structure that follows the **Last-In, First-Out (LIFO)** principle. Think of it like a stack of plates in a cafeteria: the last plate placed on top is the first one taken off.
 
-### Practice Exercise
+### Core Operations
 
-Implement a Queue using two Stacks. Solve the Valid Parentheses problem. Implement a basic calculator to evaluate a string expression. Find the first non-repeating character in a stream of characters.
+- **Push**: Add an element to the top. ($O(1)$)
+- **Pop**: Remove and return the top element. ($O(1)$)
+- **Peek**: See the top element without removing it. ($O(1)$)
 
-### Answer
+### Usage Cases
 
-**1. Implement a Queue using two Stacks:**
+- **Undo/Redo** functionality in editors.
+- **Function Call Stack** (tracking local variables and return addresses).
+- **Expression Parsing** (e.g., checking for balanced parentheses).
 
-```csharp
-public class MyQueue {
-    private Stack<int> s1 = new Stack<int>();
-    private Stack<int> s2 = new Stack<int>();
+---
 
-    public void Enqueue(int x) {
-        while (s1.Count > 0) {
-            s2.Push(s1.Pop());
-        }
-        s1.Push(x);
-        while (s2.Count > 0) {
-            s1.Push(s2.Pop());
-        }
-    }
+## What is a Queue?
 
-    public int Dequeue() {
-        return s1.Pop();
-    }
+A Queue is a linear data structure that follows the **First-In, First-Out (FIFO)** principle. Think of it like a line at a supermarket: the first person in line is the first person served.
 
-    public int Peek() {
-        return s1.Peek();
-    }
+### Core Operations
 
-    public bool Empty() {
-        return s1.Count == 0;
-    }
-}
-```
+- **Enqueue**: Add an element to the end. ($O(1)$)
+- **Dequeue**: Remove and return the front element. ($O(1)$)
+- **Peek**: See the front element. ($O(1)$)
 
-**2. Valid Parentheses:**
+### Usage Cases
+
+- **Breadth-First Search (BFS)** for graph traversal.
+- **Task Scheduling** (e.g., printer queues, background jobs).
+- **Rate Limiting** or buffering.
+
+---
+
+## Practice Exercise
+
+1.  **Valid Parentheses**: Determine if a string's brackets are correctly balanced.
+2.  **Queue using Stacks**: Implement a queue logic using only two stacks.
+3.  **Basic Calculator**: Evaluate a mathematical string (e.g., `"3+2*2"`) using a stack.
+
+---
+
+## Answer
+
+### 1. Valid Parentheses ($O(n)$ Time)
 
 ```csharp
 public bool IsValid(string s) {
     var stack = new Stack<char>();
     foreach (char c in s) {
-        if (c == '(' || c == '{' || c == '[') {
-            stack.Push(c);
-        } else {
-            if (stack.Count == 0) return false;
-            char top = stack.Pop();
-            if (c == ')' && top != '(') return false;
-            if (c == '}' && top != '{') return false;
-            if (c == ']' && top != '[') return false;
-        }
+        if (c == '(') stack.Push(')');
+        else if (c == '{') stack.Push('}');
+        else if (c == '[') stack.Push(']');
+        else if (stack.Count == 0 || stack.Pop() != c) return false;
     }
     return stack.Count == 0;
 }
 ```
 
-**3. Basic Calculator:**
+### 2. Queue Using Two Stacks
+
+We use `stackIn` for pushing and `stackOut` for popping. We only transfer from In to Out when the Out stack is empty.
+
+```csharp
+public class MyQueue {
+    private readonly Stack<int> _in = new();
+    private readonly Stack<int> _out = new();
+
+    public void Enqueue(int x) => _in.Push(x);
+
+    public int Dequeue() {
+        Peek(); // Ensure _out has elements
+        return _out.Pop();
+    }
+
+    public int Peek() {
+        if (_out.Count == 0) {
+            while (_in.Count > 0) _out.Push(_in.Pop());
+        }
+        return _out.Peek();
+    }
+}
+```
+
+### 3. Basic Calculator ($O(n)$ Time)
 
 ```csharp
 public int Calculate(string s) {
-    int len = s.Length;
-    if (len == 0) return 0;
-    Stack<int> stack = new Stack<int>();
-    int num = 0;
-    char sign = '+';
-    for (int i = 0; i < len; i++) {
-        if (char.IsDigit(s[i])) {
-            num = num * 10 + (s[i] - '0');
-        }
-        if ((!char.IsDigit(s[i]) && ' ' != s[i]) || i == len - 1) {
-            if (sign == '-') {
-                stack.Push(-num);
-            } else if (sign == '+') {
-                stack.Push(num);
-            } else if (sign == '*') {
-                stack.Push(stack.Pop() * num);
-            } else if (sign == '/') {
-                stack.Push(stack.Pop() / num);
-            }
-            sign = s[i];
-            num = 0;
+    if (string.IsNullOrEmpty(s)) return 0;
+    Stack<int> stack = new();
+    int currentNum = 0;
+    char operation = '+';
+
+    for (int i = 0; i < s.Length; i++) {
+        char c = s[i];
+        if (char.IsDigit(c)) currentNum = (currentNum * 10) + (c - '0');
+
+        if (!char.IsDigit(c) && c != ' ' || i == s.Length - 1) {
+            if (operation == '+') stack.Push(currentNum);
+            else if (operation == '-') stack.Push(-currentNum);
+            else if (operation == '*') stack.Push(stack.Pop() * currentNum);
+            else if (operation == '/') stack.Push(stack.Pop() / currentNum);
+
+            operation = c;
+            currentNum = 0;
         }
     }
-    int res = 0;
-    foreach (int i in stack) {
-        res += i;
-    }
-    return res;
+
+    int result = 0;
+    while (stack.Count > 0) result += stack.Pop();
+    return result;
 }
 ```
 
-**4. First Non-Repeating Character in a Stream:**
+## Summary
 
-```csharp
-public class FirstUnique {
-    private Dictionary<int, int> map = new Dictionary<int, int>();
-    private Queue<int> queue = new Queue<int>();
-
-    public FirstUnique(int[] nums) {
-        foreach (int num in nums) {
-            Add(num);
-        }
-    }
-
-    public int ShowFirstUnique() {
-        while (queue.Count > 0 && map[queue.Peek()] > 1) {
-            queue.Dequeue();
-        }
-        return queue.Count == 0 ? -1 : queue.Peek();
-    }
-
-    public void Add(int value) {
-        if (map.ContainsKey(value)) {
-            map[value]++;
-        } else {
-            map[value] = 1;
-        }
-        queue.Enqueue(value);
-    }
-}
-```
+- Use a **Stack** when you need to "remember" where you were or process things in reverse order.
+- Use a **Queue** when you need to process tasks in the exact sequence they arrived.
+- Stacks are the natural companion of **DFS**, while Queues are the heart of **BFS**.

@@ -1,9 +1,18 @@
 ---
-title: "Serverless Computing (Azure Functions vs. AWS Lambda)"
-description: "Explain the principles of serverless computing. Compare Azure Functions and AWS Lambda, discussing triggers, execution environments, and pricing models."
-pubDate: "Sep 06 2025"
+title: "Serverless Computing with Azure Functions & AWS Lambda"
+description: "Understand the serverless model and how to build event-driven applications using Azure Functions or AWS Lambda."
+pubDate: "9 6 2025"
 published: true
-tags: ["Cloud & DevOps (Azure/AWS)", "Serverless"]
+tags:
+  [
+    "Cloud",
+    "Serverless",
+    "Azure Functions",
+    "AWS Lambda",
+    "Event-Driven",
+    "Architecture",
+    "Scalability",
+  ]
 ---
 
 ### Mind Map Summary
@@ -28,16 +37,20 @@ tags: ["Cloud & DevOps (Azure/AWS)", "Serverless"]
 ### Core Concepts
 
 #### 1. The Serverless Paradigm Shift
-Serverless does not mean there are no servers; it means *you* don't have to manage them. In a traditional model, you provision a server (like an EC2 instance), and it runs 24/7, incurring costs even when idle. In a serverless model, your code is effectively asleep until an event triggers it. The cloud provider instantly provisions a container, runs your code, and then tears it down. You only pay for the milliseconds of compute time you actually use. This makes it incredibly cost-effective for workloads that are infrequent or have spiky traffic patterns.
+
+Serverless does not mean there are no servers; it means _you_ don't have to manage them. In a traditional model, you provision a server (like an EC2 instance), and it runs 24/7, incurring costs even when idle. In a serverless model, your code is effectively asleep until an event triggers it. The cloud provider instantly provisions a container, runs your code, and then tears it down. You only pay for the milliseconds of compute time you actually use. This makes it incredibly cost-effective for workloads that are infrequent or have spiky traffic patterns.
 
 #### 2. AWS Lambda
+
 As the pioneer in the FaaS space, Lambda is a mature and robust platform. A Lambda function is a small, stateless piece of code. You upload your code, configure the trigger (e.g., an API Gateway endpoint for an HTTP request), and set the memory allocation. Lambda handles the rest. To interact with other AWS services, like reading from a DynamoDB table or writing to an S3 bucket, you use the standard AWS SDK within your function code.
 
 #### 3. Azure Functions
-Azure Functions provides a similar event-driven model but introduces a powerful concept called **bindings**. Bindings are a declarative way to connect your function to other Azure services. 
+
+Azure Functions provides a similar event-driven model but introduces a powerful concept called **bindings**. Bindings are a declarative way to connect your function to other Azure services.
+
 - An **Input Binding** can fetch data and pass it as a parameter to your function. For example, you can have a binding that says, "When a request comes in to `/products/{id}`, fetch the product with that `id` from Cosmos DB and pass it to my function as a `Product` object."
 - An **Output Binding** can take the return value of your function and send it to a destination. For example, you can return a `string` from your function, and an output binding can automatically write that string to a new file in Azure Blob Storage.
-This can dramatically reduce the amount of boilerplate code you need to write for data access.
+  This can dramatically reduce the amount of boilerplate code you need to write for data access.
 
 ### Practice Exercise
 
@@ -67,7 +80,7 @@ public static IActionResult Run(
     [Blob("samples-workitems/{rand-guid}.txt", FileAccess.Write, Connection = "AzureWebJobsStorage")] out string outputBlob)
 {
     string requestBody = new StreamReader(req.Body).ReadToEnd();
-    
+
     // The string we assign to outputBlob will be saved to Blob Storage by the runtime.
     outputBlob = $"Received request: {requestBody}";
 
@@ -76,7 +89,8 @@ public static IActionResult Run(
 ```
 
 **Explanation**:
-- **Simplicity**: This is where Azure Functions shines. Notice that we don't have to write *any* code to interact with Azure Blob Storage. 
+
+- **Simplicity**: This is where Azure Functions shines. Notice that we don't have to write _any_ code to interact with Azure Blob Storage.
 - **Declarative**: We simply declare an `out string outputBlob` parameter and decorate it with a `[Blob(...)]` attribute. The Azure Functions runtime sees this output binding and takes care of creating the connection to storage, creating the file, and writing the string value to it. Our function code is minimal and focused purely on the business logic.
 
 #### 2. AWS Lambda Solution (Using the SDK)
@@ -123,5 +137,6 @@ public class Function
 ```
 
 **Explanation**:
+
 - **Explicit Code**: In the Lambda version, we are responsible for the interaction with the storage service. We must include the `AWSSDK.S3` NuGet package, create an instance of the `AmazonS3Client`, construct a `PutObjectRequest`, and then explicitly call `PutObjectAsync`.
 - **More Control, More Code**: This approach gives you more fine-grained control over the interaction with S3 (e.g., setting specific headers or metadata), but it requires writing more boilerplate data access code compared to the Azure Functions binding model.

@@ -1,213 +1,108 @@
 ---
-title: "Mocking Frameworks (Moq, NSubstitute)"
-description: "Demonstrate how to use a mocking library to isolate dependencies in unit tests."
-pubDate: "Sep 06 2025"
+title: "Mocking Frameworks (Moq & NSubstitute)"
+description: "Compare common mocking frameworks in .NET and how to use them for isolation in unit tests."
+pubDate: "9 6 2025"
 published: true
-tags: ["Testing", "Unit Testing", "Mocking"]
+tags:
+  [
+    ".NET",
+    "C#",
+    "Testing",
+    "Unit Testing",
+    "Mocking",
+    "Moq",
+    "NSubstitute",
+    "Isolation",
+    "TDD",
+    "Software Testing",
+  ]
 ---
 
-### Mind Map Summary
+## Mind Map Summary
 
-- **Topic**: Mocking Frameworks (Moq, NSubstitute)
-- **Definition**: Tools that allow you to create mock objects (test doubles) to simulate the behavior of real dependencies in unit tests, isolating the "unit under test."
-- **Key Concepts**:
-    - **Isolation**: Testing a single component without its real dependencies.
-    - **Mocks**: Objects that record calls made to them and allow verification of interactions.
-    - **Stubs**: Objects that provide predefined answers to method calls during tests.
-    - **Fakes**: Simplified working implementations of a dependency (e.g., in-memory database).
-    - **Spies**: Partial mocks that allow calling real methods while also tracking interactions.
-- **Benefits (Pros)**:
-    - **True Unit Testing**: Ensures tests focus solely on the logic of the component being tested, not its dependencies.
-    - **Faster Test Execution**: Mocks are in-memory, avoiding slow I/O operations (database, network).
-    - **Easier to Test Complex Logic**: Simplifies testing scenarios involving external services, databases, or complex objects.
-    - **Facilitates Test-Driven Development (TDD)**: Allows writing tests for components before their dependencies are fully implemented.
-    - **Reproducible Tests**: Eliminates external factors that could make tests flaky.
-- **Challenges (Cons)**:
-    - **Over-Mocking**: Can lead to brittle tests that break easily when refactoring, even if the underlying logic is correct.
-    - **Can Hide Integration Issues**: Tests might pass, but real components might not integrate correctly.
-    - **Learning Curve**: Advanced mocking scenarios can be complex to set up and understand.
-    - **Maintenance Overhead**: Mocks need to be updated if the interfaces of dependencies change.
-- **Common Frameworks**: Moq (most popular for C#), NSubstitute, FakeItEasy.
-- **Practical Use**:
-    - Setting up specific return values for method calls.
-    - Throwing exceptions when certain conditions are met.
-    - Verifying that methods on dependencies were called (or not called) a specific number of times with specific arguments.
+- **Mocking Frameworks**
+  - **Definition**: Tools to create "test doubles" that simulate real dependency behavior, isolating the code being tested.
+  - **Key Terminology**
+    - **Mocks**: Objects that record calls and allow interaction verification.
+    - **Stubs**: Objects providing predefined answers to calls.
+    - **Fakes**: Working but simplified implementations (e.g., in-memory DB).
+- **Benefits and Challenges**
+  - **Pros**: True isolation, lightning-fast execution (no I/O), easy testing of edge cases (errors), and reproducible results.
+  - **Cons**: Over-mocking leads to brittle tests, can hide integration bugs, and requires maintenance as interfaces change.
 
-### Core Concepts
+## Core Concepts
 
-Mocking frameworks are essential tools in modern unit testing, particularly in languages like C# where dependency injection is prevalent. They enable developers to create "test doubles" – objects that mimic the behavior of real dependencies. This isolation is crucial for unit tests, as it ensures that a test failure points directly to a bug in the "unit under test" rather than in one of its dependencies.
+Mocking frameworks are essential in modern .NET development. They enable developers to create objects that mimic real-world dependencies like databases or external APIs. This isolation ensures that if a test fails, it's because of the logic in the current class, not because a remote server is down.
 
-**Moq** and **NSubstitute** are two of the most popular mocking frameworks for .NET. They provide intuitive APIs for:
+**Moq** and **NSubstitute** are the industry leaders. They allow you to:
 
-1.  **Setting up Behavior**: Defining what a mocked method or property should return when called.
-2.  **Verifying Interactions**: Asserting that a method on a mock was called with specific arguments, or a certain number of times.
+1. **Setup Behavior**: "When I call `GetById(5)`, return this specific object."
+2. **Verify Interactions**: "Did the service actually call `Save()` when it was done?"
 
-### Practice Exercise
+## Practice Exercise
 
-Given a service class that has a dependency on a repository interface (`IProductRepository`), demonstrate how to use Moq to:
-1.  Set up a mock `IProductRepository` to return a specific product when its `GetById` method is called with a certain ID.
-2.  In a separate test, configure the mock to throw an exception when `GetById` is called.
-3.  Verify the behavior in both tests.
+Given a service class with an `IProductRepository` dependency, use Moq to:
 
-### Answer
+1. Return a specific product when `GetById` is called.
+2. Throw an exception when the ID is invalid.
+3. Verify the interactions.
 
-We will use **Moq** as the mocking framework for this exercise.
+## Answer (Mocking implementation in C#)
 
-#### 1. The Service and Interface
+### 1. The Code Under Test
 
 ```csharp
-// IProductRepository.cs
-public interface IProductRepository
-{
+public interface IProductRepository {
     Product GetById(int id);
-    void Add(Product product);
 }
 
-// Product.cs (simple POCO)
-public class Product { public int Id { get; set; } public string Name { get; set; } }
-
-// ProductService.cs (the class we want to unit test)
-public class ProductService
-{
-    private readonly IProductRepository _productRepository;
-
-    public ProductService(IProductRepository productRepository)
-    {
-        _productRepository = productRepository;
-    }
-
-    public Product GetProductDetails(int productId)
-    {
-        if (productId <= 0) throw new ArgumentException("Product ID must be positive.");
-
-        var product = _productRepository.GetById(productId);
-
-        if (product == null)
-        {
-            return null;
-        }
-        return product;
+public class ProductService(IProductRepository repo) {
+    public Product GetDetails(int id) {
+        if (id <= 0) throw new ArgumentException("Invalid ID");
+        return repo.GetById(id) ?? throw new Exception("Not found");
     }
 }
 ```
 
-#### 2. The Unit Test (`ProductServiceTests.cs`)
-
-First, ensure you have Moq and a testing framework (like XUnit) installed:
-`dotnet add package Moq`
-`dotnet add package Xunit`
-`dotnet add package Xunit.runner.visualstudio`
+### 2. The Unit Test (Moq & xUnit)
 
 ```csharp
-using Moq;
-using Xunit;
-using System;
-
-public class ProductServiceTests
-{
+public class ProductServiceTests {
     [Fact]
-    public void GetProductDetails_ShouldReturnProduct_WhenProductExists()
-    {
+    public void GetDetails_ValidId_ReturnsProduct() {
         // Arrange
-        var productId = 1;
-        var expectedProduct = new Product { Id = productId, Name = "Test Product" };
+        var mockRepo = new Mock<IProductRepository>();
+        var expected = new Product { Id = 1, Name = "Laptop" };
 
-        // Create a mock of the dependency (IProductRepository)
-        var mockRepository = new Mock<IProductRepository>();
-
-        // Configure the mock: When GetById is called with productId, return expectedProduct
-        mockRepository.Setup(repo => repo.GetById(productId))
-                      .Returns(expectedProduct);
-
-        // Create an instance of the service (the Unit Under Test), injecting the mock
-        var productService = new ProductService(mockRepository.Object);
+        mockRepo.Setup(r => r.GetById(1)).Returns(expected);
+        var service = new ProductService(mockRepo.Object);
 
         // Act
-        var result = productService.GetProductDetails(productId);
+        var result = service.GetDetails(1);
 
         // Assert
-        // Verify that the service returned the expected product
-        Assert.NotNull(result);
-        Assert.Equal(expectedProduct.Id, result.Id);
-        Assert.Equal(expectedProduct.Name, result.Name);
-
-        // Verify that the GetById method on the mock was called exactly once with the correct ID
-        mockRepository.Verify(repo => repo.GetById(productId), Times.Once);
+        Assert.Equal("Laptop", result.Name);
+        mockRepo.Verify(r => r.GetById(1), Times.Once);
     }
 
     [Fact]
-    public void GetProductDetails_ShouldThrowException_WhenRepositoryThrows()
-    {
+    public void GetDetails_InvalidId_ThrowsArgumentException() {
         // Arrange
-        var productId = 1;
-        var mockRepository = new Mock<IProductRepository>();
-
-        // Configure the mock: When GetById is called, throw an exception
-        mockRepository.Setup(repo => repo.GetById(productId))
-                      .Throws(new InvalidOperationException("Database connection failed."));
-
-        var productService = new ProductService(mockRepository.Object);
+        var mockRepo = new Mock<IProductRepository>();
+        var service = new ProductService(mockRepo.Object);
 
         // Act & Assert
-        // Verify that an InvalidOperationException is thrown when GetProductDetails is called
-        var exception = Assert.Throws<InvalidOperationException>(
-            () => productService.GetProductDetails(productId)
-        );
+        Assert.Throws<ArgumentException>(() => service.GetDetails(0));
 
-        Assert.Equal("Database connection failed.", exception.Message);
-
-        // Verify that the GetById method on the mock was called exactly once
-        mockRepository.Verify(repo => repo.GetById(productId), Times.Once);
-    }
-
-    [Fact]
-    public void GetProductDetails_ShouldReturnNull_WhenProductDoesNotExist()
-    {
-        // Arrange
-        var productId = 99;
-        var mockRepository = new Mock<IProductRepository>();
-
-        // Configure the mock: When GetById is called, return null
-        mockRepository.Setup(repo => repo.GetById(It.IsAny<int>()))
-                      .Returns((Product)null); // Explicitly cast to Product
-
-        var productService = new ProductService(mockRepository.Object);
-
-        // Act
-        var result = productService.GetProductDetails(productId);
-
-        // Assert
-        Assert.Null(result);
-        mockRepository.Verify(repo => repo.GetById(productId), Times.Once);
-    }
-
-    [Fact]
-    public void GetProductDetails_ShouldThrowArgumentException_WhenProductIdIsInvalid()
-    {
-        // Arrange
-        var productId = 0; // Invalid ID
-        var mockRepository = new Mock<IProductRepository>(); // Mock is still needed for constructor
-        var productService = new ProductService(mockRepository.Object);
-
-        // Act & Assert
-        // Use Assert.Throws to verify that an exception is thrown
-        Assert.Throws<ArgumentException>(
-            () => productService.GetProductDetails(productId)
-        );
-
-        // Verify that the repository method was NOT called
-        mockRepository.Verify(repo => repo.GetById(It.IsAny<int>()), Times.Never);
+        // Ensure the repo was NOT called
+        mockRepo.Verify(r => r.GetById(It.IsAny<int>()), Times.Never);
     }
 }
 ```
 
-#### Explanation
+### Key Takeaways
 
-1.  **`Mock<IProductRepository>()`**: Creates a mock object that implements `IProductRepository`. This mock will stand in for the real repository during the test.
-2.  **`mockRepository.Setup(repo => repo.GetById(productId)).Returns(expectedProduct);`**: This line defines the behavior of the mock. When the `GetById` method is called on the mock with the specified `productId`, it will return `expectedProduct`.
-3.  **`mockRepository.Setup(repo => repo.GetById(productId)).Throws(new InvalidOperationException(...));`**: This demonstrates how to configure the mock to throw an exception when a specific method is called.
-4.  **`mockRepository.Verify(repo => repo.GetById(productId), Times.Once);`**: This is a crucial assertion. It verifies that the `GetById` method on the mock was called exactly once with the `productId` argument. This ensures that our `ProductService` correctly interacted with its dependency.
-5.  **`It.IsAny<int>()`**: Used when you don't care about the specific argument value passed to a mocked method.
-6.  **`Times.Never`**: Used to verify that a method was *not* called.
-
-This approach ensures that your unit tests are fast, reliable, and truly isolate the code you are testing.
+1. **`mockRepo.Object`**: This is how you retrieve the actual implementation of the interface that Moq generated for you.
+2. **`Verify`**: Don't just check the return value. Use `Verify` to ensure your service is using its dependencies as intended (e.g., not calling the database unnecessarily).
+3. **`It.IsAny<int>()`**: A powerful "matcher" that allows you to setup or verify behavior regardless of the specific input value.
+4. **Mocking vs. Faking**: Use Mocks for verifying interactions; use Fakes (like an in-memory database) when you need to test rich, data-driven logic that spans multiple methods.

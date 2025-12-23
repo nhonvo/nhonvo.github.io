@@ -1,9 +1,10 @@
+````
 ---
 title: "Dependency Injection (Scopes: Singleton, Scoped, Transient)"
 description: "Explain the differences and when to use each scope in an ASP.NET Core application."
-pubDate: "Sep 06 2025"
+pubDate: "9 6 2025"
 published: true
-tags: [".NET & C# Advanced", "ASP.NET Core"]
+tags: [".NET", "C#", "Dependency Injection", "Singleton", "Scoped", "Transient", "ASP.NET Core", "IoC"]
 ---
 
 ### Mind Map Summary
@@ -74,7 +75,7 @@ public class OperationLogger : ITransientOperationLogger, IScopedOperationLogger
         OperationId = Guid.NewGuid();
     }
 }
-```
+````
 
 **2. A Service that Depends on the Loggers**
 
@@ -87,8 +88,8 @@ public class MyLoggingService
     private readonly ISingletonOperationGLogger _singletonLogger;
 
     public MyLoggingService(
-        ITransientOperationLogger transientLogger, 
-        IScopedOperationLogger scopedLogger, 
+        ITransientOperationLogger transientLogger,
+        IScopedOperationLogger scopedLogger,
         ISingletonOperationLogger singletonLogger)
     {
         _transientLogger = transientLogger;

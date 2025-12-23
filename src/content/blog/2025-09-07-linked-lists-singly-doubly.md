@@ -1,82 +1,122 @@
 ---
 title: "Linked Lists (Singly & Doubly)"
-description: "Understand the trade-offs vs. arrays. Be proficient in manipulating pointers. Master patterns like the Fast & Slow Pointer technique for cycle detection and finding the middle element."
-pubDate: "Sep 07 2025"
+description: "Master the foundation of pointer-based data structures. Learn how to reverse lists, detect cycles, and find middle elements using the Fast & Slow pointer pattern."
+pubDate: "9 7 2025"
 published: true
-tags: ["Data Structures & Algorithms (DSA)", "Linked Lists", "Pointers", "Fast & Slow Pointer"]
+tags:
+  [
+    "Algorithms",
+    "Data Structures",
+    "Linked Lists",
+    "Pointers",
+    "Fast & Slow Pointer",
+    "C#",
+    "LeetCode",
+    "Complexity Analysis",
+  ]
 ---
 
-### Mind Map Summary
+## What is a Linked List?
 
-- **Topic**: Linked Lists (Singly & Doubly)
-- **Core Concepts**:
-    - **Singly Linked List**: A linear data structure where each element (node) points to the next element in the sequence.
-    - **Doubly Linked List**: A linear data structure where each element (node) points to both the next and the previous element in the sequence.
-    - **Trade-offs vs. Arrays**:
-        - **Arrays**: Fast random access, slow insertion and deletion.
-        - **Linked Lists**: Slow random access, fast insertion and deletion.
-    - **Fast & Slow Pointer**: A pattern where two pointers are used to iterate over a linked list at different speeds. This is useful for cycle detection and finding the middle element.
+A Linked List is a linear data structure where elements are not stored in contiguous memory locations. Instead, each element (node) contains a **value** and a **reference** (pointer) to the next node.
 
-### Practice Exercise
+### Types of Linked Lists
 
-Reverse a singly linked list. Detect if a linked list has a cycle. Merge two sorted linked lists. Find the middle element of a linked list.
+1.  **Singly Linked List**: Each node points only to the `next` node. (Simple, less memory).
+2.  **Doubly Linked List**: Each node points to both the `next` and the `previous` node. (Allows bi-directional traversal, more memory).
 
-### Answer
+---
 
-**1. Reverse a Singly Linked List:**
+## Trade-offs vs. Arrays
+
+| Feature                    | Array                  | Linked List               |
+| :------------------------- | :--------------------- | :------------------------ |
+| **Access (Indexing)**      | $O(1)$                 | $O(n)$                    |
+| **Insert/Delete (Start)**  | $O(n)$                 | $O(1)$                    |
+| **Insert/Delete (Middle)** | $O(n)$                 | $O(1)$ once node is found |
+| **Memory**                 | Contiguous, Fixed size | Disjoint, Dynamic size    |
+
+---
+
+## Core Algorithmic Patterns
+
+### The Fast & Slow Pointer (Floyd’s Cycle-Finding)
+
+By having one pointer move twice as fast as the other (`fast = fast.next.next`), you can solve many problems in a single pass:
+
+- **Cycle Detection**: If they ever meet, there is a cycle.
+- **Middle Element**: When the fast pointer reaching the end, the slow pointer is exactly in the middle.
+
+---
+
+## Practice Exercise
+
+1.  **Reverse a List**: Flip the pointers of a singly linked list in-place.
+2.  **Detect a Cycle**: Determine if a list contains a loop.
+3.  **Merge Sorted Lists**: Combine two sorted linked lists into one sorted list.
+4.  **Find the Middle**: Find the central node of a list in $O(n)$ time.
+
+---
+
+## Answer
+
+### 1. Reverse a List ($O(n)$ Time, $O(1)$ Space)
 
 ```csharp
 public ListNode ReverseList(ListNode head) {
     ListNode prev = null;
     ListNode curr = head;
     while (curr != null) {
-        ListNode nextTemp = curr.next;
-        curr.next = prev;
-        prev = curr;
-        curr = nextTemp;
+        ListNode next = curr.next; // Remember the rest
+        curr.next = prev;         // Flip the pointer
+        prev = curr;              // Move forward
+        curr = next;
     }
     return prev;
 }
 ```
 
-**2. Detect if a Linked List Has a Cycle:**
+### 2. Detect a Cycle ($O(n)$ Time)
 
 ```csharp
 public bool HasCycle(ListNode head) {
-    if (head == null) return false;
-    ListNode slow = head;
-    ListNode fast = head.next;
-    while (slow != fast) {
-        if (fast == null || fast.next == null) return false;
+    ListNode slow = head, fast = head;
+    while (fast != null && fast.next != null) {
         slow = slow.next;
         fast = fast.next.next;
+        if (slow == fast) return true; // Tortoise and Hare meet
     }
-    return true;
+    return false;
 }
 ```
 
-**3. Merge Two Sorted Linked Lists:**
+### 3. Merge Sorted Lists ($O(n + m)$ Time)
 
 ```csharp
-public ListNode MergeTwoLists(ListNode l1, ListNode l2) {
-    if (l1 == null) return l2;
-    if (l2 == null) return l1;
-    if (l1.val < l2.val) {
-        l1.next = MergeTwoLists(l1.next, l2);
-        return l1;
-    } else {
-        l2.next = MergeTwoLists(l1, l2.next);
-        return l2;
+public ListNode Merge(ListNode l1, ListNode l2) {
+    ListNode dummy = new ListNode(0);
+    ListNode curr = dummy;
+
+    while (l1 != null && l2 != null) {
+        if (l1.val < l2.val) {
+            curr.next = l1;
+            l1 = l1.next;
+        } else {
+            curr.next = l2;
+            l2 = l2.next;
+        }
+        curr = curr.next;
     }
+    curr.next = l1 ?? l2; // Attach the remainder
+    return dummy.next;
 }
 ```
 
-**4. Find the Middle Element of a Linked List:**
+### 4. Find the Middle Node
 
 ```csharp
 public ListNode MiddleNode(ListNode head) {
-    ListNode slow = head;
-    ListNode fast = head;
+    ListNode slow = head, fast = head;
     while (fast != null && fast.next != null) {
         slow = slow.next;
         fast = fast.next.next;
@@ -84,3 +124,7 @@ public ListNode MiddleNode(ListNode head) {
     return slow;
 }
 ```
+
+## Summary
+
+Linked Lists are the basis for more complex structures like **Stacks**, **Queues**, and **Hash Table Chaining**. While they suffer from poor cache locality and slow indexing compared to arrays, their ability to grow dynamically and perform constant-time insertions makes them a critical tool in many algorithms.

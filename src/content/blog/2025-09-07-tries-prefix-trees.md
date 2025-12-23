@@ -1,99 +1,126 @@
 ---
 title: "Tries (Prefix Trees)"
-description: "Understand the structure of a Trie and its efficiency for string prefix problems. Know use cases like autocomplete and spell checkers."
-pubDate: "Sep 07 2025"
+description: "Master the optimal data structure for string searching and autocomplete. Learn how Tries store shared prefixes to achieve O(L) lookup performance."
+pubDate: "9 7 2025"
 published: true
-tags: ["Data Structures & Algorithms (DSA)", "Tries", "Prefix Trees", "Strings"]
+tags:
+  [
+    "Algorithms",
+    "Data Structures",
+    "Tries",
+    "Prefix Trees",
+    "Autocomplete",
+    "C#",
+    "LeetCode",
+    "Complexity Analysis",
+  ]
 ---
 
-### Mind Map Summary
+## What is a Trie?
 
-- **Topic**: Tries (Prefix Trees)
-- **Structure**: A tree-like data structure where each node represents a character in a string. The path from the root to a node represents a prefix.
-- **Efficiency**: Tries are very efficient for string prefix problems, as the time complexity for search, insertion, and deletion is proportional to the length of the string, not the number of strings in the trie.
-- **Use Cases**:
-    - **Autocomplete**: Suggest words based on a given prefix.
-    - **Spell Checkers**: Find words that are similar to a given word.
-    - **IP Routing**: Store and search for IP addresses.
+A Trie (pronounced "try" or "tree") is a tree-based data structure used for storing strings. Unlike a standard binary tree, nodes in a Trie do not store the key itself. Instead, the **position** of a node in the tree defines the key (prefix) it is associated with.
 
-### Practice Exercise
+### Key Characteristics
 
-Implement a Trie from scratch with `insert`, `search`, and `startsWith` methods. Use the Trie to build a simple autocomplete system that suggests words based on a given prefix.
+- **Root**: Usually represents an empty string.
+- **Edges**: Represent characters.
+- **Nodes**: Contain an array (or map) of children and a boolean flag indicating if the current path represents a complete word.
 
-### Answer
+---
 
-**1. Implement a Trie:**
+## Why Use a Trie?
+
+1.  **Fast Lookups**: Searching for a word of length $L$ takes exactly $O(L)$ time, regardless of how many millions of words are in the dictionary.
+2.  **Prefix Search**: Perfect for "starts with" queries, which are expensive in Hash Tables.
+3.  **Space Efficiency**: Shared prefixes (e.g., "apple" and "apply") only store their common parts ("appl") once.
+
+### Usage Cases
+
+- **Autocomplete** suggestions in search bars.
+- **Spell Checkers** and word validation.
+- **IP Routing** (longest prefix match).
+
+---
+
+## Practice Exercise
+
+Implement a Trie from scratch with `Insert`, `Search`, and `StartsWith` methods. Ensure it handles lower-case English characters ('a' through 'z').
+
+---
+
+## Answer
+
+### 1. Trie Implementation ($O(L)$ Time for all operations)
 
 ```csharp
 public class TrieNode {
-    public TrieNode[] children = new TrieNode[26];
-    public bool isWord;
+    // Array of 26 children (a-z)
+    public TrieNode[] Children = new TrieNode[26];
+    public bool IsEndOfWord;
 }
 
 public class Trie {
-    private TrieNode root = new TrieNode();
+    private readonly TrieNode _root = new();
 
     public void Insert(string word) {
-        TrieNode node = root;
+        TrieNode curr = _root;
         foreach (char c in word) {
-            if (node.children[c - 'a'] == null) {
-                node.children[c - 'a'] = new TrieNode();
+            int idx = c - 'a';
+            if (curr.Children[idx] == null) {
+                curr.Children[idx] = new TrieNode();
             }
-            node = node.children[c - 'a'];
+            curr = curr.Children[idx];
         }
-        node.isWord = true;
+        curr.IsEndOfWord = true;
     }
 
     public bool Search(string word) {
-        TrieNode node = FindNode(word);
-        return node != null && node.isWord;
+        TrieNode node = GetNode(word);
+        return node != null && node.IsEndOfWord;
     }
 
     public bool StartsWith(string prefix) {
-        return FindNode(prefix) != null;
+        return GetNode(prefix) != null;
     }
 
-    private TrieNode FindNode(string s) {
-        TrieNode node = root;
+    private TrieNode GetNode(string s) {
+        TrieNode curr = _root;
         foreach (char c in s) {
-            if (node.children[c - 'a'] == null) return null;
-            node = node.children[c - 'a'];
+            int idx = c - 'a';
+            if (curr.Children[idx] == null) return null;
+            curr = curr.Children[idx];
         }
-        return node;
+        return curr;
     }
 }
 ```
 
-**2. Autocomplete System:**
+### 2. Autocomplete Logic (Using DFS)
+
+To find all words starting with a prefix, find the prefix node first, then perform a Depth-First Search to find all `IsEndOfWord` nodes in its subtree.
 
 ```csharp
-public class AutocompleteSystem {
-    private Trie trie = new Trie();
-
-    public AutocompleteSystem(string[] words) {
-        foreach (string word in words) {
-            trie.Insert(word);
-        }
+public List<string> AutoComplete(string prefix) {
+    var result = new List<string>();
+    TrieNode startNode = GetNode(prefix);
+    if (startNode != null) {
+        Dfs(startNode, prefix, result);
     }
+    return result;
+}
 
-    public List<string> Suggest(string prefix) {
-        var suggestions = new List<string>();
-        TrieNode node = trie.FindNode(prefix);
-        if (node != null) {
-            FindWords(node, prefix, suggestions);
-        }
-        return suggestions;
-    }
+private void Dfs(TrieNode node, string currentPrefix, List<string> result) {
+    if (node.IsEndOfWord) result.Add(currentPrefix);
 
-    private void FindWords(TrieNode node, string prefix, List<string> suggestions) {
-        if (node.isWord) {
-            suggestions.Add(prefix);
-        }
-        for (char c = 'a'; c <= 'z'; c++) {
-            if (node.children[c - 'a'] != null) {
-                FindWords(node.children[c - 'a'], prefix + c, suggestions);
-            }
+    for (int i = 0; i < 26; i++) {
+        if (node.Children[i] != null) {
+            char nextChar = (char)('a' + i);
+            Dfs(node.Children[i], currentPrefix + nextChar, result);
         }
     }
 }
 ```
+
+## Summary
+
+Tries are the gold standard for **prefix-based string operations**. While they consume more memory than a Hash Set (due to storing pointers for every character), their ability to perform localized prefix searches and shared storage makes them indispensable for dictionary-heavy applications.

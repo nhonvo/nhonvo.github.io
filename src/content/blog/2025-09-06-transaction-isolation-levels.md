@@ -1,9 +1,17 @@
 ---
-title: "Transaction Isolation Levels"
-description: "Explain the different isolation levels and the concurrency issues they prevent (dirty reads, phantom reads)."
-pubDate: "Sep 06 2025"
+title: "Transaction Isolation Levels in SQL Server"
+description: "Understand the different transaction isolation levels and how they prevent concurrency issues like dirty reads."
+pubDate: "9 6 2025"
 published: true
-tags: ["Data Access & Databases", "SQL"]
+tags:
+  [
+    "Database",
+    "SQL Server",
+    "Transactions",
+    "Concurrency",
+    "Isolation Levels",
+    "ACID",
+  ]
 ---
 
 ### Mind Map Summary
@@ -31,14 +39,16 @@ tags: ["Data Access & Databases", "SQL"]
 ### Core Concepts
 
 #### 1. Why Isolation is Needed
+
 In any system with multiple users or processes accessing a database simultaneously, there's a risk that their operations will interfere with each other. Transaction isolation is a fundamental concept of the ACID (Atomicity, Consistency, Isolation, Durability) properties that guarantees data consistency. By choosing an isolation level, you are making a conscious trade-off: do you prioritize high performance and concurrency (at the risk of data anomalies), or do you prioritize perfect data consistency (at the cost of performance)?
 
 #### 2. How Isolation is Implemented
+
 Databases implement isolation using locking. When a transaction accesses data, the database may place a lock on that data, preventing other transactions from modifying (or sometimes even reading) it until the first transaction is complete. Higher isolation levels acquire more restrictive locks for longer durations.
 
 - **Read Committed**: A transaction holds a write lock on data it is changing until it commits or rolls back. It only holds a read lock for the brief moment it is reading the data. This prevents dirty reads.
 - **Repeatable Read**: A transaction holds read and write locks on all affected rows for the entire duration of the transaction. This prevents other transactions from modifying the rows you've already read.
-- **Serializable**: This level goes a step further. It places a lock not just on the rows you've read, but on the *range* of data defined by your `WHERE` clause. This prevents other transactions from inserting new rows that would match your query, thus preventing phantom reads.
+- **Serializable**: This level goes a step further. It places a lock not just on the rows you've read, but on the _range_ of data defined by your `WHERE` clause. This prevents other transactions from inserting new rows that would match your query, thus preventing phantom reads.
 
 ### Practice Exercise
 
@@ -75,7 +85,7 @@ public class IsolationDemo
             await using var context2 = new AppDbContext(_connectionString);
             context2.Products.Add(new Product { Name = "Super Widget", Price = 150 });
             // This SaveChanges call will BLOCK because TX1 has a range lock
-            await context2.SaveChangesAsync(); 
+            await context2.SaveChangesAsync();
             Console.WriteLine("TX2: Insert completed."); // This line will be delayed
         });
 

@@ -1,141 +1,124 @@
 ---
 title: "Recursion & Backtracking"
-description: "Master recursion as a problem-solving technique. Understand the backtracking template for solving problems involving permutations, combinations, and subsets. Be mindful of the call stack and potential for stack overflow."
-pubDate: "Sep 07 2025"
+description: "Master the art of self-referential logic. Learn the templates for solving combinatorial problems like Permutations, Subsets, and N-Queens using Backtracking."
+pubDate: "9 7 2025"
 published: true
-tags: ["Data Structures & Algorithms (DSA)", "Recursion", "Backtracking"]
+tags:
+  [
+    "Algorithms",
+    "Data Structures",
+    "Recursion",
+    "Backtracking",
+    "C#",
+    "LeetCode",
+    "Complexity Analysis",
+  ]
 ---
 
-### Mind Map Summary
+## What is Recursion?
 
-- **Topic**: Recursion & Backtracking
-- **Core Concepts**:
-    - **Recursion**: A problem-solving technique where a function calls itself to solve smaller instances of the same problem.
-    - **Backtracking**: A general algorithm for finding all (or some) solutions to some computational problems, notably constraint satisfaction problems, that incrementally builds candidates to the solutions, and abandons a candidate ("backtracks") as soon as it determines that the candidate cannot possibly be completed to a valid solution.
-- **Key Considerations**:
-    - **Base Case**: The condition that stops the recursion.
-    - **Recursive Step**: The part of the function that calls itself.
-    - **Call Stack**: Be mindful of the call stack and the potential for stack overflow.
+Recursion is a programming technique where a function calls itself to solve a smaller sub-problem of the original problem. Every recursive function must have two parts:
 
-### Practice Exercise
+1.  **Base Case**: The condition that terminates the recursion (prevents infinite loops and stack overflow).
+2.  **Recursive Step**: The logic that breaks the problem down and calls the function again.
 
-Generate all possible subsets of a given set. Find all permutations of a string. Solve the N-Queens problem. Implement a Sudoku solver.
+---
 
-### Answer
+## What is Backtracking?
 
-**1. Subsets:**
+Backtracking is an extension of recursion. It is a "trial and error" approach used to build a solution incrementally. If the current path doesn't lead to a valid solution, you "backtrack" (undo the last step) and try a different path.
+
+### The Backtracking Template
+
+```csharp
+void Backtrack(state, result) {
+    if (isSolution(state)) {
+        result.Add(state);
+        return;
+    }
+
+    for (option in options) {
+        if (isValid(option)) {
+            MakeChoice(option);      // Step 1: Forward
+            Backtrack(state, result); // Step 2: Recurse
+            UndoChoice(option);      // Step 3: Backtrack (Undo)
+        }
+    }
+}
+```
+
+---
+
+## Practice Exercise
+
+1.  **Subsets**: Given an integer array, return all possible subsets.
+2.  **Permutations**: Given an array of distinct integers, return all possible permutations.
+3.  **Sudoku Solver**: Fill a 9x9 grid so that each row, column, and 3x3 subgrid contains digits 1-9.
+
+---
+
+## Answer
+
+### 1. Subsets ($O(2^N)$ Time)
 
 ```csharp
 public IList<IList<int>> Subsets(int[] nums) {
-    var res = new List<IList<int>>();
-    Backtrack(res, new List<int>(), nums, 0);
-    return res;
+    var result = new List<IList<int>>();
+    GenerateSubsets(0, nums, new List<int>(), result);
+    return result;
 }
 
-private void Backtrack(List<IList<int>> res, List<int> tempList, int[] nums, int start) {
-    res.Add(new List<int>(tempList));
+private void GenerateSubsets(int start, int[] nums, List<int> current, List<IList<int>> result) {
+    result.Add(new List<int>(current)); // Add current snapshot
+
     for (int i = start; i < nums.Length; i++) {
-        tempList.Add(nums[i]);
-        Backtrack(res, tempList, nums, i + 1);
-        tempList.RemoveAt(tempList.Count - 1);
+        current.Add(nums[i]);                  // Make choice
+        GenerateSubsets(i + 1, nums, current, result); // Recurse
+        current.RemoveAt(current.Count - 1);   // Backtrack
     }
 }
 ```
 
-**2. Permutations:**
+### 2. Permutations ($O(N!)$ Time)
 
 ```csharp
 public IList<IList<int>> Permute(int[] nums) {
-    var res = new List<IList<int>>();
-    Backtrack(res, new List<int>(), nums);
-    return res;
+    var result = new List<IList<int>>();
+    Solve(nums, new List<int>(), result);
+    return result;
 }
 
-private void Backtrack(List<IList<int>> res, List<int> tempList, int[] nums) {
-    if (tempList.Count == nums.Length) {
-        res.Add(new List<int>(tempList));
-    } else {
-        for (int i = 0; i < nums.Length; i++) {
-            if (tempList.Contains(nums[i])) continue;
-            tempList.Add(nums[i]);
-            Backtrack(res, tempList, nums);
-            tempList.RemoveAt(tempList.Count - 1);
-        }
-    }
-}
-```
-
-**3. N-Queens:**
-
-```csharp
-public IList<IList<string>> SolveNQueens(int n) {
-    var res = new List<IList<string>>();
-    var board = new char[n, n];
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n; j++) {
-            board[i, j] = ".";
-        }
-    }
-    Backtrack(res, board, 0, n);
-    return res;
-}
-
-private void Backtrack(List<IList<string>> res, char[,] board, int col, int n) {
-    if (col == n) {
-        res.Add(Construct(board, n));
+private void Solve(int[] nums, List<int> current, List<IList<int>> result) {
+    if (current.Count == nums.Length) {
+        result.Add(new List<int>(current));
         return;
     }
-    for (int i = 0; i < n; i++) {
-        if (IsSafe(board, i, col, n)) {
-            board[i, col] = "Q";
-            Backtrack(res, board, col + 1, n);
-            board[i, col] = ".";
-        }
-    }
-}
 
-private bool IsSafe(char[,] board, int row, int col, int n) {
-    for (int i = 0; i < col; i++) {
-        if (board[row, i] == "Q") return false;
-    }
-    for (int i = row, j = col; i >= 0 && j >= 0; i--, j--) {
-        if (board[i, j] == "Q") return false;
-    }
-    for (int i = row, j = col; j >= 0 && i < n; i++, j--) {
-        if (board[i, j] == "Q_") return false;
-    }
-    return true;
-}
+    for (int i = 0; i < nums.Length; i++) {
+        if (current.Contains(nums[i])) continue; // Skip used numbers
 
-private List<string> Construct(char[,] board, int n) {
-    var res = new List<string>();
-    for (int i = 0; i < n; i++) {
-        res.Add(new string(board, i, 0, n));
+        current.Add(nums[i]);
+        Solve(nums, current, result);
+        current.RemoveAt(current.Count - 1); // Backtrack
     }
-    return res;
 }
 ```
 
-**4. Sudoku Solver:**
+### 3. Sudoku Solver ($O(9^{81})$ Worst Case)
 
 ```csharp
-public void SolveSudoku(char[][] board) {
-    if (board == null || board.Length == 0) return;
-    Solve(board);
-}
-
-private bool Solve(char[][] board) {
-    for (int i = 0; i < 9; i++) {
-        for (int j = 0; j < 9; j++) {
-            if (board[i][j] == ".") {
-                for (char c = '1'; c <= '9'; c++) {
-                    if (IsValid(board, i, j, c)) {
-                        board[i][j] = c;
-                        if (Solve(board)) return true;
-                        else board[i][j] = ".";
+public bool SolveSudoku(char[][] board) {
+    for (int r = 0; r < 9; r++) {
+        for (int c = 0; c < 9; c++) {
+            if (board[r][c] == '.') {
+                for (char val = '1'; val <= '9'; val++) {
+                    if (IsValid(board, r, c, val)) {
+                        board[r][c] = val;
+                        if (SolveSudoku(board)) return true;
+                        board[r][c] = '.'; // Backtrack
                     }
                 }
-                return false;
+                return false; // No valid number found for this cell
             }
         }
     }
@@ -144,10 +127,16 @@ private bool Solve(char[][] board) {
 
 private bool IsValid(char[][] board, int row, int col, char c) {
     for (int i = 0; i < 9; i++) {
-        if (board[i][col] != "." && board[i][col] == c) return false;
-        if (board[row][i] != "." && board[row][i] == c) return false;
-        if (board[3 * (row / 3) + i / 3][3 * (col / 3) + i % 3] != "." && board[3 * (row / 3) + i / 3][3 * (col / 3) + i % 3] == c) return false;
+        if (board[i][col] == c) return false; // Column check
+        if (board[row][i] == c) return false; // Row check
+        if (board[3*(row/3) + i/3][3*(col/3) + i%3] == c) return false; // Box check
     }
     return true;
 }
 ```
+
+## Summary
+
+- **Recursion** is for problems that can be solved by reducing them to identical sub-problems (like Factorial or Tree Traversal).
+- **Backtracking** is for search problems where you need to explore a "decision tree" (like finding paths or combinations).
+- Always be careful with the **base case**—without it, you'll hit a `StackOverflowException`.

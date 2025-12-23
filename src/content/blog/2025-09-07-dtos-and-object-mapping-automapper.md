@@ -1,98 +1,115 @@
 ---
-title: "DTOs and Object Mapping (AutoMapper)"
-description: "Explain the purpose of Data Transfer Objects (DTOs) and why they are important for decoupling your internal domain models from your external API contracts. Discuss the pros and cons of using an object mapping library like AutoMapper."
-pubDate: "Sep 07 2025"
+title: "DTOs & Object Mapping with AutoMapper"
+description: "Why you should never expose your Database Entities to the UI. Master the use of Data Transfer Objects and AutoMapper for clean, decoupled .NET applications."
+pubDate: "9 7 2025"
 published: true
-tags: ["Software Design & Architecture", "API Design", "DTOs", "AutoMapper"]
+tags:
+  [
+    ".NET",
+    "AutoMapper",
+    "Clean Architecture",
+    "C#",
+    "API Design",
+    "Object Mapping",
+    "Backend Development",
+    "Architecture",
+  ]
 ---
 
-### Mind Map Summary
+## Why Use DTOs?
 
-- **Topic**: DTOs and Object Mapping
-- **Core Concepts**:
-    - **Data Transfer Object (DTO)**: An object that is used to transfer data between different layers of an application, such as between the service layer and the presentation layer.
-    - **Object Mapping**: The process of converting an object from one type to another.
-    - **AutoMapper**: A popular object mapping library for .NET.
-- **Benefits of DTOs**:
-    - **Decoupling**: Decouple your internal domain models from your external API contracts.
-    - **Security**: Prevent over-posting and under-posting attacks.
-    - **Performance**: Reduce the amount of data that is sent over the wire.
-- **Pros and Cons of AutoMapper**:
-    - **Pros**: Reduces boilerplate code, easy to use, convention-based.
-    - **Cons**: Can be slow if not configured correctly, can hide complexity.
+In professional .NET development, returning Entity Framework models directly to the public API is a major anti-pattern. **Data Transfer Objects (DTOs)** solve several critical problems:
 
-### Practice Exercise
+1.  **Security (Over-posting)**: Prevents clients from updating fields they shouldn't (e.g., an `IsAdmin` flag on a User entity).
+2.  **Decoupling**: If you change your database schema, you only update the mapping, and your API contract remains stable.
+3.  **Efficiency**: DTOs allow you to flatten complex object trees into simple, flat JSON payloads, reducing data transfer size.
+4.  **Serialization**: Solves the "Circular Reference" problem (e.g., `User` has `Orders`, `Order` has `User`) that causes JSON serializers to crash.
 
-Create an EF Core entity `Product` and a corresponding `ProductDto`. Configure AutoMapper to map between the two. In a controller, use the mapping to transform the entity to a DTO before returning it to the client, and to map an incoming DTO to an entity for saving to the database.
+---
 
-### Answer
+## What is AutoMapper?
 
-**1. Entity and DTO:**
+Mapping a `User` entity to a `UserDto` manually involves repetitive boilerplate:
+`dto.Name = user.Name; dto.Email = user.Email; ...`
 
-```csharp
-public class Product
-{
-    public int Id { get; set; }
-    public string Name { get; set; }
-    public decimal Price { get; set; }
-}
+**AutoMapper** is a convention-based object-to-object mapper that does this work for you. It relies on property names matching between your source and destination objects.
 
-public class ProductDto
-{
-    public int Id { get; set; }
-    public string Name { get; set; }
-}
-```
+---
 
-**2. AutoMapper Profile:**
+## Technical Implementation
+
+### 1. The AutoMapper Profile
+
+You define your mapping rules in a `Profile` class.
 
 ```csharp
-using AutoMapper;
-
-public class MappingProfile : Profile
+public class UserProfile : Profile
 {
-    public MappingProfile()
+    public UserProfile()
     {
-        CreateMap<Product, ProductDto>();
-        CreateMap<ProductDto, Product>();
+        // Entity -> DTO
+        CreateMap<User, UserDto>()
+            .ForMember(dest => dest.FullName,
+                       opt => opt.MapFrom(src => $"{src.FirstName} {src.LastName}"));
+
+        // DTO -> Entity (for Updates/Creates)
+        CreateMap<UserDto, User>();
     }
 }
 ```
 
-**3. Controller:**
+### 2. Registration in `Program.cs`
 
 ```csharp
-using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
+builder.Services.AddAutoMapper(typeof(UserProfile));
+```
 
+---
+
+## Practice Exercise
+
+Implement a controller action that fetches an entity from the database and returns it as a DTO using AutoMapper.
+
+---
+
+## Answer
+
+### The Database to DTO Workflow
+
+```csharp
 [ApiController]
-[Route("[controller]")]
-public class ProductsController : ControllerBase
+[Route("api/users")]
+public class UsersController : ControllerBase
 {
-    private readonly MyDbContext _context;
+    private readonly AppDbContext _context;
     private readonly IMapper _mapper;
 
-    public ProductsController(MyDbContext context, IMapper mapper)
+    public UsersController(AppDbContext context, IMapper mapper)
     {
         _context = context;
         _mapper = mapper;
     }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> Get(int id)
+    public async Task<IActionResult> GetUser(int id)
     {
-        var product = await _context.Products.FindAsync(id);
-        var productDto = _mapper.Map<ProductDto>(product);
-        return Ok(productDto);
-    }
+        var user = await _context.Users.FindAsync(id);
+        if (user == null) return NotFound();
 
-    [HttpPost]
-    public async Task<IActionResult> Post(ProductDto productDto)
-    {
-        var product = _mapper.Map<Product>(productDto);
-        _context.Products.Add(product);
-        await _context.SaveChangesAsync();
-        return CreatedAtAction(nameof(Get), new { id = product.Id }, product);
+        // One-liner mapping
+        var userDto = _mapper.Map<UserDto>(user);
+
+        return Ok(userDto);
     }
 }
 ```
+
+### Why This Architecture Works
+
+1.  **Abstraction**: The controller only knows about the **Contract** (`UserDto`). It doesn't care about the internal structure of the database.
+2.  **Performance with Projections**: Using `.ProjectTo<UserDto>(_mapper.ConfigurationProvider)` allows Entity Framework to only select the necessary columns in the SQL query, significantly reducing database I/O.
+3.  **Consistency**: Validation rules for the DTO (e.g., FluentValidation) are kept separate from the internal configuration of the database (Data Annotations).
+
+## Summary
+
+DTOs are a non-negotiable part of professional API design. By integrating **AutoMapper**, you eliminate the boredom of manual mapping while ensuring that your internal database schema remains hidden, secure, and flexible.

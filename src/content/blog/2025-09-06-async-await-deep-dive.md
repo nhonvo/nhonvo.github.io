@@ -1,9 +1,10 @@
+````
 ---
 title: "Async/Await Deep Dive (State Machine, SynchronizationContext, ConfigureAwait)"
 description: "Be ready to explain the async state machine and demonstrate with code how a deadlock can occur and how ConfigureAwait(false) helps prevent it."
-pubDate: "Sep 06 2025"
+pubDate: "9 6 2025"
 published: true
-tags: [".NET & C# Advanced"]
+tags: [".NET", "C#", "Async", "Await", "Thread", "Concurrency", "Deadlock", "ConfigureAwait"]
 ---
 
 ### Mind Map Summary
@@ -35,7 +36,7 @@ tags: [".NET & C# Advanced"]
 
 #### 3. `ConfigureAwait(false)`
 - **Definition**: A method called on a `Task` that configures the awaiter for the task. Passing `false` tells the awaiter it does not need to resume execution on the original `SynchronizationContext`.
-- **Pros**: 
+- **Pros**:
   - **Prevents Deadlocks**: This is the primary reason for its existence. By allowing the continuation to run on any available thread pool thread, it avoids the conflict over the original context's thread.
   - **Performance**: There can be a minor performance benefit by avoiding the overhead of posting the continuation back to the original context.
 - **Best Practice**: In any general-purpose library code (i.e., code that is not directly part of the UI layer), you should use `ConfigureAwait(false)` on every `await` to make your library safe for all types of .NET applications to consume without causing deadlocks.
@@ -72,7 +73,7 @@ public class DeadlockDemo
         try
         {
             // This will deadlock!
-            MyAsyncMethod().Wait(); 
+            MyAsyncMethod().Wait();
         }
         catch (Exception ex)
         {
@@ -83,16 +84,17 @@ public class DeadlockDemo
 
     // The problematic async method
     public static async Task MyAsyncMethod()
-    { 
+    {
         Console.WriteLine("Inside async method, before await.");
         // We await a task that completes on a thread pool thread
         await Task.Delay(1000); // Simulates I/O work
         Console.WriteLine("Inside async method, after await."); // This line is never reached
     }
 }
-```
+````
 
 **Why it Deadlocks:**
+
 1.  `Main` sets a `SynchronizationContext` that forces all work onto a single thread.
 2.  `Main` calls `MyAsyncMethod()` and immediately blocks the main (and only) context thread by calling `.Wait()`.
 3.  `MyAsyncMethod()` runs on the main thread until it hits `await Task.Delay(1000)`. It returns an incomplete `Task` and the `Task.Delay` runs in the background on a thread pool thread.

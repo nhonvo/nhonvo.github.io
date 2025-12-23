@@ -1,9 +1,10 @@
----
+`---
 title: "Unit Testing vs. Integration Testing"
-description: "Explain the difference and the role of each in the testing pyramid."
-pubDate: "Sep 06 2025"
+description: "Compare unit tests and integration tests, and learn how to balance them for effective test coverage."
+pubDate: "9 6 2025"
 published: true
-tags: ["Testing"]
+tags: [".NET", "Testing", "Unit Testing", "Integration Testing", "xUnit", "Test Automation", "TDD"]
+
 ---
 
 ### Mind Map Summary
@@ -12,21 +13,21 @@ tags: ["Testing"]
 - **The Testing Pyramid**: A strategy that suggests writing more low-level tests (unit) and fewer high-level tests (E2E).
   - **1. Unit Tests (Base of the Pyramid)**
     - **What**: Test the smallest testable parts of an application in isolation (e.g., a single method, a single class).
-    - **Characteristics**: 
+    - **Characteristics**:
       - **Fast**: Execute in milliseconds.
       - **Cheap**: Easy to write and maintain.
       - **Isolated**: Dependencies are replaced with mocks or stubs.
     - **Purpose**: Verify the correctness of individual units of code.
   - **2. Integration Tests (Middle of the Pyramid)**
     - **What**: Test how different units or modules interact with each other.
-    - **Characteristics**: 
+    - **Characteristics**:
       - **Slower**: Involve more components, potentially real databases or external services.
       - **More Expensive**: Harder to write and maintain than unit tests.
       - **Dependencies**: Often use real dependencies or in-memory versions of them.
     - **Purpose**: Verify the correct flow and interaction between integrated components.
   - **3. End-to-End (E2E) Tests (Top of the Pyramid)**
     - **What**: Test the entire application flow from a user's perspective, simulating real user interactions.
-    - **Characteristics**: 
+    - **Characteristics**:
       - **Slowest**: Can take seconds or minutes to run.
       - **Most Expensive**: Hardest to write, maintain, and debug.
       - **Dependencies**: Requires the full application stack to be running.
@@ -35,9 +36,11 @@ tags: ["Testing"]
 ### Core Concepts
 
 #### 1. Unit Testing
+
 Unit tests are the bedrock of a good testing strategy. They focus on testing individual units of code in isolation. A "unit" is typically the smallest testable part of an application, often a single method or a class. The key to unit testing is **isolation**. If your unit has dependencies (e.g., a service that depends on a database repository), those dependencies are replaced with **mocks** or **stubs**. This ensures that if a test fails, you know exactly which unit of code is responsible for the failure, and the test runs extremely fast because it doesn't hit a real database or external service.
 
 #### 2. Integration Testing
+
 Integration tests verify that different parts of your application work correctly when put together. For example, you might test if your service layer correctly interacts with your database repository, or if your API controller correctly calls your service and returns the expected result. Unlike unit tests, integration tests often use real (or near-real) dependencies. For example, you might use an in-memory database for testing data access, or a test HTTP server for testing API calls. Integration tests are slower than unit tests but provide higher confidence that your components work together as intended.
 
 ### Practice Exercise
@@ -173,7 +176,7 @@ public class ProductServiceTests
 
 #### Explanation
 
-1.  **Isolation**: The `ProductService` is the "unit under test." Its dependency, `IProductRepository`, is replaced by a **mock object** created by Moq (`mockRepository.Object`). This means our test for `ProductService` does not actually interact with a real database. It only verifies that `ProductService` behaves correctly based on what it *expects* from its `IProductRepository`.
+1.  **Isolation**: The `ProductService` is the "unit under test." Its dependency, `IProductRepository`, is replaced by a **mock object** created by Moq (`mockRepository.Object`). This means our test for `ProductService` does not actually interact with a real database. It only verifies that `ProductService` behaves correctly based on what it _expects_ from its `IProductRepository`.
 2.  **`mockRepository.Setup(...)`**: This line tells the mock what to do when a specific method is called on it. For example, `mockRepository.Setup(repo => repo.GetById(productId)).Returns(expectedProduct);` means "When `GetById` is called with `productId`, return `expectedProduct`."
 3.  **`mockRepository.Verify(...)`**: This line is crucial for verifying interactions. It asserts that a specific method on the mock was called (or not called) a certain number of times. This helps ensure that our `ProductService` is interacting with its dependencies as expected.
 4.  **Speed**: Because no real database calls are made, these tests run extremely fast, allowing for quick feedback during development.

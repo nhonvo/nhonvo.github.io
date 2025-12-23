@@ -1,109 +1,107 @@
 ---
 title: "Hash Tables (Dictionary/HashMap)"
-description: "This is one of the most important data structures. Understand how hashing works, and discuss collision resolution strategies (chaining vs. open addressing) and their trade-offs."
-pubDate: "Sep 07 2025"
+description: "The workhorse of modern software. Master the mechanics of hashing, collision resolution (chaining vs. open addressing), and why it offers near O(1) performance."
+pubDate: "9 7 2025"
 published: true
-tags: ["Data Structures & Algorithms (DSA)", "Hash Tables", "Dictionary", "HashMap", "Collision Resolution"]
+tags:
+  [
+    "Algorithms",
+    "Data Structures",
+    "Hash Table",
+    "Dictionary",
+    "HashMap",
+    "C#",
+    "LeetCode",
+    "Complexity Analysis",
+  ]
 ---
 
-### Mind Map Summary
+## What is a Hash Table?
 
-- **Topic**: Hash Tables (Dictionary/HashMap)
-- **Core Concepts**:
-    - **Hash Table**: A data structure that maps keys to values. It uses a hash function to compute an index into an array of buckets or slots, from which the desired value can be found.
-    - **Hash Function**: A function that takes a key and returns an index into the hash table.
-    - **Collision Resolution**: Strategies for handling the case where two or more keys map to the same index.
-        - **Chaining**: Each bucket in the hash table is a linked list. When a collision occurs, the new key-value pair is added to the linked list.
-        - **Open Addressing**: When a collision occurs, the hash table probes for the next available slot.
-- **Trade-offs**:
-    - **Chaining**: Simple to implement, but can be slow if the linked lists become long.
-    - **Open Addressing**: More complex to implement, but can be faster than chaining if the load factor is low.
+A Hash Table (known as `Dictionary` in C# or `HashMap` in Java) is a data structure that provides near-constant time **$O(1)$** performance for search, insert, and delete operations. It maps **Keys** to **Values** using a **Hash Function**.
 
-### Practice Exercise
+---
 
-Implement a HashMap from scratch with basic `get`, `put`, and `delete` operations, using chaining for collision resolution. Use a Dictionary to solve problems like finding the first non-repeating character in a string or checking if two arrays have a common item.
+## Core Components
 
-### Answer
+1.  **Hash Function**: Takes a key and converts it into a numeric index. A good function distributes keys uniformly to avoid collisions.
+2.  **Buckets**: An underlying array where values are stored.
+3.  **Collision**: Occurs when two different keys result in the same array index.
 
-**1. Implement a HashMap from scratch:**
+---
 
-```csharp
-public class MyHashMap {
-    private class Node {
-        public int key, val;
-        public Node next;
-        public Node(int key, int val) {
-            this.key = key;
-            this.val = val;
-        }
-    }
+## Collision Resolution Strategies
 
-    private Node[] nodes = new Node[10000];
+### 1. Separate Chaining
 
-    public int Get(int key) {
-        int index = key % nodes.Length;
-        Node prev = Find(nodes[index], key);
-        return prev.next == null ? -1 : prev.next.val;
-    }
+Each bucket stores a **Linked List**. If two keys collide, the new entry is simply appended to the list at that index.
 
-    public void Put(int key, int value) {
-        int index = key % nodes.Length;
-        Node prev = Find(nodes[index], key);
-        if (prev.next == null)
-            prev.next = new Node(key, value);
-        else
-            prev.next.val = value;
-    }
+- **Pros**: The table never "fills up."
+- **Cons**: Performance degrades to $O(N)$ if a bucket grows too long.
 
-    public void Remove(int key) {
-        int index = key % nodes.Length;
-        Node prev = Find(nodes[index], key);
-        if (prev.next != null)
-            prev.next = prev.next.next;
-    }
+### 2. Open Addressing
 
-    private Node Find(Node bucket, int key) {
-        Node node = bucket, prev = null;
-        while (node != null && node.key != key) {
-            prev = node;
-            node = node.next;
-        }
-        return prev;
-    }
-}
-```
+If an index is taken, search for the next available slot in the array.
 
-**2. First Non-Repeating Character in a String:**
+- **Linear Probing**: Check index $i+1$, then $i+2$...
+- **Pros**: Better cache locality; no extra pointers.
+- **Cons**: Suffers from "clustering" where groups of occupied slots grow together, slowing down searches.
+
+---
+
+## Performance Matrix
+
+| Operation     | Average Case | Worst Case |
+| :------------ | :----------- | :--------- |
+| **Search**    | $O(1)$       | $O(N)$     |
+| **Insertion** | $O(1)$       | $O(N)$     |
+| **Deletion**  | $O(1)$       | $O(N)$     |
+
+_Note: The worst case $O(N)$ only occurs during extreme collision scenarios or when the table must resize (re-hash)._
+
+---
+
+## Practice Exercise
+
+1.  **First Unique Character**: Find the index of the first character in a string that does not repeat.
+2.  **Two Sum**: Find two numbers in an array that add up to a target sum.
+
+---
+
+## Answer
+
+### 1. First Unique Character ($O(N)$ Time)
 
 ```csharp
 public int FirstUniqChar(string s) {
-    var map = new Dictionary<char, int>();
+    var counts = new Dictionary<char, int>();
     foreach (char c in s) {
-        if (map.ContainsKey(c)) {
-            map[c]++;
-        } else {
-            map[c] = 1;
-        }
+        counts[c] = counts.GetValueOrDefault(c) + 1;
     }
+
     for (int i = 0; i < s.Length; i++) {
-        if (map[s[i]] == 1) {
-            return i;
-        }
+        if (counts[s[i]] == 1) return i;
     }
     return -1;
 }
 ```
 
-**3. Common Item in Two Arrays:**
+### 2. Two Sum ($O(N)$ Time)
 
 ```csharp
-public bool HasCommonItem(int[] arr1, int[] arr2) {
-    var set = new HashSet<int>(arr1);
-    foreach (int num in arr2) {
-        if (set.Contains(num)) {
-            return true;
+public int[] TwoSum(int[] nums, int target) {
+    var map = new Dictionary<int, int>(); // Value -> Index
+    for (int i = 0; i < nums.Length; i++) {
+        int complement = target - nums[i];
+        if (map.ContainsKey(complement)) {
+            return new int[] { map[complement], i };
         }
+        map[nums[i]] = i;
     }
-    return false;
+    return null;
 }
 ```
+
+## Summary
+
+Hash Tables are the single most important data structure for optimizing code. They trade a small amount of memory for **massive speed gains**, turning linear search problems into constant-time lookups. When using them, always remember that keys must be **Immutable** (or at least their hash code must never change) to ensure the data is retrievable.

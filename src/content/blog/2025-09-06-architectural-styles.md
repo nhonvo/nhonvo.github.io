@@ -1,12 +1,24 @@
 ---
-title: "Architectural Styles (Monolith vs. Microservices)"
-description: "Discuss the trade-offs, communication patterns (sync/async), and challenges of microservices."
-pubDate: "Sep 06 2025"
+title: "Architectural Styles (Monolithic, Microservices, Serverless)"
+description: "Compare and contrast different architectural patterns and understand their trade-offs."
+pubDate: "9 6 2025"
 published: true
-tags: ["Software Design & Architecture"]
+tags:
+  [
+    ".NET",
+    "C#",
+    "Architecture",
+    "Microservices",
+    "Serverless",
+    "Monolith",
+    "System Design",
+    "Scalability",
+    "Reliability",
+    "Distributed Systems",
+  ]
 ---
 
-### Mind Map Summary
+## Mind Map Summary
 
 - **Monolithic Architecture**
   - **What**: A single, unified application. All components (UI, business logic, data access) are developed and deployed as one unit.
@@ -33,42 +45,44 @@ tags: ["Software Design & Architecture"]
   - **Synchronous (e.g., REST, gRPC)**: The caller makes a request and waits for a response. Simple, but can lead to tight coupling.
   - **Asynchronous (e.g., Message Bus like RabbitMQ/Kafka)**: The caller sends a message (an event) and doesn't wait for a response. Promotes loose coupling and resilience.
 
-### Core Concepts
+## Core Concepts
 
-#### 1. The Monolith
+### 1. The Monolith
+
 The monolithic approach is the traditional way of building applications. It's a single, self-contained unit. For a web application, this typically means a single solution with projects for the UI, Business Logic Layer (BLL), and Data Access Layer (DAL). While this is very simple to start with, it presents significant challenges as the application grows. The tight coupling between components means a change in one area can have unintended consequences in another. Scaling becomes inefficient because you have to deploy new instances of the entire application, even if only a small part of it is under heavy load.
 
-#### 2. Microservices
+### 2. Microservices
+
 The microservice architecture is a direct response to the challenges of the monolith. The core idea is to break down a large application into a suite of small, independently deployable services, each organized around a specific business domain. For example, in an e-commerce system, you might have separate services for `Users`, `Products`, `Orders`, and `Payments`. Each service has its own database and can be developed, deployed, and scaled independently of the others.
 
 This independence is powerful but introduces the complexities of a distributed system. Developers must now deal with network latency, fault tolerance, service discovery, and maintaining data consistency across services, which are non-trivial problems.
 
-### Practice Exercise
+## Practice Exercise
 
 Whiteboard a simple e-commerce system. First, design it as a monolith, showing the main components. Then, redesign it as a set of microservices (e.g., Orders, Products, Users). For the microservices design, explain how the 'Place Order' process would work, including how services would communicate (e.g., REST calls vs. a message bus).
 
-### Answer
+## Answer (Architectural Comparison for E-Commerce)
 
-#### 1. Monolithic E-Commerce Design
+### 1. Monolithic E-Commerce Design
 
-```
+```text
 +----------------------------------------------------+
 |                                                    |
-|             E-Commerce Monolith App                |
+|              E-Commerce Monolith App               |
 |                                                    |
 |  +-----------------+  +--------------------------+ |
 |  |                 |  |                          | |
-|  |   Web UI Layer  |  |    Business Logic Layer  | |
+|  |  Web UI Layer   |  |   Business Logic Layer   | |
 |  |                 |  |                          | |
 |  +-------+---------+  |  +--------------------+  | |
-|          |            |  |   IUserService     |  | |
+|          |            |  |    IUserService    |  | |
 |          |            |  +--------------------+  | |
 |          |            |  |   IProductService  |  | |
 |          |            |  +--------------------+  | |
-|          |            |  |   IOrderService    |  | |
+|          |            |  |    IOrderService   |  | |
 |          |            |  +--------------------+  | |
 |          |            |                          | |
-|          +------------> +-----------+------------+ |
+|          +------------>  +-----------+------------+ |
 |                                      |             |
 |  +-----------------------------------+             |
 |  |                                                 |
@@ -78,50 +92,51 @@ Whiteboard a simple e-commerce system. First, design it as a monolith, showing t
 |                          |                         |
 |  +-----------------------v-------------------------+ |
 |  |                                                 |
-|  |            Single E-Commerce Database           | |
-|  | (Users Table, Products Table, Orders Table)     | |
-|  |                                                 | |
+|  |          Single E-Commerce Database             |
+|  |  (Users Table, Products Table, Orders Table)    |
+|  |                                                 |
 |  +-------------------------------------------------+ |
 +----------------------------------------------------+
 ```
 
--   **Structure**: A single application with distinct layers. All code is deployed together.
--   **Process**: A request to place an order goes to the `OrderService`. The `OrderService` can directly call the `ProductService` (to check inventory) and the `UserService` (to get user details) via simple in-process method calls. All these services operate on a single, shared database within a single transaction, guaranteeing consistency (ACID).
+- **Structure**: A single application with distinct layers. All code is deployed together.
+- **Process**: A request to place an order goes to the `OrderService`. The `OrderService` can directly call the `ProductService` (to check inventory) and the `UserService` (to get user details) via simple in-process method calls. All these services operate on a single, shared database within a single transaction, guaranteeing consistency (ACID).
 
-#### 2. Microservices E-Commerce Design
+### 2. Microservices E-Commerce Design
 
-```
+```text
 +----------------+      +-----------------+      +----------------+
-|  User Service  |      | Product Service |      |  Order Service |
-| (Own DB)       |      | (Own DB)        |      | (Own DB)       |
+|  User Service  |      | Product Service |      | Order Service  |
+|    (Own DB)    |      |    (Own DB)     |      |    (Own DB)    |
 +-------+--------+      +--------+--------+      +--------+-------+
         ^                        ^                        ^
         |                        |                        |
 +-------+------------------------+------------------------+-------+
-|                                                                |
-|                        API Gateway                             |
-|                                                                |
+|                                                                 |
+|                          API Gateway                            |
+|                                                                 |
 +--------------------------------+-------------------------------+
                                  ^
                                  |
 +--------------------------------+-------------------------------+
-|                                                                |
-|                         Message Bus                            |
-|                  (e.g., RabbitMQ, Kafka)                       |
-|                                                                |
+|                                                                 |
+|                          Message Bus                            |
+|                    (e.g., RabbitMQ, Kafka)                      |
+|                                                                 |
 +----------------------------------------------------------------+
 ```
 
--   **Structure**: The application is split into independent services, each with its own database. An API Gateway acts as the single entry point for external clients.
+- **Structure**: The application is split into independent services, each with its own database. An API Gateway acts as the single entry point for external clients.
+- **'Place Order' Process (Asynchronous Communication)**:
+  1. The client sends a `POST` request to the API Gateway's `/orders` endpoint.
+  2. The API Gateway forwards the request to the **Order Service**.
+  3. The **Order Service** creates an order, saves it with a status of `Pending`, and then publishes an `OrderCreated` event to the **Message Bus**.
+  4. The **Product Service** is subscribed to the `OrderCreated` event. When it receives the message, it attempts to reserve the inventory.
+     - If successful, it publishes a `ProductsReserved` event.
+     - If it fails, it publishes a `ProductReservationFailed` event.
+  5. The **Payment Service** (not shown) attempts to process the payment and publishes its result.
+  6. The **Order Service** is subscribed to all relevant events and updates the order status accordingly (Saga Pattern).
 
--   **'Place Order' Process (Asynchronous Communication)**: This is the recommended, resilient approach.
-    1.  The client sends a `POST` request to the API Gateway's `/orders` endpoint.
-    2.  The API Gateway forwards the request to the **Order Service**.
-    3.  The **Order Service** creates an order, saves it to its own database with a status of `Pending`, and then publishes an `OrderCreated` event to the **Message Bus**.
-    4.  The **Product Service** is subscribed to the `OrderCreated` event. When it receives the message, it attempts to reserve the inventory. 
-        -   If successful, it publishes a `ProductsReserved` event.
-        -   If it fails, it publishes a `ProductReservationFailed` event.
-    5.  The **Payment Service** (not shown, but would exist) is also subscribed to `OrderCreated`. It attempts to process the payment and publishes a `PaymentProcessed` or `PaymentFailed` event.
-    6.  The **Order Service** is subscribed to the `ProductsReserved`, `ProductReservationFailed`, `PaymentProcessed`, and `PaymentFailed` events. It updates the status of the order in its database based on the events it receives. This is known as a **Saga Pattern** for managing distributed transactions.
+### Why Asynchronous?
 
--   **Why Asynchronous?**: This approach is highly resilient. If the Product Service is down, orders can still be accepted and placed in a `Pending` state. When the Product Service comes back online, it can process the backlog of `OrderCreated` events from the message bus. This loose coupling prevents a failure in one service from causing a cascading failure throughout the system.
+This approach is highly resilient. If the Product Service is down, orders can still be accepted and placed in a `Pending` state. When the Product Service comes back online, it can process the backlog of `OrderCreated` events from the message bus. This loose coupling prevents a failure in one service from causing a cascading failure throughout the system.

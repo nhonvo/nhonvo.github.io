@@ -1,70 +1,108 @@
 ---
 title: "Executing Raw SQL and Stored Procedures"
-description: "Explain when it's appropriate to drop down to raw SQL or stored procedures with EF Core. Discuss the security implications (SQL injection) and how to prevent them."
-pubDate: "Sep 07 2025"
+description: "Know when to bypass LINQ for high-performance SQL. Learn how to safely execute Raw SQL and Stored Procedures in EF Core while preventing SQL injection."
+pubDate: "9 7 2025"
 published: true
-tags: ["Data Access & Databases", "EF Core", "SQL", "Stored Procedures", "Security"]
+tags:
+  [
+    "EF Core",
+    ".NET",
+    "SQL Server",
+    "PostgreSQL",
+    "Stored Procedures",
+    "Security",
+    "Performance Tuning",
+    "Backend Development",
+  ]
 ---
 
-### Mind Map Summary
+## When to Bypass LINQ?
 
-- **Topic**: Executing Raw SQL and Stored Procedures
-- **When to Use**:
-    - **Performance**: When a query is too complex for LINQ to generate efficient SQL.
-    - **Legacy Databases**: When working with a database that has existing stored procedures.
-    - **Bulk Operations**: For performing bulk updates or deletes.
-- **Security Implications**:
-    - **SQL Injection**: The biggest risk when using raw SQL. Always use parameterized queries to prevent SQL injection attacks.
-- **EF Core Methods**:
-    - **`FromSqlRaw`**: Executes a raw SQL query and maps the results to entities.
-    - **`ExecuteSqlRaw`**: Executes a raw SQL command (e.g., INSERT, UPDATE, DELETE) and returns the number of rows affected.
+While Entity Framework Core's LINQ provider is powerful, there are specific scenarios where dropping down to Raw SQL or Stored Procedures is the correct architectural choice:
 
-### Practice Exercise
+1.  **Complex Performance Tuning**: When LINQ generates inefficient SQL (e.g., massive joins or complex subqueries) that requires a specific index hint or specialized SQL syntax.
+2.  **Existing DB Assets**: When integrating with a legacy database that already contains optimized Stored Procedures.
+3.  **Bulk Operations**: Performing a single SQL statement that updates thousands of rows (`UPDATE Products SET Price = Price * 1.1`) is significantly faster than loading all entities into memory and saving them.
+4.  **Database-Specific Features**: Using syntax that EF Core doesn't support yet (e.g., recursive Common Table Expressions or Full-Text search features).
 
-Write code that safely executes a stored procedure using `FromSqlRaw` to return a list of entities. Ensure that you are passing parameters correctly to prevent SQL injection.
+---
 
-### Answer
+## Technical Implementation & Security
 
-**1. Stored Procedure:**
+The #1 rule of Raw SQL is: **NEVER use string interpolation/concatenation**. This is the most common source of SQL Injection vulnerabilities.
+
+### 1. Querying for Entities (`FromSqlRaw` / `FromSqlInterpolated`)
+
+```csharp
+// Safe: Using Parameterized SQL
+var categoryId = 5;
+var products = await _context.Products
+    .FromSqlRaw("SELECT * FROM Products WHERE CategoryId = {0}", categoryId)
+    .ToListAsync();
+
+// Even Safer: Using String Interpolation (EF Core handles the parameters)
+var productsAlt = await _context.Products
+    .FromSqlInterpolated($"SELECT * FROM Products WHERE CategoryId = {categoryId}")
+    .ToListAsync();
+```
+
+### 2. Executing Commands (`ExecuteSqlRaw`)
+
+Used for `UPDATE`, `DELETE`, or stored procedures that don't return data.
+
+```csharp
+var rowsAffected = await _context.Database.ExecuteSqlRawAsync(
+    "UPDATE Products SET Stock = 0 WHERE IsDiscontinued = {0}", true);
+```
+
+---
+
+## Practice Exercise
+
+Implement a safe call to a stored procedure that takes multiple parameters to return a filtered list of entities.
+
+---
+
+## Answer
+
+### 1. The Stored Procedure (SQL Server)
 
 ```sql
-CREATE PROCEDURE GetProductsByCategory
-    @CategoryId INT
+CREATE PROCEDURE GetActiveProductsByPrice
+    @MinPrice DECIMAL(18,2),
+    @MaxPrice DECIMAL(18,2)
 AS
 BEGIN
-    SELECT * FROM Products WHERE CategoryId = @CategoryId
+    SELECT * FROM Products
+    WHERE Price BETWEEN @MinPrice AND @MaxPrice
+    AND IsActive = 1
 END
 ```
 
-**2. C# Code to Execute the Stored Procedure:**
+### 2. The Repository Implementation
 
 ```csharp
-using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient; // Required for SqlParameter
 
-public class ProductRepository
+public async Task<List<Product>> FindActiveProducts(decimal min, decimal max)
 {
-    private readonly MyDbContext _context;
+    // Define explicit parameters to ensure type safety and security
+    var minParam = new SqlParameter("@MinPrice", min);
+    var maxParam = new SqlParameter("@MaxPrice", max);
 
-    public ProductRepository(MyDbContext context)
-    {
-        _context = context;
-    }
-
-    public List<Product> GetProductsByCategory(int categoryId)
-    {
-        var categoryIdParam = new SqlParameter("@CategoryId", categoryId);
-
-        return _context.Products
-            .FromSqlRaw("EXEC GetProductsByCategory @CategoryId", categoryIdParam)
-            .ToList();
-    }
+    // EXEC [ProcedureName] [Parameters]
+    return await _context.Products
+        .FromSqlRaw("EXEC GetActiveProductsByPrice @MinPrice, @MaxPrice", minParam, maxParam)
+        .ToListAsync();
 }
 ```
 
-**Explanation:**
+### Why This Architecture Works
 
--   We use `FromSqlRaw` to execute the stored procedure.
--   We use a `SqlParameter` to pass the `categoryId` to the stored procedure. This is the key to preventing SQL injection.
--   EF Core will automatically parameterize the query, so you don't have to worry about SQL injection vulnerabilities.
+1.  **Security**: Using `SqlParameter` or the `{0}` placeholder ensures that the database driver treats the input strictly as data, not as executable code. This makes SQL Injection impossible.
+2.  **Performance**: Stored Procedures are pre-compiled in SQL Server, which can offer a slight performance edge for extremely complex execution plans.
+3.  **Clean Code**: You can still use LINQ methods _after_ the `FromSqlRaw` call (e.g., `.OrderBy(p => p.Name).Take(10)`), and EF Core will attempt to compose the final SQL accordingly.
+
+## Summary
+
+Dropping to Raw SQL is not a "failure" to use EF Core—it's a sign of a pragmatic developer. By understanding how to use **parameterized queries**, you can harness the full power of your database engine without compromising the security of your application.

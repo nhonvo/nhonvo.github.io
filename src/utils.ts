@@ -10,10 +10,12 @@ export const getBlogPosts = async (showHidden = false) => {
   return posts;
 };
 
-export const getReadingTime = (content: string) => {
+export const getReadingTime = (content: string | undefined) => {
+  if (!content) return "0 min read";
   const wordsPerMinute = 200;
   const noOfWords = content.split(/\s/g).length;
   const minutes = noOfWords / wordsPerMinute;
   const readTime = Math.ceil(minutes);
   return `${readTime} min read`;
 };
+

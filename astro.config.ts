@@ -8,7 +8,6 @@ import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
 import tailwind from "@astrojs/tailwind";
 import svelte from "@astrojs/svelte";
-import { pagefind } from "vite-plugin-pagefind";
 
 import { BASE, SITE } from "./src/config.ts";
 
@@ -38,7 +37,6 @@ export default defineConfig({
     ssr: {
       noExternal: [BASE + "/pagefind/pagefind.js"],
     },
-    // plugins: [pagefind()],
     plugins: [],
     build: {
       rollupOptions: {
@@ -59,18 +57,14 @@ export default defineConfig({
 
   markdown: {
     shikiConfig: {
-      // Choose from Shiki's built-in themes (or add your own)
-      // https://shiki.style/themes
-      // Alternatively, provide multiple themes
-      // See note below for using dual light/dark themes
       themes: {
         light: "github-light",
         dark: "github-dark",
       },
       defaultColor: false,
       transformers: [
-        transformerMetaHighlight(),
-        transformerNotationHighlight(),
+        transformerMetaHighlight() as any,
+        transformerNotationHighlight() as any,
       ],
       wrap: true,
     },

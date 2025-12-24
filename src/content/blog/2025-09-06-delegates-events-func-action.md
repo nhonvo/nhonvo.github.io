@@ -1,4 +1,3 @@
-````
 ---
 title: "Delegates, Events, Func<T>, Action<T>"
 description: "Understand common use cases like event-driven architecture and callbacks."

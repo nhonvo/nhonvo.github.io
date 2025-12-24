@@ -1,0 +1,31 @@
+---
+import { getBlogPosts } from "src/utils";
+import SearchFilter from "$components/search/SearchFilter.astro";
+import BaseLayout from "$layouts/BaseLayout.astro";
+import Header from "$components/Header.astro";
+import Footer from "$components/Footer.astro";
+import { SITE_TITLE } from "../../config.ts";
+
+const posts = await getBlogPosts();
+const title = `All Articles - ${SITE_TITLE}`;
+const description = "Browse, search, and filter all technical articles and notes.";
+---
+
+<BaseLayout title={title} description={description}>
+  <Header active="blog" />
+  
+  <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <header class="mb-12 text-center sm:text-left">
+      <h1 class="text-4xl font-extrabold text-base-900 dark:text-base-50 tracking-tight sm:text-5xl">
+        The Archive
+      </h1>
+      <p class="mt-4 text-lg text-base-500 dark:text-base-400 max-w-2xl">
+        All structured notes, deep dives, and technical guides in one place. Use the filters below to find exactly what you're looking for.
+      </p>
+    </header>
+
+    <SearchFilter posts={posts} />
+  </main>
+  
+  <Footer />
+</BaseLayout>

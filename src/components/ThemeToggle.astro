@@ -62,45 +62,29 @@ const { class: className, ...props } = Astro.props;
 </noscript>
 
 <script>
-  (() => {
-    let darkMode = false;
+  function initTheme() {
+    const themeToggleButton = document.querySelector('[data-theme-toggle]');
+    
+    themeToggleButton?.addEventListener('click', () => {
+      const isDark = document.documentElement.classList.contains('dark');
+      const newTheme = isDark ? 'light' : 'dark';
+      
+      const apply = () => {
+        document.documentElement.classList.toggle('dark', newTheme === 'dark');
+        localStorage.setItem('darkMode', (newTheme === 'dark').toString());
+      };
 
-    function setTheme(dark: boolean) {
-      const root = document.documentElement;
-      if (dark) {
-        root.classList.add("dark");
-      } else {
-        root.classList.remove("dark");
+      if (!document.startViewTransition) {
+        apply();
+        return;
       }
-    }
 
-    function toggleTheme() {
-      darkMode = !darkMode;
-      localStorage.setItem("darkMode", JSON.stringify(darkMode));
-      setTheme(darkMode);
-    }
+      document.startViewTransition(apply);
+    });
+  }
 
-    // Initialize theme on page load
-    const savedDarkMode = localStorage.getItem("darkMode");
-    if (savedDarkMode !== null) {
-      darkMode = JSON.parse(savedDarkMode);
-    } else {
-      darkMode = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    }
-    setTheme(darkMode);
-
-    // Listen to system theme changes
-    window
-      .matchMedia("(prefers-color-scheme: dark)")
-      .addEventListener("change", (e) => e.matches && toggleTheme());
-
-    window
-      .matchMedia("(prefers-color-scheme: light)")
-      .addEventListener("change", (e) => e.matches && toggleTheme());
-
-    // Add click event to toggle button
-    document
-      .querySelector("button[data-theme-toggle]")
-      ?.addEventListener("click", toggleTheme);
-  })();
+  document.addEventListener('astro:page-load', initTheme);
+  initTheme();
 </script>
+
+

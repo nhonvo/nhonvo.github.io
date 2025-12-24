@@ -4,44 +4,69 @@ import FormattedDate from "./FormattedDate.astro";
 import Tag from "./Tag.astro";
 import HeroImage from "./HeroImage.astro";
 
-const { title, description, pubDate, slug, heroImage, tags, noImage } =
+const { title, description, pubDate, slug, heroImage, tags, noImage, index = 0 } =
   Astro.props;
+
 ---
 
-<article class="relative isolate flex flex-col gap-8 md:flex-row group">
-  {
-    noImage || !SHOW_IMAGES || !heroImage ? null : (
-      <div class="relative aspect-[16/9] md:w-64 md:shrink-0">
-        <HeroImage image={heroImage} />
-      </div>
-    )
-  }
-  <div>
-    <div class={"flex items-center gap-x-4 text-xs"}>
-      <time datetime={pubDate} class="text-base-500 shrink-0">
-        <FormattedDate date={pubDate} />
-      </time>
-      <div class="flex gap-2 flex-wrap">
-        {tags?.map((tag: string) => <Tag {tag} />)}
-      </div>
-    </div>
-    <div class="max-w-xl">
-      <div
-        class="mt-3 text-lg font-semibold leading-6 text-base-900 dark:text-base-50"
-      >
-        <a href={BASE + `/posts/${slug}/`}>
-          <span class="absolute inset-0"></span>
-          {title}
-        </a>
-
-        <div
-          class="absolute -inset-2 md:-inset-4 rounded-2xl opacity-0 group-hover:opacity-100 scale-95 group-hover:scale-100 bg-base-200/50 dark:bg-base-800/50 -z-10 transition-all duration-150"
-        >
+<article class="relative block group opacity-0 translate-y-4 animate-fade-in-up" style={{ animationDelay: `${index * 100}ms` }}>
+  <a href={BASE + `/posts/${slug}/`} class="relative flex flex-col md:flex-row gap-8 p-4 sm:p-6 rounded-2xl transition-all duration-300 hover:bg-white dark:hover:bg-base-900 shadow-none hover:shadow-xl hover:shadow-accent-500/5 border border-transparent hover:border-base-200 dark:hover:border-base-800">
+    {
+      noImage || !SHOW_IMAGES || !heroImage ? null : (
+        <div class="relative aspect-[16/9] md:w-72 md:shrink-0 overflow-hidden rounded-xl shadow-sm border border-base-200 dark:border-base-800">
+          <div class="absolute inset-0 z-10 bg-gradient-to-t from-base-950/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+          <HeroImage image={heroImage} />
+        </div>
+      )
+    }
+    <div class="flex flex-col flex-1">
+      <div class="flex items-center gap-x-4 text-xs font-medium uppercase tracking-wider text-base-400 dark:text-base-500 mb-3">
+        <time datetime={pubDate} class="flex items-center gap-1.5 whitespace-nowrap">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+          <FormattedDate date={pubDate} />
+        </time>
+        <div class="h-1 w-1 rounded-full bg-base-300 dark:bg-base-700"></div>
+        <div class="flex gap-2 flex-wrap">
+          {tags?.slice(0, 3).map((tag: string) => (
+            <span class="text-accent-600 dark:text-accent-400">#{tag}</span>
+          )) || <span class="text-accent-600 dark:text-accent-400">#Technology</span>}
         </div>
       </div>
-      <p class="mt-5 text-sm leading-6 text-base-600 dark:text-base-400">
-        {description}
-      </p>
+      
+      <div class="flex-1">
+        <h3 class="text-xl sm:text-2xl font-bold leading-tight text-base-900 dark:text-base-50 group-hover:text-accent-600 dark:group-hover:text-accent-400 transition-colors duration-300 mb-3">
+          {title}
+        </h3>
+        <p class="text-sm sm:text-base leading-relaxed text-base-600 dark:text-base-400 line-clamp-3">
+          {description}
+        </p>
+      </div>
+
+      <div class="mt-6 flex items-center text-sm font-bold text-accent-600 dark:text-accent-400 opacity-0 group-hover:opacity-100 translate-x-[-10px] group-hover:translate-x-0 transition-all duration-300">
+        Read Article
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+        </svg>
+      </div>
     </div>
-  </div>
+  </a>
 </article>
+
+<style>
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  .animate-fade-in-up {
+    animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+</style>
+

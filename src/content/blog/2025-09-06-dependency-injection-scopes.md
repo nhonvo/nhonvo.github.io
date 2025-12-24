@@ -1,4 +1,3 @@
-````
 ---
 title: "Dependency Injection (Scopes: Singleton, Scoped, Transient)"
 description: "Explain the differences and when to use each scope in an ASP.NET Core application."

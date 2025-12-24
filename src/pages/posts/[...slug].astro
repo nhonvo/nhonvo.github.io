@@ -6,9 +6,11 @@ import Header from "$components/Header.astro";
 import Footer from "$components/Footer.astro";
 import { Image } from "astro:assets";
 import FormattedDate from "$components/FormattedDate.astro";
-import { getBlogPosts } from "src/utils";
+import { getBlogPosts, getReadingTime } from "src/utils";
 import BlueskyLikes from "$components/bluesky/BlueskyLikes.astro";
 import Tag from "$components/Tag.astro";
+import ReadingProgressBar from "$components/ReadingProgressBar.astro";
+
 import { SHOW_IMAGES } from "../../config.ts";
 
 export async function getStaticPaths() {
@@ -22,6 +24,8 @@ type Props = CollectionEntry<"blog">;
 
 const post = Astro.props;
 const { Content } = await render(post);
+const posts = await getBlogPosts(true);
+
 
 const images = import.meta.glob<{ default: ImageMetadata }>(
   "/src/assets/**/*.{jpeg,jpg,png,gif}"
@@ -36,6 +40,7 @@ if (replacedHero && !images[replacedHero])
 <BaseLayout {...post.data} image={post.id + ".png"}>
   <Header active="blog" />
 
+  <ReadingProgressBar />
   <main class="max-w-2xl lg:max-w-3xl mx-auto my-0 h-full p-4">
     {
       replacedHero && post.data.hideHero !== true && SHOW_IMAGES ? (
@@ -48,15 +53,25 @@ if (replacedHero && !images[replacedHero])
     }
     <BlogPost>
       <div
-        class="flex mt-8 gap-4 text-xs flex-col md:flex-row items-start md:items-center"
+        class="flex mt-8 gap-4 text-xs flex-col md:flex-row items-start md:items-center text-base-500"
       >
-        <div class="shrink-0">
+        <div class="flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
           <FormattedDate date={post.data.pubDate} />
+        </div>
+        <div class="flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <span>{getReadingTime(post.body)}</span>
         </div>
         <div class="flex gap-2 flex-wrap">
           {post.data.tags?.map((tag: string) => <Tag {tag} />)}
         </div>
       </div>
+
 
       <h1 class="mt-4">{post.data.title}</h1>
       <Content class="text-lg leading-relaxed whitespace-nowrap" />
@@ -65,7 +80,41 @@ if (replacedHero && !images[replacedHero])
         disableLikes={post.data.disableLikes}
         disableComments={post.data.disableComments}
       />
+
+      <hr class="my-10 border-base-200 dark:border-base-800" />
+
+      <!-- Related Posts -->
+      <section class="related-posts mt-10">
+        <h2 class="text-2xl font-bold mb-6 text-base-900 dark:text-base-50">Continue Reading</h2>
+        <div class="grid gap-6 sm:grid-cols-2">
+          {(() => {
+            const allPosts = posts.filter(p => p.id !== post.id);
+            const related = allPosts
+              .filter(p => p.data.tags?.some(tag => post.data.tags?.includes(tag)))
+              .slice(0, 2);
+            
+            // Fallback if no tag matches
+            const finalRelated = related.length > 0 ? related : allPosts.slice(0, 2);
+
+            return finalRelated.map((rp) => (
+              <a href={`/posts/${rp.id}/`} class="group block p-5 rounded-2xl border border-base-200 dark:border-base-800 hover:border-accent-500/50 hover:bg-white dark:hover:bg-base-900 shadow-none hover:shadow-xl hover:shadow-accent-500/5 transition-all duration-300">
+                <time class="text-[10px] font-bold uppercase tracking-widest text-base-400 dark:text-base-500 mb-2 block">
+                  {new Date(rp.data.pubDate).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })}
+                </time>
+                <h3 class="font-bold text-base-900 dark:text-base-100 group-hover:text-accent-600 dark:group-hover:text-accent-400 transition-colors line-clamp-2 mb-2">
+                  {rp.data.title}
+                </h3>
+                <p class="text-xs text-base-500 dark:text-base-400 line-clamp-2 leading-relaxed">
+                  {rp.data.description}
+                </p>
+              </a>
+            ));
+
+          })()}
+        </div>
+      </section>
     </BlogPost>
+
   </main>
   <Footer />
 </BaseLayout>

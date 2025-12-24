@@ -1,41 +1,94 @@
 ---
 import BaseHead from "../components/BaseHead.astro";
+import { ClientRouter } from "astro:transitions";
+import BackToTop from "../components/BackToTop.astro";
 const { title, description, image } = Astro.props;
+
 ---
 
+
 <!doctype html>
-<html lang="en" class="h-full antialiased">
+<html lang="en" class="antialiased scroll-smooth">
   <head>
     <BaseHead title={title} description={description} image={image} />
+    <ClientRouter />
+
 
     <script is:inline>
-      let dark = false;
-      if (localStorage.getItem("darkMode")) {
-        dark = JSON.parse(localStorage.getItem("darkMode") ?? "false");
-      } else {
-        dark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-      }
+      const getTheme = () => {
+        if (typeof localStorage !== 'undefined' && localStorage.getItem('darkMode')) {
+          return JSON.parse(localStorage.getItem('darkMode')) ? 'dark' : 'light';
+        }
+        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      };
+    
+      const setTheme = (theme) => {
+        const root = document.documentElement;
+        // Prevent transition flares
+        root.classList.add('no-transitions');
+        
+        if (theme === 'dark') {
+          root.classList.add('dark');
+        } else {
+          root.classList.remove('dark');
+        }
 
-      var root = document.getElementsByTagName("html")[0];
-      if (dark) {
-        root.classList.add("dark");
-      } else {
-        root.classList.remove("dark");
-      }
+        // Force reflow
+        window.getComputedStyle(root).opacity;
+        root.classList.remove('no-transitions');
+      };
+
+      // Initial set
+      setTheme(getTheme());
+
+      // Re-apply after Astro view transition
+      document.addEventListener('astro:after-swap', () => setTheme(getTheme()));
     </script>
 
+
+
+
     <style is:global>
+      :root {
+        --transition-speed: 0.3s;
+      }
+
+      html.no-transitions *,
+      html.no-transitions *:before,
+      html.no-transitions *:after {
+        transition: none !important;
+      }
+
+      html {
+
+        transition: background-color var(--transition-speed) ease;
+      }
+
+      body {
+        transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
+      }
+
       html.dark .astro-code,
       html.dark .astro-code span {
         color: var(--shiki-dark);
       }
+
 
       html:not(dark) .astro-code,
       html:not(dark) .astro-code span {
         color: var(--shiki-light);
       }
 
+      @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
+      .animate-fade-in {
+        animation: fadeIn 0.8s ease-out forwards;
+      }
+
       pre {
+
         @apply overflow-hidden !important;
         @apply border border-base-300 dark:border-base-700 bg-base-200/50 dark:bg-base-950/30 rounded-xl !important;
       }
@@ -77,6 +130,9 @@ const { title, description, image } = Astro.props;
         <slot />
       </div>
     </div>
+
+    <BackToTop />
+
 
     <div class="fixed inset-0 h-full w-full -z-50">
       <div

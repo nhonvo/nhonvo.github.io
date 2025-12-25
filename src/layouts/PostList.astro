@@ -9,6 +9,8 @@ import BlogEntry from "$components/BlogEntry.astro";
 import Pagination from "$components/Pagination.astro";
 import ProseWrapper from "./ProseWrapper.astro";
 import BigBlogEntry from "$components/BigBlogEntry.astro";
+import { getReadingTime } from "src/utils";
+
 
 type Props = {
   posts: Array<any>;
@@ -30,19 +32,20 @@ const { posts, totalPages, currentPage, tag, showFeatured } = Astro.props;
 
     {
       showFeatured ? (
-        <BigBlogEntry {...posts[0].data} slug={posts[0].id} />
+        <BigBlogEntry {...posts[0].data} slug={posts[0].id} readingTime={getReadingTime(posts[0].body)} />
       ) : null
     }
     <div class="my-14 space-y-16 max-w-3xl">
       {
         posts.map((post: any, index: number) =>
           index > 0 || !showFeatured ? (
-            <BlogEntry {...post.data} slug={post.id} index={index} />
+            <BlogEntry {...post.data} slug={post.id} index={index} readingTime={getReadingTime(post.body)} />
           ) : null
         )
       }
 
     </div>
+
 
     {
       totalPages > 1 ? (

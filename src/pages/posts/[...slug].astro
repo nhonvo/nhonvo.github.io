@@ -10,6 +10,9 @@ import { getBlogPosts, getReadingTime } from "src/utils";
 import BlueskyLikes from "$components/bluesky/BlueskyLikes.astro";
 import Tag from "$components/Tag.astro";
 import ReadingProgressBar from "$components/ReadingProgressBar.astro";
+import TableOfContents from "$components/TableOfContents.astro";
+import ShareButtons from "$components/ShareButtons.astro";
+import CopyCodeButton from "$components/CopyCodeButton.astro";
 
 import { SHOW_IMAGES } from "../../config.ts";
 
@@ -23,7 +26,7 @@ export async function getStaticPaths() {
 type Props = CollectionEntry<"blog">;
 
 const post = Astro.props;
-const { Content } = await render(post);
+const { Content, headings } = await render(post);
 const posts = await getBlogPosts(true);
 
 
@@ -74,7 +77,14 @@ if (replacedHero && !images[replacedHero])
 
 
       <h1 class="mt-4">{post.data.title}</h1>
+      
+      <TableOfContents {headings} />
+      
       <Content class="text-lg leading-relaxed whitespace-nowrap" />
+
+      <ShareButtons title={post.data.title} description={post.data.description} />
+      
+      <CopyCodeButton />
 
       <BlueskyLikes
         disableLikes={post.data.disableLikes}

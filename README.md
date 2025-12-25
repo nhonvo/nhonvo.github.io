@@ -9,19 +9,19 @@ See a [live demo here](https://nhonvo.github.io/) (also doubles as a tutorial on
 Features:
 
 - ✅ 100/100 Lighthouse performance
-- ✅ SEO-friendly with canonical URLs and OpenGraph data (automatically generated)
-- ✅ Sitemap support
-- ✅ RSS Feed support
-- ✅ Markdown support
-- ✅ Pagination
-- ✅ Syntax highlighting (+ copy button)
-- ✅ Dark and light mode with toggle button or auto-detect
-- ✅ Search included
-- ✅ Tags for posts
+- ✅ **New**: Table of Contents with active section highlighting
+- ✅ **New**: Premium UX with staggered animations & View Transitions
+- ✅ **New**: Comprehensive Dark Mode with immediate persistence
+- ✅ **New**: Advanced Archive filtering and sorting
+- ✅ **New**: One-click Copy Code buttons for all code blocks
+- ✅ **New**: Integrated Social Sharing components
+- ✅ **New**: Reading time estimates on all post listings
+- ✅ **New**: Premium custom 404 error page
+- ✅ SEO-friendly with canonical URLs and OpenGraph data
+
+- ✅ RSS Feed, Sitemap, and Markdown/MDX support
+- ✅ Comments and likes via Bluesky
 - ✅ Super easy to deploy as a static site
-- ✅ Includes some prebuilt components for you to use
-- ✅ Easy to edit by editing the markdown directly
-- ✅ Comments and likes via bluesky
 
 ## tutorials
 
@@ -35,9 +35,9 @@ the demo blog doubles as a tutorial on how to use this template:
 
 ## quick start with github pages in 5 minutes
 
-1. Fork [the repository of this blog](https://github.com/nhonvo/algo-blog) 
+1. Fork [the repository of this blog](https://github.com/nhonvo/algo-blog)
 
-- Either name your fork `<github-username>.github.io` if you want your blog to live at `<github-username>.github.io` 
+- Either name your fork `<github-username>.github.io` if you want your blog to live at `<github-username>.github.io`
 
 - Or choose any other repo name and it will live at `<github-username>.github.io/<repo-name>`
 
@@ -48,8 +48,8 @@ the demo blog doubles as a tutorial on how to use this template:
 - `SITE`: set to `https://<github-username>.github.io`
 - `BASE`: if repo name is `<github-username>.github.io` set to `/`, otherwise set to `/<repo-name>`
 
-4. Once you push your changes to main your blog should be live in about 1-2 minutes at 
-`<github-username>.github.io` or `<github-username>.github.io/<repo-name>`
+4. Once you push your changes to main your blog should be live in about 1-2 minutes at
+   `<github-username>.github.io` or `<github-username>.github.io/<repo-name>`
 
 5. Set up more info in `src/config.ts` (see [all options here](https://nhonvo.github.io/posts/configuring-the-blog))
 
@@ -57,20 +57,20 @@ the demo blog doubles as a tutorial on how to use this template:
 - `SITE_DESCRIPTION` is the description of your blog, and will be shown e.g. in search results
 - `SITE_FAVICON` is the emoji that will be shown as favicon of your blog (will be shown in the header and as favicon)
 - `NAME` is the name of the author of the blog, will be shown in the footer as `(c) <YEAR> <NAME> - LICENSE`
-- `BLUESKY_IDENTIFIER` is your bluesky handle (without the `@`), this is needed for likes and comments to work 
-(see [comments via bluesky](https://nhonvo.github.io/posts/comments-via-bluesky))
-- `SOCIAL_LINKS` set your social media links here, e.g. `{ BLUESKY_URL: "https://bsky.app/profile/nhonvo.dev" }` 
-will be shown in the footer of the blog
+- `BLUESKY_IDENTIFIER` is your bluesky handle (without the `@`), this is needed for likes and comments to work
+  (see [comments via bluesky](https://nhonvo.github.io/posts/comments-via-bluesky))
+- `SOCIAL_LINKS` set your social media links here, e.g. `{ BLUESKY_URL: "https://bsky.app/profile/nhonvo.dev" }`
+  will be shown in the footer of the blog
 
 6. Edit `about.mdx` in `src/content/info/` to add your own about page.
 
-7. Remove all files from `src/content/blog/` and add your own blog posts there. Time to write your first blog post! 
-(see [adding content](https://nhonvo.github.io/posts/adding-content) for more info)
+7. Remove all files from `src/content/blog/` and add your own blog posts there. Time to write your first blog post!
+   (see [adding content](https://nhonvo.github.io/posts/adding-content) for more info)
 
-8. Anytime you push to the main branch, your blog will automatically be updated (should usually take less than 2 minutes). 
-You can also go to the github actions tab to check the progress/status.
+8. Anytime you push to the main branch, your blog will automatically be updated (should usually take less than 2 minutes).
+   You can also go to the github actions tab to check the progress/status.
 
-If you run into any issues, feel free to [open an issue](https://github.com/nhonvo/algo-blog/issues) or 
+If you run into any issues, feel free to [open an issue](https://github.com/nhonvo/algo-blog/issues) or
 [contact me on bluesky](https://bsky.app/profile/nhonvo.dev)
 
 ## Notes

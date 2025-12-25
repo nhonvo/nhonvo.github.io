@@ -1,6 +1,7 @@
 ---
 import FormattedDate from "../FormattedDate.astro";
 import { BASE } from "../../config.ts";
+import { getReadingTime } from "../../utils";
 
 interface Props {
   posts: any[];
@@ -12,192 +13,242 @@ const { posts } = Astro.props;
 const allTags = [...new Set(posts.flatMap((post) => post.data.tags || []))].sort();
 ---
 
-<div class="search-container space-y-8" id="search-filter-root">
-  <!-- Controls -->
-  <div class="sticky top-4 z-20 bg-base-100/90 dark:bg-base-950/90 backdrop-blur-md p-4 sm:p-6 rounded-2xl border border-base-200 dark:border-base-800 shadow-xl overflow-hidden">
-    <div class="flex flex-col gap-6">
-      <div class="flex flex-col md:flex-row gap-4">
+
+
+<div class="search-container space-y-8 sm:space-y-12" id="search-filter-root">
+  <!-- Top Section: Search & Tags -->
+  <div class="relative z-30">
+    <div class="bg-white/95 dark:bg-base-900/95 backdrop-blur-xl p-5 sm:p-8 rounded-3xl sm:rounded-[2.5rem] border border-base-200 dark:border-base-800 shadow-2xl shadow-base-900/5 dark:shadow-none ring-1 ring-base-900/5 dark:ring-white/5">
+      <div class="space-y-6 sm:space-y-8">
         <!-- Search Input -->
-        <div class="relative flex-1">
-          <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-base-400">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        <div class="relative group">
+          <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-base-400 dark:text-base-500 group-focus-within:text-accent-500 transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
           </div>
           <input
             type="text"
             id="search-input"
-            placeholder="Search topics, titles, or descriptions..."
-            class="w-full pl-11 pr-4 py-2.5 bg-base-50 dark:bg-base-900 border border-base-200 dark:border-base-700 rounded-xl focus:ring-2 focus:ring-accent-500 focus:border-accent-500 outline-none transition-all text-base-900 dark:text-base-100 placeholder:text-base-400 dark:placeholder:text-base-600"
+            placeholder="Search titles, descriptions, or tags..."
+            class="w-full pl-11 sm:pl-12 pr-6 py-3.5 sm:py-4 bg-base-50 dark:bg-base-950/50 border border-base-200 dark:border-base-800 rounded-xl sm:rounded-2xl focus:ring-4 focus:ring-accent-500/10 focus:border-accent-500 outline-none transition-all text-base sm:text-lg font-medium text-base-900 dark:text-base-100 placeholder:text-base-400 dark:placeholder:text-base-600"
           />
         </div>
 
-        <!-- Sort Select -->
-        <div class="relative min-w-[160px]">
-          <select 
-            id="sort-select"
-            class="w-full pl-4 pr-10 py-2.5 bg-base-50 dark:bg-base-900 border border-base-200 dark:border-base-700 rounded-xl focus:ring-2 focus:ring-accent-500 outline-none transition-all text-base-900 dark:text-base-100 appearance-none cursor-pointer"
-          >
-            <option value="newest">Newest First</option>
-            <option value="oldest">Oldest First</option>
-            <option value="az">A to Z</option>
-            <option value="za">Z to A</option>
-          </select>
-          <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-base-400">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-            </svg>
-          </div>
-        </div>
-      </div>
-
-      <!-- Tag Filter -->
-      <div class="space-y-3">
-        <span class="text-[10px] font-bold uppercase tracking-widest text-base-400 dark:text-base-500 px-1">Filter by Tag</span>
-        <div class="flex flex-wrap gap-2 text-sm">
-          <button
-            class="tag-pill active px-4 py-1.5 rounded-full border border-base-200 dark:border-base-800 hover:border-accent-500 transition-all font-medium"
-            data-tag="all"
-          >
-            All Topics
-          </button>
-          {allTags.map((tag) => (
-            <button
-              class="tag-pill px-4 py-1.5 rounded-full border border-base-200 dark:border-base-800 hover:border-accent-500 transition-all font-medium"
-              data-tag={tag}
-            >
-              #{tag}
+        <!-- Tag Filter -->
+        <div class="space-y-4">
+          <div class="flex items-center justify-between px-1">
+            <span class="text-[10px] sm:text-[11px] font-black uppercase tracking-[0.2em] text-base-400 dark:text-base-500">Filter by Topics</span>
+            <button id="clear-tags" class="text-[10px] sm:text-[11px] font-black uppercase tracking-[0.1em] text-accent-600 dark:text-accent-400 hover:text-accent-500 transition-colors opacity-0 pointer-events-none data-[visible=true]:opacity-100 data-[visible=true]:pointer-events-auto">
+              Clear Filters
             </button>
-          ))}
-        </div>
-      </div>
-      
-      <div class="pt-2 border-t border-base-100 dark:border-base-900 text-xs font-medium text-base-500 flex justify-between px-1">
-        <span id="results-count">Showing all {posts.length} articles</span>
-        <span id="active-filters-info" class="hidden text-accent-600 dark:text-accent-400">Filters applied</span>
-      </div>
-    </div>
-  </div>
-
-
-  <!-- Post Grid -->
-  <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-2" id="posts-grid">
-    {posts.map((post, index) => (
-      <article 
-        class="post-card group relative bg-base-100 dark:bg-base-900 rounded-2xl border border-base-200 dark:border-base-800 p-6 hover:shadow-xl hover:border-accent-500/50 transition-all duration-300 overflow-hidden opacity-0 translate-y-4 animate-fade-in-up"
-        style={{ animationDelay: `${index * 50}ms` }}
-        data-title={post.data.title.toLowerCase()}
-        data-raw-title={post.data.title}
-        data-description={post.data.description.toLowerCase()}
-        data-tags={JSON.stringify(post.data.tags || [])}
-        data-date={post.data.pubDate.getTime()}
-      >
-        <div class="relative z-10 flex flex-col h-full">
-          <div class="flex items-center gap-x-4 text-[10px] uppercase tracking-widest font-bold text-base-400 dark:text-base-500 mb-4">
-            <time datetime={post.data.pubDate.toISOString()}>
-
-              <FormattedDate date={post.data.pubDate} />
-            </time>
           </div>
-          <div class="mb-3">
-            <h3 class="text-xl font-bold leading-tight text-base-900 dark:text-base-100 group-hover:text-accent-600 dark:group-hover:text-accent-400 transition-colors">
-              <a href={BASE + `/posts/${post.id}/`}>
-                <span class="absolute inset-0"></span>
-                {post.data.title}
-              </a>
-            </h3>
-          </div>
-          <p class="text-sm leading-relaxed text-base-600 dark:text-base-400 line-clamp-3 mb-4 flex-1">
-            {post.data.description}
-          </p>
-          <div class="mt-auto flex flex-wrap gap-2">
-            {post.data.tags?.slice(0, 3).map((tag: string) => (
-               <span class="text-[10px] font-bold text-accent-600/80 dark:text-accent-400/80">#{tag}</span>
+          <div class="flex flex-wrap gap-2 sm:gap-2.5 max-h-[25vh] overflow-y-auto scrollbar-thin py-1 pr-2">
+            {allTags.map((tag) => (
+              <button
+                class="tag-pill px-4 sm:px-5 py-2 rounded-lg sm:rounded-xl border border-base-200 dark:border-base-800 bg-white dark:bg-base-900 text-[13px] sm:text-sm font-semibold text-base-600 dark:text-base-400 hover:border-accent-500/50 hover:text-accent-600 dark:hover:text-accent-400 transition-all duration-300 whitespace-nowrap"
+                data-tag={tag}
+              >
+                #{tag}
+              </button>
             ))}
           </div>
         </div>
-        <!-- Decorative background -->
-        <div class="absolute top-0 right-0 -mr-16 -mt-16 w-32 h-32 bg-accent-500/5 rounded-full blur-3xl group-hover:bg-accent-500/10 transition-colors"></div>
-      </article>
-    ))}
+      </div>
+    </div>
   </div>
 
-  <!-- Empty State -->
-  <div id="empty-state" class="hidden text-center py-20">
-    <div class="mb-4 text-base-300 dark:text-base-700">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.172 9.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-      </svg>
+
+  <!-- Bottom Section: Sort & Results -->
+  <div class="space-y-8">
+    <div class="flex flex-col sm:flex-row items-center justify-between gap-4 px-2">
+      <div id="results-count" class="text-sm font-bold text-base-500 dark:text-base-400 flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-accent-500 animate-pulse"></span>
+        Showing all {posts.length} articles
+      </div>
+      
+      <!-- Sort Select -->
+      <div class="relative min-w-[180px] w-full sm:w-auto">
+        <select 
+          id="sort-select"
+          class="w-full pl-4 pr-10 py-2.5 bg-white dark:bg-base-900 border border-base-200 dark:border-base-800 rounded-xl focus:ring-2 focus:ring-accent-500 outline-none transition-all text-sm font-bold text-base-700 dark:text-base-200 appearance-none cursor-pointer"
+        >
+          <option value="newest">Latest First</option>
+          <option value="oldest">Oldest First</option>
+          <option value="az">Alphabetical A-Z</option>
+          <option value="za">Alphabetical Z-A</option>
+        </select>
+        <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-base-400">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7" />
+          </svg>
+        </div>
+      </div>
     </div>
-    <h3 class="text-xl font-medium text-base-900 dark:text-base-100">No matches found</h3>
-    <p class="mt-2 text-base-500">Try adjusting your search or filters</p>
-    <button id="clear-all" class="mt-6 text-accent-600 font-medium hover:underline">Clear all filters</button>
+
+    <!-- Post Grid -->
+    <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-2" id="posts-grid">
+      {posts.map((post, index) => (
+        <article 
+          class="post-card group relative bg-white dark:bg-base-900/40 rounded-3xl border border-base-100 dark:border-base-800 p-8 hover:shadow-2xl hover:shadow-accent-500/10 hover:border-accent-500/50 transition-all duration-500 overflow-hidden opacity-0 translate-y-4 animate-fade-in-up"
+          style={{ animationDelay: `${index * 50}ms` }}
+          data-title={post.data.title.toLowerCase()}
+          data-raw-title={post.data.title}
+          data-description={post.data.description.toLowerCase()}
+          data-tags={JSON.stringify(post.data.tags || [])}
+          data-date={post.data.pubDate.getTime()}
+        >
+          <div class="relative z-10 flex flex-col h-full">
+            <div class="flex items-center gap-x-4 text-[10px] sm:text-[11px] uppercase tracking-[0.15em] font-black text-base-400 dark:text-base-500 mb-6">
+              <time datetime={post.data.pubDate.toISOString()} class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                <FormattedDate date={post.data.pubDate} />
+              </time>
+              <span class="w-1.5 h-1.5 rounded-full bg-base-200 dark:bg-base-800"></span>
+              <span class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                {getReadingTime(post.body)}
+              </span>
+            </div>
+            
+            <div class="mb-4">
+              <h3 class="text-2xl font-black leading-tight text-base-950 dark:text-base-50 group-hover:text-accent-600 dark:group-hover:text-accent-400 transition-colors duration-300">
+                <a href={BASE + `/posts/${post.id}/`}>
+                  <span class="absolute inset-0"></span>
+                  {post.data.title}
+                </a>
+              </h3>
+            </div>
+            
+            <p class="text-base leading-relaxed text-base-600 dark:text-base-400 line-clamp-3 mb-8 flex-1">
+              {post.data.description}
+            </p>
+            
+            <div class="mt-auto pt-6 border-t border-base-100 dark:border-base-800/50 flex flex-wrap gap-3">
+              {post.data.tags?.map((tag: string) => (
+                 <span class="text-[11px] font-black uppercase tracking-widest text-accent-600/70 dark:text-accent-400/60 transition-colors group-hover:text-accent-600">#{tag}</span>
+              ))}
+            </div>
+          </div>
+          
+          <!-- Premium Background Effect -->
+          <div class="absolute -bottom-12 -right-12 w-48 h-48 bg-accent-500/5 dark:bg-accent-500/10 rounded-full blur-[80px] group-hover:bg-accent-500/20 transition-all duration-700"></div>
+        </article>
+      ))}
+    </div>
+
+    <!-- Empty State -->
+    <div id="empty-state" class="hidden text-center py-32 animate-fade-in">
+      <div class="mb-8 inline-flex p-6 rounded-full bg-base-50 dark:bg-base-900 border border-base-100 dark:border-base-800 text-base-300 dark:text-base-700">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.172 9.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      </div>
+      <h3 class="text-3xl font-black text-base-900 dark:text-base-100 italic">"No insights found..."</h3>
+      <p class="mt-4 text-lg text-base-500 max-w-sm mx-auto">Try a different keyword or expand your topic selection.</p>
+      <button id="clear-all-btn" class="mt-10 px-8 py-3 bg-accent-600 text-white font-black rounded-2xl shadow-xl shadow-accent-600/20 hover:bg-accent-500 transition-all active:scale-95">Reset Exploration</button>
+    </div>
   </div>
 </div>
 
 <style>
   @keyframes fadeInUp {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
   }
   .animate-fade-in-up {
-    animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   }
   .tag-pill.active {
-    @apply bg-accent-600 text-white border-accent-600 shadow-lg scale-105;
+    @apply bg-accent-600 text-white border-accent-600 shadow-xl shadow-accent-600/20 scale-105;
   }
-  
   .post-card.hidden {
     display: none;
   }
-
-  /* Reading enhancements for mobile */
-  @media (max-width: 640px) {
-    .search-container {
-      @apply gap-4;
-    }
-    .post-card {
-      @apply p-5;
-    }
-  }
 </style>
-
 
 <script>
   function initFilters() {
     const searchInput = document.getElementById('search-input') as HTMLInputElement;
     const sortSelect = document.getElementById('sort-select') as HTMLSelectElement;
     const tagPills = document.querySelectorAll('.tag-pill');
+    const clearTagsBtn = document.getElementById('clear-tags');
     const resultsCount = document.getElementById('results-count');
     const emptyState = document.getElementById('empty-state');
     const postsGrid = document.getElementById('posts-grid');
-    const clearAllBtn = document.getElementById('clear-all');
+    const clearAllBtn = document.getElementById('clear-all-btn');
     
     if (!postsGrid) return;
     
-    // Convert NodeList to Array for easier manipulation
     const allPosts = Array.from(document.querySelectorAll('.post-card')) as HTMLElement[];
-    let activeTag = 'all';
+    const activeTags = new Set<string>();
     let searchQuery = '';
     let currentSort = 'newest';
 
+    // Initialize from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const tagParam = urlParams.get('tag');
+    const searchParam = urlParams.get('q');
+
+    if (tagParam) {
+      // Support comma separated tags in URL
+      tagParam.split(',').forEach(t => {
+        if (t) activeTags.add(t);
+      });
+      
+      // Highlight the initial tags
+      tagPills.forEach(pill => {
+        const t = pill.getAttribute('data-tag');
+        if (t && activeTags.has(t)) {
+          pill.classList.add('active');
+        }
+      });
+      
+      // Scroll first active tag into view
+      const firstActive = document.querySelector('.tag-pill.active');
+      if (firstActive) {
+        firstActive.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      }
+    }
+
+    if (searchParam) {
+      searchQuery = searchParam.toLowerCase();
+      if (searchInput) searchInput.value = searchParam;
+    }
+
+    function updateURL() {
+      const params = new URLSearchParams();
+      if (searchQuery) params.set('q', searchQuery);
+      if (activeTags.size > 0) {
+        params.set('tag', Array.from(activeTags).join(','));
+      }
+      
+      const newUrl = `${window.location.pathname}${params.toString() ? '?' + params.toString() : ''}`;
+      window.history.replaceState({}, '', newUrl);
+    }
+
     function update() {
       // 1. Filter
+      // Normalize active tags for comparison
+      const activeTagsList = Array.from(activeTags).map(t => t.toLowerCase().trim());
+
       const filteredPosts = allPosts.filter(post => {
         const title = post.getAttribute('data-title') || '';
         const desc = post.getAttribute('data-description') || '';
-        const tags = JSON.parse(post.getAttribute('data-tags') || '[]');
+        // Robust parsing: ensure array and normalize
+        const rawTags = JSON.parse(post.getAttribute('data-tags') || '[]');
+        const postTags = Array.isArray(rawTags) ? rawTags.map((t: any) => String(t).toLowerCase().trim()) : [];
         
-        const matchesSearch = title.includes(searchQuery) || desc.includes(searchQuery);
-        const matchesTag = activeTag === 'all' || tags.includes(activeTag);
+        const matchesSearch = searchQuery === '' || title.includes(searchQuery) || desc.includes(searchQuery) || postTags.some(t => t.includes(searchQuery));
         
-        return matchesSearch && matchesTag;
+        // OR Logic: Post contains ANY of the selected tags (normalized check)
+        const matchesTags = activeTags.size === 0 || activeTagsList.some(activeTag => postTags.includes(activeTag));
+        
+        return matchesSearch && matchesTags;
       });
 
       // 2. Sort
@@ -217,22 +268,16 @@ const allTags = [...new Set(posts.flatMap((post) => post.data.tags || []))].sort
       filteredPosts.forEach((post, index) => {
         post.classList.remove('hidden');
         post.style.order = index.toString();
-        // Re-trigger animation delay for visible items
         post.style.animationDelay = `${index * 50}ms`;
       });
 
       // 4. UI Updates
       if (resultsCount) {
-        resultsCount.textContent = `Showing ${filteredPosts.length} article${filteredPosts.length === 1 ? '' : 's'}`;
+        resultsCount.innerHTML = `<span class="w-2 h-2 rounded-full bg-accent-500 ${filteredPosts.length > 0 ? 'animate-pulse' : ''}"></span> Found ${filteredPosts.length} article${filteredPosts.length === 1 ? '' : 's'}`;
       }
 
-      const activeFiltersInfo = document.getElementById('active-filters-info');
-      if (activeFiltersInfo) {
-        if (activeTag !== 'all' || searchQuery !== '') {
-          activeFiltersInfo.classList.remove('hidden');
-        } else {
-          activeFiltersInfo.classList.add('hidden');
-        }
+      if (clearTagsBtn) {
+        clearTagsBtn.setAttribute('data-visible', (activeTags.size > 0).toString());
       }
 
       if (filteredPosts.length === 0) {
@@ -242,6 +287,8 @@ const allTags = [...new Set(posts.flatMap((post) => post.data.tags || []))].sort
         postsGrid?.classList.remove('hidden');
         emptyState?.classList.add('hidden');
       }
+      
+      updateURL();
     }
 
     searchInput?.addEventListener('input', (e) => {
@@ -256,29 +303,37 @@ const allTags = [...new Set(posts.flatMap((post) => post.data.tags || []))].sort
 
     tagPills.forEach(pill => {
       pill.addEventListener('click', () => {
-        tagPills.forEach(p => p.classList.remove('active'));
-        pill.classList.add('active');
-        activeTag = pill.getAttribute('data-tag') || 'all';
+        const tag = pill.getAttribute('data-tag');
+        if (!tag) return;
+
+        if (activeTags.has(tag)) {
+          activeTags.delete(tag);
+          pill.classList.remove('active');
+        } else {
+          activeTags.add(tag);
+          pill.classList.add('active');
+        }
         update();
       });
     });
 
-    clearAllBtn?.addEventListener('click', () => {
+    function resetAll() {
       if (searchInput) searchInput.value = '';
       if (sortSelect) sortSelect.value = 'newest';
       searchQuery = '';
       currentSort = 'newest';
+      activeTags.clear();
       tagPills.forEach(p => p.classList.remove('active'));
-      document.querySelector('[data-tag="all"]')?.classList.add('active');
-      activeTag = 'all';
       update();
-    });
+    }
 
-    // Final layout adjustment: grid needs to use flex/order or append
+    clearTagsBtn?.addEventListener('click', resetAll);
+    clearAllBtn?.addEventListener('click', resetAll);
+    
     postsGrid.style.display = 'grid';
   }
 
   document.addEventListener('astro:page-load', initFilters);
   initFilters();
-
 </script>
+

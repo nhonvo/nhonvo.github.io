@@ -1,0 +1,53 @@
+---
+---
+
+<script>
+  const copyButtonLabel = "Copy";
+  const codeCopiedLabel = "Copied!";
+
+  function initCopyCode() {
+    let codeBlocks = Array.from(document.querySelectorAll("pre"));
+
+    for (let codeBlock of codeBlocks) {
+      let container = document.createElement("div");
+      container.className = "relative group";
+
+      codeBlock.parentNode?.insertBefore(container, codeBlock);
+      container.appendChild(codeBlock);
+
+      let copyButton = document.createElement("button");
+      copyButton.className = "copy-code absolute top-3 right-3 px-2 py-1 text-xs font-bold uppercase tracking-wider text-base-400 bg-base-800/50 backdrop-blur-sm border border-base-700 rounded-md opacity-0 group-hover:opacity-100 transition-all duration-200 hover:text-white hover:bg-base-700 active:scale-95 z-20";
+      copyButton.innerHTML = copyButtonLabel;
+      
+      container.appendChild(copyButton);
+
+      copyButton.addEventListener("click", async () => {
+        await copyCode(codeBlock, copyButton);
+      });
+    }
+  }
+
+  async function copyCode(block: HTMLElement, button: HTMLButtonElement) {
+    let code = block.querySelector("code");
+    let text = code?.innerText || "";
+
+    await navigator.clipboard.writeText(text);
+
+    button.innerText = codeCopiedLabel;
+    button.classList.add("text-accent-400", "border-accent-500/50");
+
+    setTimeout(() => {
+      button.innerText = copyButtonLabel;
+      button.classList.remove("text-accent-400", "border-accent-500/50");
+    }, 2000);
+  }
+
+  document.addEventListener("astro:page-load", initCopyCode);
+  initCopyCode();
+</script>
+
+<style is:global>
+  pre {
+    position: relative !important;
+  }
+</style>

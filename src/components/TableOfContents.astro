@@ -1,0 +1,72 @@
+---
+interface Props {
+  headings: { depth: number; slug: string; text: string }[];
+}
+
+const { headings } = Astro.props;
+
+const filteredHeadings = headings.filter((h) => h.depth > 1 && h.depth < 4);
+---
+
+{
+  filteredHeadings.length > 0 && (
+    <nav class="toc-container mb-12 p-6 rounded-2xl border border-base-200 dark:border-base-800 bg-base-50/50 dark:bg-base-900/50 backdrop-blur-sm shadow-sm">
+      <div class="flex items-center gap-2 mb-4 text-accent-600 dark:text-accent-400">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" />
+        </svg>
+        <h2 class="text-sm font-black uppercase tracking-widest m-0! p-0!">Table of Contents</h2>
+      </div>
+      <ul class="list-none m-0! p-0! space-y-2">
+        {filteredHeadings.map((heading) => (
+          <li
+            class={`list-none m-0! p-0! ${
+              heading.depth === 3 ? "pl-4" : ""
+            }`}
+          >
+            <a
+              href={`#${heading.slug}`}
+              class="block text-sm font-medium text-base-500 dark:text-base-400 hover:text-accent-600 dark:hover:text-accent-400 transition-colors duration-200 line-clamp-1"
+            >
+              {heading.text}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  )
+}
+
+<style>
+  .toc-container {
+    max-width: 100%;
+  }
+</style>
+
+<script>
+  function initTOC() {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const id = entry.target.getAttribute("id");
+          const tocLink = document.querySelector(`.toc-container a[href="#${id}"]`);
+          
+          if (entry.isIntersecting) {
+            document.querySelectorAll(".toc-container a").forEach((link) => {
+              link.classList.remove("text-accent-600", "dark:text-accent-400", "font-bold");
+            });
+            tocLink?.classList.add("text-accent-600", "dark:text-accent-400", "font-bold");
+          }
+        });
+      },
+      { rootMargin: "-100px 0% -66%" }
+    );
+
+    document.querySelectorAll("h2, h3").forEach((heading) => {
+      observer.observe(heading);
+    });
+  }
+
+  document.addEventListener("astro:page-load", initTOC);
+  initTOC();
+</script>

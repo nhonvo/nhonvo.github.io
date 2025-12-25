@@ -1,4 +1,6 @@
-<div id="reading-progress-bar" class="fixed top-0 left-0 h-1 bg-accent-500 z-[100] w-0 transition-all duration-75"></div>
+<div id="reading-progress-container" class="fixed top-0 left-0 w-full h-1.5 z-[100] pointer-events-none">
+  <div id="reading-progress-bar" class="h-full bg-gradient-to-r from-accent-400 to-accent-600 w-0 transition-all duration-150 ease-out shadow-[0_0_15px_rgba(var(--accent-rgb),0.5)]"></div>
+</div>
 
 <script>
   function updateProgressBar() {
@@ -7,20 +9,24 @@
 
     const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
     const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-    const scrolled = (winScroll / height) * 100;
     
+    if (height <= 0) {
+      bar.style.width = "0%";
+      return;
+    }
+
+    const scrolled = (winScroll / height) * 100;
     bar.style.width = scrolled + "%";
   }
 
-  // Handle both initial load and view transitions
-  document.addEventListener('scroll', updateProgressBar);
-  document.addEventListener('astro:page-load', () => {
-    updateProgressBar();
-  });
+  window.addEventListener('scroll', updateProgressBar);
+  document.addEventListener('astro:page-load', updateProgressBar);
+  document.addEventListener('astro:after-swap', updateProgressBar);
 </script>
 
 <style>
   #reading-progress-bar {
-    @apply shadow-[0_0_10px_rgba(236,72,153,0.5)]; /* pink shadow matches pink accent */
+    filter: drop-shadow(0 0 8px rgb(var(--accent-rgb) / 0.6));
   }
 </style>
+

@@ -2,9 +2,13 @@
 import BaseHead from "../components/BaseHead.astro";
 import { ClientRouter } from "astro:transitions";
 import BackToTop from "../components/BackToTop.astro";
-const { title, description, image } = Astro.props;
+import { ACCENT_COLOR } from "../config.ts";
+import { ACCENT_RGB_MAP } from "../colors";
 
+const { title, description, image } = Astro.props;
+const accentRGB = ACCENT_RGB_MAP[ACCENT_COLOR];
 ---
+
 
 
 <!doctype html>
@@ -48,10 +52,12 @@ const { title, description, image } = Astro.props;
 
 
 
-    <style is:global>
+    <style is:global define:vars={{ accentRGB }}>
       :root {
         --transition-speed: 0.3s;
+        --accent-rgb: var(--accentRGB);
       }
+
 
       html.no-transitions *,
       html.no-transitions *:before,

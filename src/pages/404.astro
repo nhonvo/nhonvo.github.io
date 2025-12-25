@@ -1,0 +1,56 @@
+---
+import BaseLayout from "$layouts/BaseLayout.astro";
+import Header from "$components/Header.astro";
+import Footer from "$components/Footer.astro";
+import { BASE, SITE_TITLE } from "../config.ts";
+---
+
+<BaseLayout title={`404 - Page Not Found | ${SITE_TITLE}`} description="The page you are looking for does not exist.">
+  <Header />
+  
+  <main class="flex-1 flex items-center justify-center min-h-[60vh] px-6">
+    <div class="text-center animate-fade-in">
+      <div class="relative inline-block">
+        <h1 class="text-[12rem] font-black leading-none text-base-200 dark:text-base-800 select-none">
+          404
+        </h1>
+        <div class="absolute inset-0 flex items-center justify-center">
+          <p class="text-4xl sm:text-5xl font-black text-base-900 dark:text-base-50 tracking-tight">
+            Oops!
+          </p>
+        </div>
+      </div>
+      
+      <div class="mt-8 space-y-4">
+        <h2 class="text-2xl font-bold text-base-800 dark:text-base-200">
+          Page not found
+        </h2>
+        <p class="text-base-500 dark:text-base-400 max-w-md mx-auto">
+          The page you are looking for might have been moved, deleted, or never existed in the first place.
+        </p>
+      </div>
+
+      <div class="mt-12">
+        <a
+          href={BASE + "/"}
+          class="inline-flex items-center gap-2 px-8 py-4 bg-accent-600 hover:bg-accent-500 text-white font-bold rounded-2xl shadow-lg shadow-accent-600/20 transition-all duration-300 hover:scale-105 active:scale-95"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+          Back to Home
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  main {
+    background-image: radial-gradient(circle at 50% 50%, transparent 0%, transparent 100%), 
+                      radial-gradient(circle at 0% 0%, rgb(var(--accent-500) / 0.05) 0%, transparent 50%),
+                      radial-gradient(circle at 100% 100%, rgb(var(--accent-500) / 0.05) 0%, transparent 50%);
+  }
+</style>

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vo Thuong Truong Nhon (Nolan) — Web Portfolio & Engineering Showcase</title>
-    <meta name="description" content="Personal Web Portfolio of Vo Thuong Truong Nhon - Senior .NET Backend Engineer & Cloud Architect. Explore flagship projects, distributed system architecture, and verified credentials.">
+    <meta name="description" content="Personal Web Portfolio of Vo Thuong Truong Nhon - Senior .NET Backend Engineer & Cloud Architect. Explore flagship projects, distributed system architecture, competition honors, and verified credentials.">
     
     <!-- Open Graph Meta -->
     <meta property="og:title" content="Vo Thuong Truong Nhon (Nolan) — Web Portfolio">
@@ -76,6 +76,28 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
+        .gallery-img-container {
+            position: relative;
+            overflow: hidden;
+            border-radius: 0.75rem;
+            cursor: pointer;
+        }
+        .gallery-img-container img {
+            transition: transform 0.4s ease;
+        }
+        .gallery-img-container:hover img {
+            transform: scale(1.05);
+        }
+        .gallery-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(9, 13, 22, 0.9) 0%, rgba(9, 13, 22, 0.2) 60%, transparent 100%);
+            display: flex;
+            align-items: flex-end;
+            padding: 1rem;
+            opacity: 0.9;
+            transition: opacity 0.3s ease;
+        }
     </style>
 </head>
 
@@ -85,9 +107,7 @@
     <header class="fixed top-0 left-0 right-0 z-50 glass-panel border-b border-white/5">
         <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
             <a href="#" class="flex items-center gap-3 group">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-cyan-500 flex items-center justify-center font-bold text-white shadow-lg shadow-indigo-500/20 group-hover:scale-105 transition-transform">
-                    N
-                </div>
+                <img src="assets/images/avatar.jpg" alt="Nhon Vo Avatar" class="w-10 h-10 rounded-xl object-cover border border-indigo-500/40 shadow-lg shadow-indigo-500/20 group-hover:scale-105 transition-transform" onerror="this.src='https://github.com/nhonvo.png'">
                 <div>
                     <span class="font-bold text-lg tracking-tight text-white">Nhon Vo</span>
                     <span class="text-xs text-indigo-400 block font-mono">Portfolio & Projects</span>
@@ -95,11 +115,14 @@
             </a>
 
             <!-- Desktop Nav -->
-            <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-400">
+            <nav class="hidden lg:flex items-center gap-7 text-sm font-medium text-slate-400">
                 <a href="#about" class="hover:text-white transition-colors">About</a>
                 <a href="#projects" class="hover:text-white transition-colors">Flagship Projects</a>
                 <a href="#tech-stack" class="hover:text-white transition-colors">Tech Stack</a>
                 <a href="#certifications" class="hover:text-white transition-colors">Certifications</a>
+                <a href="#honors" class="hover:text-amber-300 font-semibold text-amber-400/90 transition-colors flex items-center gap-1.5">
+                    <i class="fa-solid fa-trophy text-amber-400"></i> Honors & Awards
+                </a>
                 <a href="#cv-showcase" class="hover:text-indigo-400 font-semibold text-indigo-300 transition-colors flex items-center gap-1.5">
                     <i class="fa-solid fa-file-contract"></i> LaTeX CV
                 </a>
@@ -138,7 +161,7 @@
                     </h1>
 
                     <p class="text-lg sm:text-xl text-slate-300 font-normal leading-relaxed max-w-2xl">
-                        Senior <strong>.NET Backend Engineer</strong> & <strong>Cloud Architect</strong>. I specialize in building event-driven microservices, high-throughput financial analysis backends, and AI agentic automation on <strong>C# (.NET 8)</strong> and <strong>AWS</strong>.
+                        Senior <strong>.NET Backend Engineer</strong> & <strong>Cloud Architect</strong>. 4 years of experience building event-driven microservices, high-throughput financial backends, and AI agentic automation on <strong>C# (.NET 8/10)</strong> and <strong>AWS</strong>.
                     </p>
 
                     <div class="flex flex-wrap gap-4 pt-4">
@@ -148,8 +171,8 @@
                         <a href="cv.html" class="px-6 py-3 rounded-xl glass-card hover:bg-slate-800 text-white font-semibold text-sm transition-all hover:scale-105 flex items-center gap-2 border border-indigo-500/30">
                             <i class="fa-solid fa-file-lines text-indigo-400"></i> Open LaTeX CV Viewer
                         </a>
-                        <a href="https://learning-three-flax.vercel.app/" target="_blank" class="px-6 py-3 rounded-xl bg-cyan-950/50 border border-cyan-700/60 hover:bg-cyan-900/60 text-cyan-300 font-semibold text-sm transition-all flex items-center gap-2">
-                            <i class="fa-solid fa-brain"></i> GraphMind Knowledge Garden ↗
+                        <a href="#honors" class="px-6 py-3 rounded-xl bg-amber-950/40 border border-amber-600/50 hover:bg-amber-900/40 text-amber-300 font-semibold text-sm transition-all flex items-center gap-2">
+                            <i class="fa-solid fa-award"></i> View Honors & Awards
                         </a>
                     </div>
 
@@ -160,8 +183,8 @@
                             <div class="text-xs text-slate-400 uppercase tracking-wider font-semibold">Years Experience</div>
                         </div>
                         <div>
-                            <div class="text-3xl font-extrabold text-indigo-400 font-mono">99.9%</div>
-                            <div class="text-xs text-slate-400 uppercase tracking-wider font-semibold">System SLA Focus</div>
+                            <div class="text-3xl font-extrabold text-indigo-400 font-mono">3x</div>
+                            <div class="text-xs text-slate-400 uppercase tracking-wider font-semibold">1st Prize Awards</div>
                         </div>
                         <div>
                             <div class="text-3xl font-extrabold text-cyan-400 font-mono">7+</div>
@@ -176,13 +199,11 @@
                         <div class="absolute -inset-1 rounded-2xl bg-gradient-to-r from-indigo-500 to-cyan-500 opacity-25 blur-2xl"></div>
                         <div class="relative glass-card rounded-2xl p-6 border border-white/10 space-y-6">
                             <div class="flex items-center justify-between pb-4 border-b border-white/10">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-12 h-12 rounded-xl bg-indigo-600/30 border border-indigo-500/30 flex items-center justify-center text-indigo-400 text-xl font-bold">
-                                        VT
-                                    </div>
+                                <div class="flex items-center gap-4">
+                                    <img src="assets/images/avatar.jpg" alt="Vo Thuong Truong Nhon" class="w-14 h-14 rounded-2xl object-cover border-2 border-indigo-500/50 shadow-md" onerror="this.src='https://github.com/nhonvo.png'">
                                     <div>
                                         <div class="font-bold text-white text-base">Vo Thuong Truong Nhon</div>
-                                        <div class="text-xs text-indigo-300">Software Engineer | Nolan</div>
+                                        <div class="text-xs text-indigo-300 font-mono">Software Engineer | Nolan</div>
                                     </div>
                                 </div>
                                 <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-emerald-950/60 text-emerald-400 border border-emerald-800/40">Active</span>
@@ -191,7 +212,7 @@
                             <div class="space-y-3 text-xs text-slate-300 font-mono">
                                 <div class="flex justify-between py-1.5 border-b border-white/5">
                                     <span class="text-slate-500">Core Runtime:</span>
-                                    <span class="text-white">.NET 8.0, ASP.NET Core</span>
+                                    <span class="text-white">.NET 8.0/10, ASP.NET Core</span>
                                 </div>
                                 <div class="flex justify-between py-1.5 border-b border-white/5">
                                     <span class="text-slate-500">Cloud Stack:</span>
@@ -293,100 +314,81 @@
                     </div>
                 </div>
 
-                <!-- Project 2: dotfiles & Systems -->
+                <!-- Project 2: Clean Architecture .NET 8.0 -->
                 <div class="glass-card rounded-2xl p-6 flex flex-col justify-between">
                     <div>
                         <div class="flex items-center justify-between mb-4">
-                            <span class="px-3 py-1 rounded-full text-xs font-mono bg-indigo-950/80 text-indigo-300 border border-indigo-700/50">DevOps & Systems</span>
-                            <span class="text-xs font-mono text-emerald-400">Automated</span>
+                            <span class="px-3 py-1 rounded-full text-xs font-mono bg-indigo-950/80 text-indigo-300 border border-indigo-700/50">Production Boilerplate</span>
+                            <span class="text-xs font-mono text-amber-400 flex items-center gap-1.5">
+                                <i class="fa-solid fa-star"></i> 100+ Stars
+                            </span>
                         </div>
-                        <h3 class="text-xl font-bold text-white mb-2">dotfiles & System Automation</h3>
+                        <h3 class="text-xl font-bold text-white mb-2">Clean Architecture .NET 8.0</h3>
                         <p class="text-sm text-slate-400 leading-relaxed mb-6">
-                            Reproducible Linux Mint & hardware engineering environment. Centralized configurations, custom touch gestures, POSH shell profiles, automated installer, and verification test suites.
-                        </p>
-                        <div class="flex flex-wrap gap-2 mb-6">
-                            <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-slate-800 text-slate-300">Bash</span>
-                            <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-slate-800 text-slate-300">Linux Mint</span>
-                            <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-slate-800 text-slate-300">System Automation</span>
-                            <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-slate-800 text-slate-300">PowerShell</span>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-3 pt-4 border-t border-white/5">
-                        <a href="https://github.com/nhonvo/dotfiles" target="_blank" class="flex-1 text-center py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-white text-xs font-semibold transition-colors">
-                            <i class="fa-brands fa-github mr-1"></i> View System Configs
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Project 3: clean-architecture-net-8.0 -->
-                <div class="glass-card rounded-2xl p-6 flex flex-col justify-between">
-                    <div>
-                        <div class="flex items-center justify-between mb-4">
-                            <span class="px-3 py-1 rounded-full text-xs font-mono bg-indigo-950/80 text-indigo-300 border border-indigo-700/50">Enterprise Template</span>
-                            <span class="text-xs font-mono text-emerald-400">Open Source</span>
-                        </div>
-                        <h3 class="text-xl font-bold text-white mb-2">clean-architecture-net-8.0</h3>
-                        <p class="text-sm text-slate-400 leading-relaxed mb-6">
-                            Production-grade enterprise Clean Architecture Web API template in .NET 8. Incorporates CQRS pattern with MediatR, FluentValidation pipeline behaviors, EF Core, and containerized Docker setup.
+                            Industry-grade boilerplate template for enterprise .NET 8 Web APIs. Implements strict CQRS with MediatR, Domain-Driven Design (DDD), EF Core 8 with SQL Server, JWT auth, and k6 performance testing.
                         </p>
                         <div class="flex flex-wrap gap-2 mb-6">
                             <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-slate-800 text-slate-300">.NET 8.0</span>
                             <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-slate-800 text-slate-300">C#</span>
-                            <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-slate-800 text-slate-300">CQRS & MediatR</span>
-                            <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-slate-800 text-slate-300">PostgreSQL</span>
+                            <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-slate-800 text-slate-300">EF Core</span>
+                            <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-slate-800 text-slate-300">CQRS</span>
                         </div>
                     </div>
                     <div class="flex items-center gap-3 pt-4 border-t border-white/5">
                         <a href="https://github.com/nhonvo/clean-architecture-net-8.0" target="_blank" class="flex-1 text-center py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-white text-xs font-semibold transition-colors">
-                            <i class="fa-brands fa-github mr-1"></i> View Architecture
+                            <i class="fa-brands fa-github mr-1"></i> View Repository
                         </a>
                     </div>
                 </div>
 
-                <!-- Project 4: quartz-mastery-portal -->
-                <div class="glass-card rounded-2xl p-6 flex flex-col justify-between">
+                <!-- Project 3: Nobita Digital Bank (HDBank Hackathon 1st Prize) -->
+                <div class="glass-card rounded-2xl p-6 flex flex-col justify-between group">
                     <div>
                         <div class="flex items-center justify-between mb-4">
-                            <span class="px-3 py-1 rounded-full text-xs font-mono bg-cyan-950/80 text-cyan-300 border border-cyan-700/50">Knowledge Hub</span>
-                            <span class="text-xs font-mono text-cyan-400">Vercel Live</span>
+                            <span class="px-3 py-1 rounded-full text-xs font-mono bg-amber-950/80 text-amber-300 border border-amber-700/50">
+                                <i class="fa-solid fa-trophy mr-1 text-amber-400"></i> Hackathon 1st Prize
+                            </span>
+                            <span class="text-xs font-mono text-slate-400">FinTech</span>
                         </div>
-                        <h3 class="text-xl font-bold text-white mb-2">GraphMind Knowledge Portal</h3>
+                        
+                        <div class="mb-4 gallery-img-container rounded-xl overflow-hidden border border-white/10 max-h-36">
+                            <img src="assets/images/Project/hdbank-project.png" alt="Nobita Digital Bank App UI" class="w-full h-36 object-cover preview-img cursor-pointer" data-caption="Nobita Smart Digital Bank - 1st Prize HDBank Hackathon 2022">
+                        </div>
+
+                        <h3 class="text-xl font-bold text-white mb-2">Nobita Smart Digital Bank</h3>
                         <p class="text-sm text-slate-400 leading-relaxed mb-6">
-                            Digital garden and networked thought repository built with Quartz and Obsidian. Covers deep system design, cloud architecture, and language mastery in English & Japanese.
+                            Full-stack digital banking ecosystem built during HDBank Hackathon 2022, securing <strong>1st Prize</strong>. Seamlessly integrated with HDBank Open API for secure account verification and peer-to-peer transfers.
                         </p>
                         <div class="flex flex-wrap gap-2 mb-6">
-                            <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-slate-800 text-slate-300">Quartz v5</span>
-                            <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-slate-800 text-slate-300">Obsidian</span>
-                            <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-slate-800 text-slate-300">Markdown</span>
-                            <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-slate-800 text-slate-300">Vercel</span>
+                            <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-slate-800 text-slate-300">ASP.NET Core</span>
+                            <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-slate-800 text-slate-300">Flutter</span>
+                            <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-slate-800 text-slate-300">SQL Server</span>
+                            <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-slate-800 text-slate-300">HDBank APIs</span>
                         </div>
                     </div>
                     <div class="flex items-center gap-3 pt-4 border-t border-white/5">
-                        <a href="https://learning-three-flax.vercel.app/" target="_blank" class="flex-1 text-center py-2 rounded-lg bg-cyan-600 hover:bg-cyan-500 text-slate-950 text-xs font-bold transition-colors">
-                            <i class="fa-solid fa-arrow-up-right-from-square mr-1"></i> Open Portal
-                        </a>
-                        <a href="https://github.com/nhonvo/quartz-mastery-portal" target="_blank" class="px-3 py-2 rounded-lg glass-card hover:bg-slate-700 text-slate-300 text-xs transition-colors">
-                            <i class="fa-brands fa-github text-sm"></i>
-                        </a>
+                        <button onclick="openModal('assets/images/Project/hdbank-project.png', 'Nobita Digital Bank - 1st Prize HDBank Hackathon 2022')" class="flex-1 text-center py-2 rounded-lg bg-amber-600/80 hover:bg-amber-600 text-white text-xs font-semibold transition-colors">
+                            <i class="fa-solid fa-image mr-1"></i> View Screenshot
+                        </button>
                     </div>
                 </div>
 
-                <!-- Project 5: InventoryManagementSystem -->
+                <!-- Project 4: InventoryManagementSystem -->
                 <div class="glass-card rounded-2xl p-6 flex flex-col justify-between">
                     <div>
                         <div class="flex items-center justify-between mb-4">
-                            <span class="px-3 py-1 rounded-full text-xs font-mono bg-indigo-950/80 text-indigo-300 border border-indigo-700/50">Finance & Analytics</span>
-                            <span class="text-xs font-mono text-slate-400">Asset Tracker</span>
+                            <span class="px-3 py-1 rounded-full text-xs font-mono bg-indigo-950/80 text-indigo-300 border border-indigo-700/50">Supply Chain & Alerts</span>
+                            <span class="text-xs font-mono text-cyan-400">.NET 10 Clean Arch</span>
                         </div>
-                        <h3 class="text-xl font-bold text-white mb-2">Inventory & Portfolio Tracker</h3>
+                        <h3 class="text-xl font-bold text-white mb-2">Inventory Management (Alerts)</h3>
                         <p class="text-sm text-slate-400 leading-relaxed mb-6">
-                            Stock and asset portfolio management system integrating market data feeds from US equities for automated performance tracking and risk assessment.
+                            Event-driven stock evaluation platform built on .NET 10 Clean Architecture and Next.js 15. Automated background evaluation via AWS SQS & Hangfire with Redis Cache-Aside achieving p95 latency &lt; 75ms.
                         </p>
                         <div class="flex flex-wrap gap-2 mb-6">
-                            <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-slate-800 text-slate-300">C#</span>
-                            <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-slate-800 text-slate-300">.NET Core</span>
-                            <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-slate-800 text-slate-300">PostgreSQL</span>
-                            <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-slate-800 text-slate-300">Financial APIs</span>
+                            <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-slate-800 text-slate-300">.NET 10</span>
+                            <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-slate-800 text-slate-300">Next.js 15</span>
+                            <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-slate-800 text-slate-300">AWS SQS</span>
+                            <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-slate-800 text-slate-300">Redis</span>
                         </div>
                     </div>
                     <div class="flex items-center gap-3 pt-4 border-t border-white/5">
@@ -396,25 +398,55 @@
                     </div>
                 </div>
 
-                <!-- Project 6: BinhDinhFood -->
+                <!-- Project 5: BinhDinhFood -->
                 <div class="glass-card rounded-2xl p-6 flex flex-col justify-between">
                     <div>
                         <div class="flex items-center justify-between mb-4">
                             <span class="px-3 py-1 rounded-full text-xs font-mono bg-indigo-950/80 text-indigo-300 border border-indigo-700/50">E-Commerce</span>
                             <span class="text-xs font-mono text-slate-400">Full-Stack</span>
                         </div>
-                        <h3 class="text-xl font-bold text-white mb-2">BinhDinhFood E-Commerce</h3>
+
+                        <div class="mb-4 gallery-img-container rounded-xl overflow-hidden border border-white/10 max-h-36">
+                            <img src="assets/images/Project/binh-dinh-food.png" alt="BinhDinhFood Marketplace" class="w-full h-36 object-cover preview-img cursor-pointer" data-caption="BinhDinhFood E-Commerce Platform">
+                        </div>
+
+                        <h3 class="text-xl font-bold text-white mb-2">BinhDinhFood Marketplace</h3>
                         <p class="text-sm text-slate-400 leading-relaxed mb-6">
-                            Specialized e-commerce marketplace promoting regional Vietnamese culinary products. Includes catalog management, order fulfillment workflows, and payment gateway integration.
+                            Specialized e-commerce marketplace promoting regional Vietnamese culinary products. Complete catalog management, order fulfillment workflows, and payment gateway integration.
                         </p>
                         <div class="flex flex-wrap gap-2 mb-6">
                             <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-slate-800 text-slate-300">ASP.NET Core</span>
-                            <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-slate-800 text-slate-300">React</span>
+                            <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-slate-800 text-slate-300">Entity Framework</span>
                             <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-slate-800 text-slate-300">SQL Server</span>
                         </div>
                     </div>
                     <div class="flex items-center gap-3 pt-4 border-t border-white/5">
                         <a href="https://github.com/nhonvo/BinhDinhFood" target="_blank" class="flex-1 text-center py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-white text-xs font-semibold transition-colors">
+                            <i class="fa-brands fa-github mr-1"></i> View Repository
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Project 6: dotfiles & System Engineering -->
+                <div class="glass-card rounded-2xl p-6 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="px-3 py-1 rounded-full text-xs font-mono bg-indigo-950/80 text-indigo-300 border border-indigo-700/50">DevOps & Systems</span>
+                            <span class="text-xs font-mono text-slate-400">Linux Mint / Yoga</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">System Configs & Dotfiles</h3>
+                        <p class="text-sm text-slate-400 leading-relaxed mb-6">
+                            Idempotent automated provisioning and desktop environment configurations for Linux Mint and Lenovo Yoga hardware. Manages gestural drivers, custom window management, and terminal tooling.
+                        </p>
+                        <div class="flex flex-wrap gap-2 mb-6">
+                            <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-slate-800 text-slate-300">Bash</span>
+                            <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-slate-800 text-slate-300">Linux Mint</span>
+                            <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-slate-800 text-slate-300">Zsh / Tmux</span>
+                            <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-slate-800 text-slate-300">Automation</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3 pt-4 border-t border-white/5">
+                        <a href="https://github.com/nhonvo/dotfiles" target="_blank" class="flex-1 text-center py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-white text-xs font-semibold transition-colors">
                             <i class="fa-brands fa-github mr-1"></i> View Repository
                         </a>
                     </div>
@@ -437,7 +469,7 @@
                         </div>
                         <div class="flex flex-wrap gap-2">
                             <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-slate-800/80 text-slate-300">C#</span>
-                            <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-slate-800/80 text-slate-300">.NET 8.0</span>
+                            <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-slate-800/80 text-slate-300">.NET 8 / 10</span>
                             <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-slate-800/80 text-slate-300">ASP.NET Core</span>
                             <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-slate-800/80 text-slate-300">Python</span>
                             <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-slate-800/80 text-slate-300">TypeScript</span>
@@ -451,7 +483,7 @@
                         <div class="flex flex-wrap gap-2">
                             <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-slate-800/80 text-slate-300">AWS ECS</span>
                             <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-slate-800/80 text-slate-300">AWS SQS / SNS</span>
-                            <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-slate-800/80 text-slate-300">AWS Lambda</span>
+                            <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-slate-800/80 text-slate-300">AWS Bedrock</span>
                             <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-slate-800/80 text-slate-300">Docker</span>
                             <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-slate-800/80 text-slate-300">GitHub Actions</span>
                         </div>
@@ -459,27 +491,390 @@
 
                     <div class="space-y-3">
                         <div class="text-sm font-bold text-white flex items-center gap-2">
-                            <i class="fa-solid fa-database text-emerald-400"></i> Databases & Storage
+                            <i class="fa-solid fa-database text-emerald-400"></i> Databases & Vector
                         </div>
                         <div class="flex flex-wrap gap-2">
                             <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-slate-800/80 text-slate-300">PostgreSQL</span>
-                            <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-slate-800/80 text-slate-300">MS SQL</span>
-                            <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-slate-800/80 text-slate-300">Redis Cache</span>
+                            <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-slate-800/80 text-slate-300">pgvector</span>
+                            <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-slate-800/80 text-slate-300">MS SQL Server</span>
+                            <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-slate-800/80 text-slate-300">Redis / Valkey</span>
                             <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-slate-800/80 text-slate-300">MongoDB</span>
-                            <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-slate-800/80 text-slate-300">DynamoDB</span>
                         </div>
                     </div>
 
                     <div class="space-y-3">
                         <div class="text-sm font-bold text-white flex items-center gap-2">
-                            <i class="fa-solid fa-cubes text-amber-400"></i> Architectural Patterns
+                            <i class="fa-solid fa-cubes text-amber-400"></i> Architecture & Patterns
                         </div>
                         <div class="flex flex-wrap gap-2">
                             <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-slate-800/80 text-slate-300">Clean Architecture</span>
                             <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-slate-800/80 text-slate-300">CQRS & MediatR</span>
                             <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-slate-800/80 text-slate-300">Event-Driven</span>
-                            <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-slate-800/80 text-slate-300">DDD</span>
+                            <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-slate-800/80 text-slate-300">MCP Protocol</span>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Professional Certifications Section -->
+        <section id="certifications" class="max-w-7xl mx-auto px-6 py-16">
+            <div class="text-center max-w-2xl mx-auto mb-12">
+                <div class="text-xs font-mono uppercase text-indigo-400 tracking-wider">Credentials</div>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-white mt-1">Professional Certifications</h2>
+                <p class="text-sm text-slate-400 mt-2">
+                    Industry-recognized accreditations in Cloud Architecture, AI tooling, and Database design.
+                </p>
+            </div>
+
+            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Cert 1: GitHub Copilot -->
+                <a href="https://learn.microsoft.com/api/credentials/share/en-us/nhonvo/BA1E3C592CEC7780" target="_blank" class="glass-card rounded-2xl p-6 group block">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-10 h-10 rounded-xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-lg">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i>
+                        </div>
+                        <span class="text-xs font-mono text-indigo-400 group-hover:translate-x-1 transition-transform">Verify ↗</span>
+                    </div>
+                    <h3 class="font-bold text-white text-base group-hover:text-indigo-300 transition-colors">GitHub Copilot (GH300)</h3>
+                    <div class="text-xs text-slate-400 mb-2">Microsoft / GitHub • 2026</div>
+                    <p class="text-xs text-slate-400 leading-relaxed">
+                        Professional accreditation in AI-assisted software delivery and developer acceleration.
+                    </p>
+                </a>
+
+                <!-- Cert 2: AWS Cloud Architecture -->
+                <a href="https://www.udacity.com/certificate/e/664f07ee-65ad-11ef-a192-d776ea27f5c9" target="_blank" class="glass-card rounded-2xl p-6 group block">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-lg">
+                            <i class="fa-solid fa-cloud"></i>
+                        </div>
+                        <span class="text-xs font-mono text-amber-400 group-hover:translate-x-1 transition-transform">Verify ↗</span>
+                    </div>
+                    <h3 class="font-bold text-white text-base group-hover:text-amber-300 transition-colors">AWS Cloud Architecture</h3>
+                    <div class="text-xs text-slate-400 mb-2">Udacity Nanodegree • 2024</div>
+                    <p class="text-xs text-slate-400 leading-relaxed">
+                        High availability, disaster recovery, resilience, and infrastructure automation at scale.
+                    </p>
+                </a>
+
+                <!-- Cert 3: Katalon Certified Expert -->
+                <a href="https://academy.katalon.com/mcertificate/6655d776daab4" target="_blank" class="glass-card rounded-2xl p-6 group block">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-lg">
+                            <i class="fa-solid fa-vial-circle-check"></i>
+                        </div>
+                        <span class="text-xs font-mono text-emerald-400 group-hover:translate-x-1 transition-transform">Verify ↗</span>
+                    </div>
+                    <h3 class="font-bold text-white text-base group-hover:text-emerald-300 transition-colors">Katalon Certified Expert</h3>
+                    <div class="text-xs text-slate-400 mb-2">Katalon Academy • 2024</div>
+                    <p class="text-xs text-slate-400 leading-relaxed">
+                        Advanced test automation frameworks, continuous testing orchestration, and CI/CD pipelines.
+                    </p>
+                </a>
+
+                <!-- Cert 4: MongoDB Certified Associate (With Real Cert Preview) -->
+                <div class="glass-card rounded-2xl p-6 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-lg">
+                                <i class="fa-solid fa-leaf"></i>
+                            </div>
+                            <span class="text-xs font-mono text-emerald-400">Certified Associate</span>
+                        </div>
+                        
+                        <div class="mb-3 gallery-img-container rounded-xl overflow-hidden border border-white/10 max-h-32">
+                            <img src="assets/images/Certificate/mongo-cert.jpg" alt="MongoDB Associate Developer Certificate" class="w-full h-32 object-cover preview-img cursor-pointer" data-caption="MongoDB Certified Associate Developer - MongoDB University">
+                        </div>
+
+                        <h3 class="font-bold text-white text-base">MongoDB Certified Associate</h3>
+                        <div class="text-xs text-slate-400 mb-2">MongoDB University • 2023 / 2024</div>
+                        <p class="text-xs text-slate-400 leading-relaxed">
+                            Document data modeling, aggregation pipelines, indexing strategies, and query performance.
+                        </p>
+                    </div>
+                    <div class="pt-4 flex gap-2 border-t border-white/5 mt-4">
+                        <button onclick="openModal('assets/images/Certificate/mongo-cert.jpg', 'MongoDB Certified Associate Developer - Official Certificate')" class="flex-1 py-1.5 text-center rounded-lg bg-emerald-950/60 hover:bg-emerald-900/60 text-emerald-300 text-xs font-semibold transition-colors border border-emerald-700/40">
+                            <i class="fa-solid fa-expand mr-1"></i> Preview Cert
+                        </button>
+                        <a href="https://learn.mongodb.com/c/G5hEeS7nRIaWzcVDQkCQFA" target="_blank" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold transition-colors">
+                            Verify ↗
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Cert 5: Cloud Developer -->
+                <a href="https://confirm.udacity.com/e/f5009d0c-3b21-11ee-b039-dfe669e63fdd" target="_blank" class="glass-card rounded-2xl p-6 group block">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-10 h-10 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-lg">
+                            <i class="fa-solid fa-server"></i>
+                        </div>
+                        <span class="text-xs font-mono text-cyan-400 group-hover:translate-x-1 transition-transform">Verify ↗</span>
+                    </div>
+                    <h3 class="font-bold text-white text-base group-hover:text-cyan-300 transition-colors">Cloud Developer Nanodegree</h3>
+                    <div class="text-xs text-slate-400 mb-2">Udacity • 2023</div>
+                    <p class="text-xs text-slate-400 leading-relaxed">
+                        Serverless applications, Docker container orchestration, and AWS microservices.
+                    </p>
+                </a>
+
+                <!-- Cert 6: SQL Nanodegree -->
+                <a href="https://confirm.udacity.com/e/382c1482-bb86-11ee-9bdf-ebd6686d311a" target="_blank" class="glass-card rounded-2xl p-6 group block">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-10 h-10 rounded-xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-lg">
+                            <i class="fa-solid fa-database"></i>
+                        </div>
+                        <span class="text-xs font-mono text-indigo-400 group-hover:translate-x-1 transition-transform">Verify ↗</span>
+                    </div>
+                    <h3 class="font-bold text-white text-base group-hover:text-indigo-300 transition-colors">SQL Nanodegree</h3>
+                    <div class="text-xs text-slate-400 mb-2">Udacity • 2024</div>
+                    <p class="text-xs text-slate-400 leading-relaxed">
+                        Relational schema design, complex analytical queries, and query plan optimization.
+                    </p>
+                </a>
+            </div>
+        </section>
+
+        <!-- Honors, Hackathons & Academic Awards Section -->
+        <section id="honors" class="max-w-7xl mx-auto px-6 py-16">
+            <div class="text-center max-w-2xl mx-auto mb-12">
+                <div class="text-xs font-mono uppercase text-amber-400 tracking-wider">Achievements</div>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-white mt-1">Honors, Hackathons & Awards</h2>
+                <p class="text-sm text-slate-400 mt-2">
+                    Verified first-prize competition awards, talent scholarships, and hackathon honors. Click any certificate to inspect full resolution.
+                </p>
+            </div>
+
+            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Award 1: HDBank Hackathon 2022 (First Prize) -->
+                <div class="glass-card rounded-2xl overflow-hidden flex flex-col justify-between border border-amber-500/20">
+                    <div>
+                        <div class="gallery-img-container h-48 bg-slate-900">
+                            <img src="assets/images/Competition/hdbank.jpg" alt="1st Prize - HDBank Hackathon 2022" class="w-full h-full object-cover preview-img" data-caption="First Prize — HDBank Hackathon 2022 Award Ceremony (Nobita Digital Bank)">
+                            <div class="gallery-overlay">
+                                <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-amber-500 text-slate-950 font-bold">
+                                    <i class="fa-solid fa-trophy mr-1"></i> 1st Prize
+                                </span>
+                            </div>
+                        </div>
+                        <div class="p-5">
+                            <div class="text-xs font-mono text-amber-400 mb-1">HDBank & HUTECH • 2022</div>
+                            <h3 class="font-bold text-white text-base mb-2">HDBank Hackathon 2022 (1st Prize)</h3>
+                            <p class="text-xs text-slate-400 leading-relaxed">
+                                Won 1st place in national banking technology hackathon with "Nobita Smart Digital Bank" integrated into the HDBank Open API ecosystem.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="p-5 pt-0 flex gap-2">
+                        <button onclick="openModal('assets/images/Competition/hdbank.jpg', 'First Prize — HDBank Hackathon 2022 (Nobita Smart Digital Bank)')" class="flex-1 py-1.5 text-center rounded-lg bg-amber-950/60 hover:bg-amber-900/60 text-amber-300 text-xs font-semibold transition-colors border border-amber-700/40">
+                            <i class="fa-solid fa-expand mr-1"></i> View Photo
+                        </button>
+                        <a href="https://www.hutech.edu.vn/homepage/tin-tuc/hoat-dong-sinh-vien/14607882-khoa-cong-nghe-thong-tin-to-chuc-vong-chung-ket-va-le-trao-giai-cuoc-thi-hdbank-hackathon-2022" target="_blank" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold transition-colors">
+                            Article ↗
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Award 2: IT Got Talent 2022 (First Prize) -->
+                <div class="glass-card rounded-2xl overflow-hidden flex flex-col justify-between border border-amber-500/20">
+                    <div>
+                        <div class="gallery-img-container h-48 bg-slate-900">
+                            <img src="assets/images/Competition/it-got-talent.jpg" alt="1st Prize - IT Got Talent 2022" class="w-full h-full object-cover preview-img" data-caption="First Prize (Table B) — HUTECH IT Got Talent 2022 Contest">
+                            <div class="gallery-overlay">
+                                <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-amber-500 text-slate-950 font-bold">
+                                    <i class="fa-solid fa-trophy mr-1"></i> 1st Prize
+                                </span>
+                            </div>
+                        </div>
+                        <div class="p-5">
+                            <div class="text-xs font-mono text-amber-400 mb-1">Faculty of IT, HUTECH • 2022</div>
+                            <h3 class="font-bold text-white text-base mb-2">IT Got Talent Contest (Table B Champion)</h3>
+                            <p class="text-xs text-slate-400 leading-relaxed">
+                                Awarded 1st place in university-wide IT talent competition for advanced FinTech application architecture and real-time transaction processing.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="p-5 pt-0 flex gap-2">
+                        <button onclick="openModal('assets/images/Competition/it-got-talent.jpg', 'First Prize (Table B) — IT Got Talent 2022 Contest')" class="flex-1 py-1.5 text-center rounded-lg bg-amber-950/60 hover:bg-amber-900/60 text-amber-300 text-xs font-semibold transition-colors border border-amber-700/40">
+                            <i class="fa-solid fa-expand mr-1"></i> View Photo
+                        </button>
+                        <a href="https://www.hutech.edu.vn/khoacntt/tin-tuc/tin-tuc-su-kien/14608074-chung-ket-cuoc-thi-tim-kiem-tai-nang-cntt-2022-hutech-it-got-talent-2022" target="_blank" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold transition-colors">
+                            Article ↗
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Award 3: Top 1 GPA Talent Scholarship (2022) -->
+                <div class="glass-card rounded-2xl overflow-hidden flex flex-col justify-between border border-indigo-500/20">
+                    <div>
+                        <div class="gallery-img-container h-48 bg-slate-900">
+                            <img src="assets/images/Competition/scholarship2021-2022.jpg" alt="Top 1 GPA Talent Scholarship 2022" class="w-full h-full object-cover preview-img" data-caption="Top 1 GPA — K20 HUTECH Talent Scholarship 2021-2022">
+                            <div class="gallery-overlay">
+                                <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-indigo-500 text-white font-bold">
+                                    <i class="fa-solid fa-graduation-cap mr-1"></i> Top 1 GPA
+                                </span>
+                            </div>
+                        </div>
+                        <div class="p-5">
+                            <div class="text-xs font-mono text-indigo-400 mb-1">HUTECH University • 2022</div>
+                            <h3 class="font-bold text-white text-base mb-2">Top 1 GPA Talent Scholarship</h3>
+                            <p class="text-xs text-slate-400 leading-relaxed">
+                                Highest academic GPA achievement recognition for K20 software engineering intake, accompanied by full academic merit scholarship.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="p-5 pt-0">
+                        <button onclick="openModal('assets/images/Competition/scholarship2021-2022.jpg', 'Top 1 GPA — K20 HUTECH Talent Scholarship Certificate')" class="w-full py-1.5 text-center rounded-lg bg-indigo-950/60 hover:bg-indigo-900/60 text-indigo-300 text-xs font-semibold transition-colors border border-indigo-700/40">
+                            <i class="fa-solid fa-expand mr-1"></i> View Certificate
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Award 4: Top 3 GPA Talent Scholarship (2021) -->
+                <div class="glass-card rounded-2xl overflow-hidden flex flex-col justify-between border border-indigo-500/20">
+                    <div>
+                        <div class="gallery-img-container h-48 bg-slate-900">
+                            <img src="assets/images/Competition/scholarship2020-2021.jpg" alt="Top 3 GPA Talent Scholarship 2021" class="w-full h-full object-cover preview-img" data-caption="Top 3 GPA — K20 HUTECH Talent Scholarship 2020-2021">
+                            <div class="gallery-overlay">
+                                <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-indigo-500 text-white font-bold">
+                                    <i class="fa-solid fa-graduation-cap mr-1"></i> Top 3 GPA
+                                </span>
+                            </div>
+                        </div>
+                        <div class="p-5">
+                            <div class="text-xs font-mono text-indigo-400 mb-1">HUTECH University • 2021</div>
+                            <h3 class="font-bold text-white text-base mb-2">Top 3 GPA Talent Scholarship</h3>
+                            <p class="text-xs text-slate-400 leading-relaxed">
+                                Academic excellence recognition and talent scholarship for freshman intake cohort in Software Engineering.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="p-5 pt-0">
+                        <button onclick="openModal('assets/images/Competition/scholarship2020-2021.jpg', 'Top 3 GPA — K20 HUTECH Talent Scholarship Certificate')" class="w-full py-1.5 text-center rounded-lg bg-indigo-950/60 hover:bg-indigo-900/60 text-indigo-300 text-xs font-semibold transition-colors border border-indigo-700/40">
+                            <i class="fa-solid fa-expand mr-1"></i> View Certificate
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Award 5: AI Challenge 2022 -->
+                <div class="glass-card rounded-2xl overflow-hidden flex flex-col justify-between border border-cyan-500/20">
+                    <div>
+                        <div class="gallery-img-container h-48 bg-slate-900">
+                            <img src="assets/images/Competition/AI-Challenge.jpg" alt="AI Challenge 2022" class="w-full h-full object-cover preview-img" data-caption="Consolation Prize — Ho Chi Minh City AI Challenge 2022">
+                            <div class="gallery-overlay">
+                                <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-cyan-500 text-slate-950 font-bold">
+                                    <i class="fa-solid fa-robot mr-1"></i> AI Challenge
+                                </span>
+                            </div>
+                        </div>
+                        <div class="p-5">
+                            <div class="text-xs font-mono text-cyan-400 mb-1">Ho Chi Minh City • 2022</div>
+                            <h3 class="font-bold text-white text-base mb-2">AI Challenge HCMC (2022)</h3>
+                            <p class="text-xs text-slate-400 leading-relaxed">
+                                Consolation Prize at the municipal AI Challenge competition organized by the HCMC Department of Information and Communications.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="p-5 pt-0">
+                        <button onclick="openModal('assets/images/Competition/AI-Challenge.jpg', 'Consolation Prize — Ho Chi Minh City AI Challenge 2022 Certificate')" class="w-full py-1.5 text-center rounded-lg bg-cyan-950/60 hover:bg-cyan-900/60 text-cyan-300 text-xs font-semibold transition-colors border border-cyan-700/40">
+                            <i class="fa-solid fa-expand mr-1"></i> View Certificate
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Award 6: My First Website Competition -->
+                <div class="glass-card rounded-2xl overflow-hidden flex flex-col justify-between border border-slate-700">
+                    <div>
+                        <div class="gallery-img-container h-48 bg-slate-900">
+                            <img src="assets/images/Competition/my-first-website.jpg" alt="My First Website Competition" class="w-full h-full object-cover preview-img" data-caption="Consolation Prize — My First Website Competition 2022">
+                            <div class="gallery-overlay">
+                                <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-slate-700 text-slate-200 font-bold">
+                                    <i class="fa-solid fa-globe mr-1"></i> Web Contest
+                                </span>
+                            </div>
+                        </div>
+                        <div class="p-5">
+                            <div class="text-xs font-mono text-slate-400 mb-1">HUTECH University • 2022</div>
+                            <h3 class="font-bold text-white text-base mb-2">My First Website Competition (2022)</h3>
+                            <p class="text-xs text-slate-400 leading-relaxed">
+                                Consolation Prize in the university-wide front-end and web engineering showcase contest.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="p-5 pt-0">
+                        <button onclick="openModal('assets/images/Competition/my-first-website.jpg', 'Consolation Prize — My First Website Competition Certificate')" class="w-full py-1.5 text-center rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold transition-colors">
+                            <i class="fa-solid fa-expand mr-1"></i> View Certificate
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Award 7: Student of 5 Merits (Sinh Vien 5 Tot) -->
+                <div class="glass-card rounded-2xl overflow-hidden flex flex-col justify-between border border-emerald-500/20">
+                    <div>
+                        <div class="gallery-img-container h-48 bg-slate-900">
+                            <img src="assets/images/Competition/sv5t2021.jpg" alt="Student of 5 Merits Award" class="w-full h-full object-cover preview-img" data-caption="Student of 5 Merits (Sinh Viên 5 Tốt) University Award">
+                            <div class="gallery-overlay">
+                                <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-emerald-500 text-slate-950 font-bold">
+                                    <i class="fa-solid fa-medal mr-1"></i> 5 Merits Award
+                                </span>
+                            </div>
+                        </div>
+                        <div class="p-5">
+                            <div class="text-xs font-mono text-emerald-400 mb-1">Vietnam Students' Association • 2020-2023</div>
+                            <h3 class="font-bold text-white text-base mb-2">Student of 5 Merits ("Sinh Viên 5 Tốt")</h3>
+                            <p class="text-xs text-slate-400 leading-relaxed">
+                                Prestigious recognition across consecutive years fulfilling 5 criteria: Ethics, Academics, Physical Fitness, Volunteering, and Global Integration.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="p-5 pt-0">
+                        <button onclick="openModal('assets/images/Competition/sv5t2021.jpg', 'Student of 5 Merits Award Recognition')" class="w-full py-1.5 text-center rounded-lg bg-emerald-950/60 hover:bg-emerald-900/60 text-emerald-300 text-xs font-semibold transition-colors border border-emerald-700/40">
+                            <i class="fa-solid fa-expand mr-1"></i> View Award
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Award 8: Speckathon 2026 (Top 1 Spec Game) -->
+                <div class="glass-card rounded-2xl p-6 flex flex-col justify-between border border-amber-500/30">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-lg">
+                                <i class="fa-solid fa-gamepad"></i>
+                            </div>
+                            <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-amber-500 text-slate-950 font-bold">Top 1 Hackathon</span>
+                        </div>
+                        <div class="text-xs font-mono text-amber-400 mb-1">FPT Software • 2026</div>
+                        <h3 class="font-bold text-white text-base mb-2">Speckathon 2026 (Top 1 Spec Game)</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed">
+                            Secured <strong>Top 1</strong> in FPT Software's AI-assisted rapid game development hackathon, authoring spec-driven architectures leveraging Claude Code and agentic tooling.
+                        </p>
+                    </div>
+                    <div class="pt-4 border-t border-white/5 mt-4">
+                        <span class="inline-flex items-center gap-1.5 text-xs text-amber-300 font-mono">
+                            <i class="fa-solid fa-check-circle"></i> FPT Software Division Champion
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Award 9: Top Employee Award 2025 -->
+                <div class="glass-card rounded-2xl p-6 flex flex-col justify-between border border-indigo-500/30">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-10 h-10 rounded-xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-lg">
+                                <i class="fa-solid fa-award"></i>
+                            </div>
+                            <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-indigo-500 text-white font-bold">Best Performance</span>
+                        </div>
+                        <div class="text-xs font-mono text-indigo-400 mb-1">FPT Software • 2025</div>
+                        <h3 class="font-bold text-white text-base mb-2">Top Employee Award (2025)</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed">
+                            Recognized with Best Performance of the quarter and across LMS business unit for architecting high-throughput logistics microservices and incident triage tooling.
+                        </p>
+                    </div>
+                    <div class="pt-4 border-t border-white/5 mt-4">
+                        <a href="https://www.linkedin.com/feed/update/urn:li:activity:7342420219941765121/" target="_blank" class="w-full py-1.5 text-center rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold transition-colors block">
+                            View on LinkedIn ↗
+                        </a>
                     </div>
                 </div>
             </div>
@@ -499,143 +894,55 @@
                         <p class="text-sm sm:text-base text-slate-300 leading-relaxed max-w-2xl">
                             My CV is authored as pure source code and compiled via automated LaTeX pipelines (from <a href="https://github.com/nhonvo/build_cv" target="_blank" class="text-indigo-400 underline">build_cv</a>). It guarantees pixel-perfect typesetting, strict budgets, and standard formatting.
                         </p>
-
                         <div class="flex flex-wrap gap-4 pt-2">
-                            <a href="cv.html" class="px-6 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm shadow-xl shadow-indigo-600/30 transition-all hover:scale-105 flex items-center gap-2">
-                                <i class="fa-solid fa-arrow-up-right-from-square"></i> Open Fullscreen LaTeX CV Viewer
+                            <a href="cv.html" class="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs transition-all shadow-lg shadow-indigo-600/30 flex items-center gap-2">
+                                <i class="fa-solid fa-expand"></i> Open Fullscreen CV Viewer
                             </a>
-                            <a href="pdf/cv_one_page.pdf" download class="px-5 py-3 rounded-xl glass-card hover:bg-slate-800 text-white font-semibold text-sm transition-all flex items-center gap-2">
-                                <i class="fa-solid fa-download text-indigo-400"></i> Download 1-Page (PDF)
+                            <a href="pdf/cv_one_page.pdf" download class="px-5 py-2.5 rounded-xl glass-card hover:bg-slate-800 text-white font-semibold text-xs transition-all border border-indigo-500/30 flex items-center gap-2">
+                                <i class="fa-solid fa-download text-indigo-400"></i> Download 1-Page Summary (PDF)
                             </a>
-                            <a href="pdf/cv_master.pdf" download class="px-5 py-3 rounded-xl glass-card hover:bg-slate-800 text-slate-300 font-semibold text-sm transition-all flex items-center gap-2">
-                                <i class="fa-solid fa-download text-slate-400"></i> Download Master (PDF)
+                            <a href="pdf/cv_master.pdf" download class="px-5 py-2.5 rounded-xl glass-card hover:bg-slate-800 text-slate-300 font-semibold text-xs transition-all flex items-center gap-2">
+                                <i class="fa-solid fa-file-pdf"></i> Download Master CV (PDF)
                             </a>
                         </div>
                     </div>
 
-                    <!-- Visual Mini TeX Card -->
                     <div class="lg:col-span-4 flex justify-center">
-                        <a href="cv.html" class="group block w-full max-w-xs p-5 rounded-2xl glass-card border border-white/10 hover:border-indigo-500/50 transition-all">
-                            <div class="flex items-center justify-between mb-4">
-                                <div class="w-10 h-10 rounded-xl bg-indigo-600/30 text-indigo-400 flex items-center justify-center text-lg">
-                                    <i class="fa-solid fa-file-pdf"></i>
-                                </div>
-                                <span class="text-xs font-mono text-indigo-400 group-hover:translate-x-1 transition-transform">View ↗</span>
+                        <a href="cv.html" class="block group relative rounded-2xl overflow-hidden border border-indigo-500/40 shadow-2xl shadow-indigo-500/20 max-w-xs hover:scale-105 transition-transform">
+                            <div class="bg-slate-900/90 p-4 border-b border-white/10 flex items-center justify-between text-xs font-mono text-slate-400">
+                                <span>cv_one_page.pdf</span>
+                                <span class="text-indigo-400 group-hover:translate-x-1 transition-transform">Interactive ↗</span>
                             </div>
-                            <h4 class="font-bold text-white text-sm mb-1">Dual Target Pipeline</h4>
-                            <p class="text-xs text-slate-400 leading-relaxed mb-3">
-                                Switch dynamically between high-impact 1-page executive summary or comprehensive career history.
-                            </p>
-                            <span class="text-[11px] font-mono text-indigo-300 block">LaTeX Engine • Live PDF Viewer</span>
+                            <div class="bg-white p-6 text-slate-900 space-y-2 select-none h-56 overflow-hidden">
+                                <div class="text-center pb-2 border-b border-slate-300">
+                                    <div class="font-extrabold text-sm tracking-tight text-slate-950">VO THUONG TRUONG NHON</div>
+                                    <div class="text-[9px] text-slate-600 font-mono">Senior .NET Backend Engineer • Ho Chi Minh City</div>
+                                </div>
+                                <div class="space-y-1 text-[8px] text-slate-700">
+                                    <div class="font-bold text-slate-950 uppercase tracking-wider text-[8px] border-b border-slate-200">Experience</div>
+                                    <div><strong>FPT Software</strong> — .NET Backend Engineer (2023 - Present)</div>
+                                    <div class="text-slate-500 pl-2">• Quotes API handling 200k+ daily dynamic pricing requests</div>
+                                    <div class="text-slate-500 pl-2">• AWS Valkey caching (40% DB load cut, p95 500ms → 95ms)</div>
+                                    <div class="text-slate-500 pl-2">• Hub Service nearest-hub calculation & Superchat AI Slack App</div>
+                                </div>
+                            </div>
                         </a>
                     </div>
                 </div>
             </div>
         </section>
-
-        <!-- Certifications Section -->
-        <section id="certifications" class="max-w-7xl mx-auto px-6 py-16">
-            <div class="text-center max-w-2xl mx-auto mb-12">
-                <div class="text-xs font-mono uppercase text-indigo-400 tracking-wider">Credentials</div>
-                <h2 class="text-3xl sm:text-4xl font-extrabold text-white mt-1">Professional Certifications</h2>
-                <p class="text-sm text-slate-400 mt-2">
-                    Industry-recognized accreditations in Cloud Architecture, AI tooling, and Database design.
-                </p>
-            </div>
-
-            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Cert 1 -->
-                <a href="https://learn.microsoft.com/api/credentials/share/en-us/nhonvo/BA1E3C592CEC7780" target="_blank" class="glass-card rounded-2xl p-6 group block">
-                    <div class="flex items-center justify-between mb-4">
-                        <div class="w-10 h-10 rounded-xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-lg">
-                            <i class="fa-solid fa-wand-magic-sparkles"></i>
-                        </div>
-                        <span class="text-xs font-mono text-indigo-400 group-hover:translate-x-1 transition-transform">Verify ↗</span>
-                    </div>
-                    <h3 class="font-bold text-white text-base group-hover:text-indigo-300 transition-colors">GitHub Copilot (GH300)</h3>
-                    <div class="text-xs text-slate-400 mb-2">Microsoft / GitHub • 2026</div>
-                    <p class="text-xs text-slate-400 leading-relaxed">
-                        Professional accreditation in AI-assisted software delivery and developer acceleration.
-                    </p>
-                </a>
-
-                <!-- Cert 2 -->
-                <a href="https://www.udacity.com/certificate/e/664f07ee-65ad-11ef-a192-d776ea27f5c9" target="_blank" class="glass-card rounded-2xl p-6 group block">
-                    <div class="flex items-center justify-between mb-4">
-                        <div class="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-lg">
-                            <i class="fa-solid fa-cloud"></i>
-                        </div>
-                        <span class="text-xs font-mono text-amber-400 group-hover:translate-x-1 transition-transform">Verify ↗</span>
-                    </div>
-                    <h3 class="font-bold text-white text-base group-hover:text-amber-300 transition-colors">AWS Cloud Architecture</h3>
-                    <div class="text-xs text-slate-400 mb-2">Udacity Nanodegree • 2024</div>
-                    <p class="text-xs text-slate-400 leading-relaxed">
-                        High availability, disaster recovery, resilience, and infrastructure automation at scale.
-                    </p>
-                </a>
-
-                <!-- Cert 3 -->
-                <a href="https://academy.katalon.com/mcertificate/6655d776daab4" target="_blank" class="glass-card rounded-2xl p-6 group block">
-                    <div class="flex items-center justify-between mb-4">
-                        <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-lg">
-                            <i class="fa-solid fa-vial-circle-check"></i>
-                        </div>
-                        <span class="text-xs font-mono text-emerald-400 group-hover:translate-x-1 transition-transform">Verify ↗</span>
-                    </div>
-                    <h3 class="font-bold text-white text-base group-hover:text-emerald-300 transition-colors">Katalon Certified Expert</h3>
-                    <div class="text-xs text-slate-400 mb-2">Katalon Academy • 2024</div>
-                    <p class="text-xs text-slate-400 leading-relaxed">
-                        Advanced test automation frameworks, continuous testing orchestration, and CI/CD pipelines.
-                    </p>
-                </a>
-
-                <!-- Cert 4 -->
-                <a href="https://learn.mongodb.com/c/G5hEeS7nRIaWzcVDQkCQFA" target="_blank" class="glass-card rounded-2xl p-6 group block">
-                    <div class="flex items-center justify-between mb-4">
-                        <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-lg">
-                            <i class="fa-solid fa-leaf"></i>
-                        </div>
-                        <span class="text-xs font-mono text-emerald-400 group-hover:translate-x-1 transition-transform">Verify ↗</span>
-                    </div>
-                    <h3 class="font-bold text-white text-base group-hover:text-emerald-300 transition-colors">MongoDB Certified Associate</h3>
-                    <div class="text-xs text-slate-400 mb-2">MongoDB University • 2023</div>
-                    <p class="text-xs text-slate-400 leading-relaxed">
-                        Document data modeling, aggregation pipelines, indexing strategies, and query performance.
-                    </p>
-                </a>
-
-                <!-- Cert 5 -->
-                <a href="https://confirm.udacity.com/e/f5009d0c-3b21-11ee-b039-dfe669e63fdd" target="_blank" class="glass-card rounded-2xl p-6 group block">
-                    <div class="flex items-center justify-between mb-4">
-                        <div class="w-10 h-10 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-lg">
-                            <i class="fa-solid fa-server"></i>
-                        </div>
-                        <span class="text-xs font-mono text-cyan-400 group-hover:translate-x-1 transition-transform">Verify ↗</span>
-                    </div>
-                    <h3 class="font-bold text-white text-base group-hover:text-cyan-300 transition-colors">Cloud Developer Nanodegree</h3>
-                    <div class="text-xs text-slate-400 mb-2">Udacity • 2023</div>
-                    <p class="text-xs text-slate-400 leading-relaxed">
-                        Serverless applications, Docker container orchestration, and AWS microservices.
-                    </p>
-                </a>
-
-                <!-- Cert 6 -->
-                <a href="https://confirm.udacity.com/e/382c1482-bb86-11ee-9bdf-ebd6686d311a" target="_blank" class="glass-card rounded-2xl p-6 group block">
-                    <div class="flex items-center justify-between mb-4">
-                        <div class="w-10 h-10 rounded-xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-lg">
-                            <i class="fa-solid fa-database"></i>
-                        </div>
-                        <span class="text-xs font-mono text-indigo-400 group-hover:translate-x-1 transition-transform">Verify ↗</span>
-                    </div>
-                    <h3 class="font-bold text-white text-base group-hover:text-indigo-300 transition-colors">SQL Nanodegree</h3>
-                    <div class="text-xs text-slate-400 mb-2">Udacity • 2024</div>
-                    <p class="text-xs text-slate-400 leading-relaxed">
-                        Relational schema design, complex analytical queries, and query plan optimization.
-                    </p>
-                </a>
-            </div>
-        </section>
     </main>
+
+    <!-- Interactive Lightbox Modal -->
+    <div id="image-modal" class="fixed inset-0 z-50 hidden bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
+        <div class="relative max-w-4xl max-h-[90vh] flex flex-col items-center">
+            <button id="modal-close" onclick="closeModal()" class="absolute -top-12 right-0 text-white hover:text-indigo-400 text-3xl font-bold p-2 transition-colors">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <img id="modal-img" src="" alt="Credential Certificate" class="max-w-full max-h-[80vh] rounded-xl shadow-2xl object-contain border border-white/10">
+            <div id="modal-caption" class="text-sm text-slate-200 mt-4 text-center font-medium font-sans"></div>
+        </div>
+    </div>
 
     <!-- Footer -->
     <footer class="border-t border-white/5 py-12 text-center text-xs text-slate-500 space-y-4">
@@ -659,5 +966,46 @@
         <p>© 2026 Vo Thuong Truong Nhon (Nolan). Hosted natively via GitHub Pages.</p>
     </footer>
 
+    <!-- Lightbox Script -->
+    <script>
+        const modal = document.getElementById('image-modal');
+        const modalImg = document.getElementById('modal-img');
+        const modalCaption = document.getElementById('modal-caption');
+
+        function openModal(src, caption) {
+            modalImg.src = src;
+            modalCaption.textContent = caption || '';
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            modal.classList.add('hidden');
+            modalImg.src = '';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Attach listeners to preview-img elements
+        document.querySelectorAll('.preview-img').forEach(img => {
+            img.addEventListener('click', (e) => {
+                e.stopPropagation();
+                openModal(img.src, img.getAttribute('data-caption') || img.alt);
+            });
+        });
+
+        // Close on backdrop click
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal || e.target.id === 'modal-close') {
+                closeModal();
+            }
+        });
+
+        // Close on Escape key
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+                closeModal();
+            }
+        });
+    </script>
 </body>
 </html>

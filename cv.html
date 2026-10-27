@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curriculum Vitae (LaTeX) — Vo Thuong Truong Nhon</title>
+    <meta name="description" content="Official LaTeX Curriculum Vitae of Vo Thuong Truong Nhon - Senior .NET Backend Engineer & Cloud Architect.">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- FontAwesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        :root {
+            --bg-dark: #090d16;
+            --bar-bg: rgba(15, 23, 42, 0.94);
+            --card-border: rgba(255, 255, 255, 0.1);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent-primary: #6366f1;
+            --accent-secondary: #06b6d4;
+            --accent-glow: rgba(99, 102, 241, 0.4);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Minimal Floating Toolbar */
+        .toolbar {
+            height: 60px;
+            background: var(--bar-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--card-border);
+            padding: 0 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 50;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.45rem 0.85rem;
+            border-radius: 8px;
+            font-size: 0.825rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-decoration: none;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--card-border);
+            transition: all 0.2s ease;
+        }
+
+        .back-btn:hover {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .tabs {
+            display: flex;
+            gap: 0.35rem;
+            background: rgba(30, 41, 59, 0.7);
+            padding: 4px;
+            border-radius: 10px;
+            border: 1px solid var(--card-border);
+        }
+
+        .tab-btn {
+            padding: 0.45rem 1rem;
+            border-radius: 7px;
+            font-size: 0.825rem;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            background: transparent;
+            color: var(--text-muted);
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tab-btn.active {
+            background: var(--accent-primary);
+            color: #ffffff;
+            box-shadow: 0 2px 10px var(--accent-glow);
+        }
+
+        .tab-btn:hover:not(.active) {
+            color: var(--text-main);
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .actions {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .btn-action {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            padding: 0.45rem 0.95rem;
+            border-radius: 8px;
+            font-size: 0.825rem;
+            font-weight: 600;
+            text-decoration: none;
+            color: var(--text-main);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--card-border);
+            transition: all 0.2s ease;
+        }
+
+        .btn-action:hover {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(255, 255, 255, 0.25);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+            border: none;
+            box-shadow: 0 2px 12px var(--accent-glow);
+        }
+
+        .btn-primary:hover {
+            opacity: 0.92;
+            transform: translateY(-1px);
+        }
+
+        /* Fullscreen Viewport */
+        .viewport {
+            flex: 1;
+            width: 100%;
+            height: calc(100vh - 60px);
+            border: none;
+            background: #181d28;
+        }
+
+        .pdf-object {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .pdf-fallback {
+            padding: 3rem;
+            text-align: center;
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 1.25rem;
+            height: 100%;
+            background: var(--bg-dark);
+        }
+
+        @media (max-width: 768px) {
+            .toolbar {
+                padding: 0 0.75rem;
+            }
+            .tab-btn span {
+                display: none;
+            }
+            .btn-action span {
+                display: none;
+            }
+            .back-btn span {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Minimal Control Bar -->
+    <div class="toolbar">
+        <div class="nav-left">
+            <a href="index.html" class="back-btn" title="Back to Web Portfolio">
+                <i class="fa-solid fa-arrow-left"></i> <span>Portfolio</span>
+            </a>
+            <div class="tabs">
+                <button class="tab-btn active" id="tabOnePage" onclick="switchCv('one_page')">
+                    <i class="fa-solid fa-file-contract"></i> <span>Executive 1-Page (LaTeX)</span>
+                </button>
+                <button class="tab-btn" id="tabFull" onclick="switchCv('full')">
+                    <i class="fa-solid fa-file-lines"></i> <span>Master Full CV (LaTeX)</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="actions">
+            <a id="openNewTabBtn" href="pdf/cv_one_page.pdf" target="_blank" class="btn-action">
+                <i class="fa-solid fa-arrow-up-right-from-square"></i> <span>Open Fullscreen</span>
+            </a>
+            <a id="downloadBtn" href="pdf/cv_one_page.pdf" download class="btn-action btn-primary">
+                <i class="fa-solid fa-download"></i> <span>Download LaTeX PDF</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- PDF Viewer Viewport -->
+    <div class="viewport">
+        <object id="pdfObject" data="pdf/cv_one_page.pdf" type="application/pdf" class="pdf-object">
+            <div class="pdf-fallback">
+                <i class="fa-solid fa-file-pdf" style="font-size: 3.5rem; color: #6366f1;"></i>
+                <h3 style="font-size: 1.25rem; font-weight: 700;">LaTeX Curriculum Vitae</h3>
+                <p style="color: var(--text-muted); max-width: 400px; font-size: 0.9rem;">
+                    Your browser does not support embedded PDF preview. You can download the compiled LaTeX PDF directly below.
+                </p>
+                <a id="fallbackDownloadBtn" href="pdf/cv_one_page.pdf" download class="btn-action btn-primary">
+                    <i class="fa-solid fa-download"></i> Download LaTeX PDF
+                </a>
+            </div>
+        </object>
+    </div>
+
+    <script>
+        const cvTargets = {
+            'one_page': 'pdf/cv_one_page.pdf',
+            'full': 'pdf/cv_master.pdf'
+        };
+
+        function switchCv(key) {
+            const pdfPath = cvTargets[key];
+            if (!pdfPath) return;
+
+            document.getElementById('tabOnePage').classList.toggle('active', key === 'one_page');
+            document.getElementById('tabFull').classList.toggle('active', key === 'full');
+
+            document.getElementById('pdfObject').data = pdfPath;
+            document.getElementById('downloadBtn').href = pdfPath;
+            document.getElementById('openNewTabBtn').href = pdfPath;
+            document.getElementById('fallbackDownloadBtn').href = pdfPath;
+        }
+    </script>
+</body>
+</html>
